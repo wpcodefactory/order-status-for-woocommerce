@@ -3,7 +3,7 @@ Contributors: wpcodefactory, algoritmika, anbinder
 Tags: woocommerce, status, order status, woo commerce
 Requires at least: 4.7
 Tested up to: 6.0
-Stable tag: 1.1.1
+Stable tag: 1.2.0
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -39,7 +39,7 @@ You can add any number of statuses and for *each status* you can set:
 
 == Changelog ==
 
-= 1.2.0 - 20/10/2022 =
+= 1.2.0 - 21/10/2022 =
 * Dev - Admin menu priority lowered from `PHP_INT_MAX` to `100`.
 * Deploy script added.
 * Readme.txt updated.

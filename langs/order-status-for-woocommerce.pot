@@ -1,49 +1,15 @@
-# Copyright (C) 2022 WPFactory
-# This file is distributed under the same license as the Order Status for WooCommerce Pro plugin.
-msgid ""
-msgstr ""
-"Project-Id-Version: order-status-for-woocommerce 1.2.0-dev\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/order-status-for-woocommerce\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-10-21T02:53:50+02:00\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.4.0\n"
-"X-Domain: order-status-for-woocommerce\n"
-
-#. Plugin Name of the plugin
-msgid "Order Status for WooCommerce Pro"
-msgstr ""
-
-#. Plugin URI of the plugin
-msgid "https://wpfactory.com/item/order-status-for-woocommerce/"
-msgstr ""
-
-#. Description of the plugin
-msgid "Manage order statuses in WooCommerce. Beautifully."
-msgstr ""
-
-#. Author of the plugin
-msgid "WPFactory"
-msgstr ""
-
-#. Author URI of the plugin
-msgid "https://wpfactory.com"
-msgstr ""
-
 #: includes/admin/class-wfwp-wc-order-status-admin.php:77
 msgid "Order status title cannot start with number."
 msgstr ""
 
 #: includes/admin/class-wfwp-wc-order-status-admin.php:94
 #: includes/admin/class-wfwp-wc-order-status-admin.php:100
+#, php-format
 msgid "%s status deleted."
 msgstr ""
 
 #: includes/admin/class-wfwp-wc-order-status-admin.php:101
+#, php-format
 msgid "%s order(s) updated (to %s)."
 msgstr ""
 
@@ -53,6 +19,7 @@ msgid "Security check (nonce not verified)."
 msgstr ""
 
 #: includes/admin/class-wfwp-wc-order-status-admin.php:134
+#, php-format
 msgid "Custom order status (%s) deleted."
 msgstr ""
 
@@ -74,7 +41,8 @@ msgid "Styling Options"
 msgstr ""
 
 #: includes/admin/wfwp-wc-order-status-options.php:28
-msgid "Styling options are visible in \"Status\" column and on order preview page."
+msgid ""
+"Styling options are visible in \"Status\" column and on order preview page."
 msgstr ""
 
 #: includes/admin/wfwp-wc-order-status-options.php:31
@@ -162,14 +130,21 @@ msgid "Email Options"
 msgstr ""
 
 #: includes/admin/wfwp-wc-order-status-options.php:144
-msgid "Placeholders in <strong>subject</strong>, <strong>heading</strong> and <strong>content</strong>: %s"
+#, php-format
+msgid ""
+"Placeholders in <strong>subject</strong>, <strong>heading</strong> and "
+"<strong>content</strong>: %s"
 msgstr ""
 
 #: includes/admin/wfwp-wc-order-status-options.php:157
-msgid "Additional placeholder in <strong>heading</strong> and <strong>content</strong>: %s"
+#, php-format
+msgid ""
+"Additional placeholder in <strong>heading</strong> and <strong>content</"
+"strong>: %s"
 msgstr ""
 
 #: includes/admin/wfwp-wc-order-status-options.php:159
+#, php-format
 msgid "Placeholders in email <strong>address</strong>: %s"
 msgstr ""
 
@@ -182,6 +157,7 @@ msgid "Email address"
 msgstr ""
 
 #: includes/admin/wfwp-wc-order-status-options.php:175
+#, php-format
 msgid "if empty, will send to %s"
 msgstr ""
 
@@ -190,6 +166,7 @@ msgid "Subject"
 msgstr ""
 
 #: includes/admin/wfwp-wc-order-status-options.php:186
+#, php-format
 msgid "%s Order %s status changed to %s - %s"
 msgstr ""
 
@@ -198,6 +175,7 @@ msgid "Heading"
 msgstr ""
 
 #: includes/admin/wfwp-wc-order-status-options.php:193
+#, php-format
 msgid "Order status changed to %s"
 msgstr ""
 
@@ -206,6 +184,7 @@ msgid "Content"
 msgstr ""
 
 #: includes/admin/wfwp-wc-order-status-options.php:200
+#, php-format
 msgid "Order %s status changed from %s to %s"
 msgstr ""
 
@@ -239,12 +218,25 @@ msgid "View orders"
 msgstr ""
 
 #: includes/class-wfwp-wc-order-status-core.php:146
+#, php-format
 msgid "Change order status to %s"
 msgstr ""
 
+#: includes/class-wfwp-wc-order-status-core.php:157
+msgid "Change status: "
+msgstr ""
+
 #: includes/class-wfwp-wc-order-status-core.php:233
+#, php-format
 msgid "Change status to %s"
 msgstr ""
+
+#: includes/class-wfwp-wc-order-status-core.php:287
+#, php-format
+msgid " <span class=\"count\">(%s)</span>"
+msgid_plural " <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
 
 #: includes/class-wfwp-wc-order-status-core.php:306
 msgctxt "post type general name"
@@ -311,11 +303,16 @@ msgstr ""
 msgid "WooCommerce custom order status"
 msgstr ""
 
+#: includes/class-wfwp-wc-order-status.php:132
+msgid "Settings"
+msgstr ""
+
 #: includes/class-wfwp-wc-order-status.php:135
 msgid "Go Pro"
 msgstr ""
 
 #: includes/pro/classes/class-wfwp-wc-order-status-email.php:28
+#, php-format
 msgid "Email for the \"%s\" custom order status."
 msgstr ""
 
