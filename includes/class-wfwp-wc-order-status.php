@@ -2,7 +2,7 @@
 /**
  * Order Status for WooCommerce - Main Class
  *
- * @version 1.1.1
+ * @version 1.3.0
  * @since   1.0.0
  *
  * @author  Algoritmika Ltd.
@@ -21,6 +21,20 @@ final class WFWP_WC_Order_Status {
 	 * @since 1.0.0
 	 */
 	public $version = WFWP_WC_ORDER_STATUS_VERSION;
+
+	/**
+	 * core.
+	 *
+	 * @since 1.3.0
+	 */
+	public $core;
+
+	/**
+	 * pro.
+	 *
+	 * @since 1.3.0
+	 */
+	public $pro;
 
 	/**
 	 * @var   WFWP_WC_Order_Status The single instance of the class
@@ -49,7 +63,7 @@ final class WFWP_WC_Order_Status {
 	/**
 	 * WFWP_WC_Order_Status Constructor.
 	 *
-	 * @version 1.1.1
+	 * @version 1.3.0
 	 * @since   1.0.0
 	 *
 	 * @access  public
@@ -66,7 +80,7 @@ final class WFWP_WC_Order_Status {
 
 		// Pro
 		if ( 'order-status-for-woocommerce-pro.php' === basename( WFWP_WC_ORDER_STATUS_FILE ) ) {
-			require_once( 'pro/class-wfwp-wc-order-status-pro.php' );
+			$this->pro = require_once( 'pro/class-wfwp-wc-order-status-pro.php' );
 		}
 
 		// Include required files

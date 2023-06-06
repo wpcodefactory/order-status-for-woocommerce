@@ -2,8 +2,8 @@
 Contributors: wpcodefactory, algoritmika, anbinder
 Tags: woocommerce, status, order status, woo commerce
 Requires at least: 4.7
-Tested up to: 6.0
-Stable tag: 1.2.0
+Tested up to: 6.2
+Stable tag: 1.3.0
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -11,7 +11,7 @@ Manage order statuses in WooCommerce. Beautifully.
 
 == Description ==
 
-**Order Status for WooCommerce** plugin lets you add and manage **custom order statuses** in WooCommerce.
+**Order Status for WooCommerce** plugin lets you add and manage **default & custom order statuses** in WooCommerce.
 
 ### &#9989; Main Features ###
 
@@ -38,6 +38,15 @@ You can add any number of statuses and for *each status* you can set:
 3. Start by visiting plugin settings at "WooCommerce > Order Status".
 
 == Changelog ==
+
+= 1.3.0 - 06/06/2023 =
+* Dev - Default WooCommerce status class property added (`is_override`).
+* Dev - Emails - "Wrap in WooCommerce template" option added (defaults to `yes`).
+* Dev - Emails - `{completed_order}` placeholder added.
+* Dev - Admin settings descriptions updated.
+* Dev - Code refactoring.
+* WC tested up to: 7.7.
+* Tested up to: 6.2.
 
 = 1.2.0 - 21/10/2022 =
 * Dev - Admin menu priority lowered from `PHP_INT_MAX` to `100`.

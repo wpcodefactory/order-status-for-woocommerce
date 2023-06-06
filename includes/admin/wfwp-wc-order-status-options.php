@@ -2,7 +2,7 @@
 /**
  * Order Status for WooCommerce - Options
  *
- * @version 1.1.0
+ * @version 1.3.0
  * @since   1.0.0
  *
  * @author  Algoritmika Ltd.
@@ -15,7 +15,7 @@ return apply_filters( 'wfwp_wc_order_status_options', array(
 		'title'    => __( 'Status Slug', 'order-status-for-woocommerce' ),
 		'desc'     => __( 'Status slug cannot be edited.', 'order-status-for-woocommerce' ),
 		'options'  => array(
-			array(
+			'slug' => array(
 				'id'       => 'slug',
 				'type'     => 'text',
 				'css'      => 'width:100%',
@@ -27,13 +27,13 @@ return apply_filters( 'wfwp_wc_order_status_options', array(
 		'title'    => __( 'Styling Options', 'order-status-for-woocommerce' ),
 		'desc'     => __( 'Styling options are visible in "Status" column and on order preview page.', 'order-status-for-woocommerce' ),
 		'options'  => array(
-			array(
+			'text_color' => array(
 				'title'    => __( 'Text color', 'order-status-for-woocommerce' ),
 				'id'       => 'text_color',
 				'type'     => 'color',
 				'default'  => '#000000',
 			),
-			array(
+			'bg_color' => array(
 				'title'    => __( 'Background color', 'order-status-for-woocommerce' ),
 				'id'       => 'bg_color',
 				'type'     => 'color',
@@ -44,7 +44,7 @@ return apply_filters( 'wfwp_wc_order_status_options', array(
 	'general_options' => array(
 		'title'    => __( 'General Options', 'order-status-for-woocommerce' ),
 		'options'  => array(
-			array(
+			'is_bulk_action' => array(
 				'title'    => __( 'Add to order bulk actions', 'order-status-for-woocommerce' ),
 				'id'       => 'is_bulk_action',
 				'type'     => 'select',
@@ -54,7 +54,7 @@ return apply_filters( 'wfwp_wc_order_status_options', array(
 					'yes' => __( 'Yes', 'order-status-for-woocommerce' ),
 				),
 			),
-			array(
+			'is_report' => array(
 				'title'    => __( 'Add to reports', 'order-status-for-woocommerce' ),
 				'id'       => 'is_report',
 				'type'     => 'select',
@@ -69,7 +69,7 @@ return apply_filters( 'wfwp_wc_order_status_options', array(
 	'action_buttons_options' => array(
 		'title'    => __( 'Action Buttons Options', 'order-status-for-woocommerce' ),
 		'options'  => array(
-			array(
+			'is_order_list_action' => array(
 				'title'    => __( 'Add to order list action buttons', 'order-status-for-woocommerce' ),
 				'id'       => 'is_order_list_action',
 				'type'     => 'select',
@@ -79,7 +79,7 @@ return apply_filters( 'wfwp_wc_order_status_options', array(
 					'yes' => __( 'Yes', 'order-status-for-woocommerce' ),
 				),
 			),
-			array(
+			'order_list_icon' => array(
 				'title'    => __( 'Order list icon', 'order-status-for-woocommerce' ) .
 					' [<a target="_blank" href="https://rawgit.com/woothemes/woocommerce-icons/master/demo.html">' . __( 'icon codes', 'order-status-for-woocommerce' ) . '</a>]' .
 					' <span class="view %slug%' . '"></span>',
@@ -87,19 +87,19 @@ return apply_filters( 'wfwp_wc_order_status_options', array(
 				'type'     => 'text',
 				'default'  => 'e011',
 			),
-			array(
+			'order_list_icon_color' => array(
 				'title'    => __( 'Order list icon color', 'order-status-for-woocommerce' ),
 				'id'       => 'order_list_icon_color',
 				'type'     => 'color',
 				'default'  => '#999999',
 			),
-			array(
+			'order_list_icon_bg_color' => array(
 				'title'    => __( 'Order list icon background color', 'order-status-for-woocommerce' ),
 				'id'       => 'order_list_icon_bg_color',
 				'type'     => 'color',
 				'default'  => '#ffffff',
 			),
-			array(
+			'is_order_preview_action' => array(
 				'title'    => __( 'Add to admin order preview action buttons', 'order-status-for-woocommerce' ),
 				'id'       => 'is_order_preview_action',
 				'type'     => 'select',
@@ -114,7 +114,7 @@ return apply_filters( 'wfwp_wc_order_status_options', array(
 	'order_options' => array(
 		'title'    => __( 'Order Options', 'order-status-for-woocommerce' ),
 		'options'  => array(
-			array(
+			'is_order_editable' => array(
 				'title'    => __( 'Is order editable', 'order-status-for-woocommerce' ),
 				'id'       => 'is_order_editable',
 				'type'     => 'select',
@@ -124,7 +124,7 @@ return apply_filters( 'wfwp_wc_order_status_options', array(
 					'yes' => __( 'Yes', 'order-status-for-woocommerce' ),
 				),
 			),
-			array(
+			'is_order_paid' => array(
 				'title'    => __( 'Is order paid', 'order-status-for-woocommerce' ),
 				'id'       => 'is_order_paid',
 				'type'     => 'select',
@@ -159,7 +159,7 @@ return apply_filters( 'wfwp_wc_order_status_options', array(
 			sprintf( __( 'Placeholders in email <strong>address</strong>: %s', 'order-status-for-woocommerce' ),
 				'<code>' . implode( '</code>, <code>', array( '%customer%', '%admin%' ) ) . '</code>' ),
 		'options'  => array(
-			array(
+			'do_send_email' => array(
 				'title'    => __( 'Send email on status change', 'order-status-for-woocommerce' ),
 				'id'       => 'do_send_email',
 				'type'     => 'select',
@@ -170,29 +170,39 @@ return apply_filters( 'wfwp_wc_order_status_options', array(
 				),
 				'custom_attributes' => apply_filters( 'wfwp_wc_order_status_settings', 'disabled="disabled"' ),
 			),
-			array(
-				'title'    => __( 'Email address', 'order-status-for-woocommerce' ) .
-					' <em>(' . sprintf( __( 'if empty, will send to %s', 'order-status-for-woocommerce' ), '<code>' . get_option( 'admin_email' ) . '</code>' ) . ')</em>',
+			'email_address' => array(
+				'title'    => __( 'Email address', 'order-status-for-woocommerce' ),
 				'id'       => 'email_address',
 				'type'     => 'text',
 				'css'      => 'width:100%',
 				'default'  => '',
+				'placeholder' => get_option( 'admin_email' ),
 			),
-			array(
+			'email_subject' => array(
 				'title'    => __( 'Subject', 'order-status-for-woocommerce' ),
 				'id'       => 'email_subject',
 				'type'     => 'text',
 				'css'      => 'width:100%',
 				'default'  => sprintf( __( '%s Order %s status changed to %s - %s', 'order-status-for-woocommerce' ), '[{site_title}]', '#{order_number}', '{status_to_title}', '{order_date}' ),
 			),
-			array(
-				'title'    => __( 'Heading', 'order-status-for-woocommerce' ),
+			'do_wrap_email' => array(
+				'title'    => __( 'Wrap in WooCommerce template', 'order-status-for-woocommerce' ),
+				'id'       => 'do_wrap_email',
+				'type'     => 'select',
+				'default'  => 'yes',
+				'options'  => array(
+					'no'  => __( 'No', 'order-status-for-woocommerce' ),
+					'yes' => __( 'Yes', 'order-status-for-woocommerce' ),
+				),
+			),
+			'email_heading' => array(
+				'title'    => __( 'WooCommerce template heading', 'order-status-for-woocommerce' ),
 				'id'       => 'email_heading',
 				'type'     => 'text',
 				'css'      => 'width:100%',
 				'default'  => sprintf( __( 'Order status changed to %s', 'order-status-for-woocommerce' ), '{status_to_title}' ),
 			),
-			array(
+			'email_content' => array(
 				'title'    => __( 'Content', 'order-status-for-woocommerce' ),
 				'id'       => 'email_content',
 				'type'     => 'textarea',
@@ -206,7 +216,7 @@ return apply_filters( 'wfwp_wc_order_status_options', array(
 		'desc'     => __( 'Admin note is visible on current page only.', 'order-status-for-woocommerce' ),
 		'context'  => 'side',
 		'options'  => array(
-			array(
+			'admin_note' => array(
 				'id'       => 'admin_note',
 				'type'     => 'textarea',
 				'css'      => 'width:100%;height:100px',

@@ -2,7 +2,7 @@
 /**
  * Order Status for WooCommerce - Admin Class
  *
- * @version 1.2.0
+ * @version 1.3.0
  * @since   1.0.0
  *
  * @author  Algoritmika Ltd.
@@ -20,36 +20,104 @@ class WFWP_WC_Order_Status_Admin {
 	 * @version 1.2.0
 	 * @since   1.0.0
 	 *
-	 * @todo    [now] [!] (dev) do not allow to insert statuses that already exist (in `wc_get_order_statuses()`)
-	 * @todo    [feature] editable slug - if slug is changed, change all orders to new status (or make it editable at least in draft)
-	 * @todo    [feature] custom columns in "Statuses" list (icon, options etc.)
-	 * @todo    [feature] icon picker (JS?)
-	 * @todo    [feature] translations (for the custom status title)
-	 * @todo    [feature] add option to set which "options" to show in admin meta boxes
-	 * @todo    [feature] customizable default value for each "option"
+	 * @todo    (feature) editable slug - if slug is changed, change all orders to new status (or make it editable at least in draft)
+	 * @todo    (feature) custom columns in "Statuses" list (icon, options etc.)
+	 * @todo    (feature) icon picker (JS?)
+	 * @todo    (feature) translations (for the custom status title)
+	 * @todo    (feature) add option to set which "options" to show in admin meta boxes
+	 * @todo    (feature) customizable default value for each "option"
 	 */
 	function __construct() {
+
 		add_action( 'admin_menu', array( $this, 'add_menu_link' ), 100 );
+
 		add_action( 'admin_head', array( $this, 'hide_default_options' ) );
+
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ) );
 		add_action( 'save_post_wfwp_wc_order_status', array( $this, 'save_meta_box' ), PHP_INT_MAX, 2 );
+
 		add_filter( 'wp_insert_post_data', array( $this, 'on_insert_post_data' ), PHP_INT_MAX, 2 );
+
 		add_filter( 'admin_init', array( $this, 'delete_status' ), PHP_INT_MAX );
 		add_filter( 'admin_notices', array( $this, 'delete_status_notices' ), PHP_INT_MAX );
+
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+
+	}
+
+	/**
+	 * filter_options.
+	 *
+	 * @version 1.3.0
+	 * @since   1.3.0
+	 *
+	 * @todo    [!] (dev) `is_override`: enable all options, e.g., `is_report`
+	 * @todo    [!] (dev) `draft`: better msg, e.g., check for duplicated slug
+	 */
+	function filter_options( $options, $post_id = false ) {
+
+		if ( ! $post_id ) {
+			$post_id = get_the_ID();
+		}
+
+		if ( ( $status = new WFWP_WC_Shop_Order_Status( $post_id ) ) ) {
+
+			// Override
+			if ( $status->is_override() ) {
+
+				if ( isset( $options['main_data']['desc'] ) ) {
+					$options['main_data']['desc'] .= '<br>' . '<strong>' .
+						sprintf( __( 'You are overriding the default %s WooCommerce status.', 'order-status-for-woocommerce' ), '<code>' . $status->wc_slug . '</code>' ) .
+					'</strong>';
+				}
+
+				if ( isset( $options['general_options']['options']['is_report'] ) ) {
+					unset( $options['general_options']['options']['is_report'] );
+				}
+
+				if ( isset( $options['action_buttons_options'] ) ) {
+					unset( $options['action_buttons_options'] );
+				}
+
+				if ( isset( $options['order_options']['options']['is_order_paid'] ) ) {
+					unset( $options['order_options']['options']['is_order_paid'] );
+				}
+
+				if ( isset( $options['email_options']['options']['do_send_email']['title'] ) ) {
+					$options['email_options']['options']['do_send_email']['title'] = __( 'Send an additional email on status change', 'order-status-for-woocommerce' );
+				}
+
+			}
+
+			// Draft
+			if ( 'draft' === get_post_status( $post_id ) ) {
+
+				if ( isset( $options['main_data']['desc'] ) ) {
+					$options['main_data']['desc'] .= '<br>' . '<strong>' .
+						__( 'This is a draft. The slug may change after you publish.', 'order-status-for-woocommerce' ) .
+					'</strong>';
+				}
+
+			}
+
+		}
+
+		return $options;
+
 	}
 
 	/**
 	 * get_options.
 	 *
-	 * @version 1.0.0
+	 * @version 1.3.0
 	 * @since   1.0.0
 	 *
-	 * @todo    [dev] recheck options descriptions
+	 * @todo    (dev) recheck option descriptions
 	 */
-	function get_options() {
+	function get_options( $post_id = false ) {
 		if ( ! isset( $this->options ) ) {
 			$this->options = require_once( 'wfwp-wc-order-status-options.php' );
+			$this->options = $this->filter_options( $this->options, $post_id );
 		}
 		return $this->options;
 	}
@@ -86,7 +154,7 @@ class WFWP_WC_Order_Status_Admin {
 	 * @version 1.0.0
 	 * @since   1.0.0
 	 *
-	 * @todo    [dev] retrieve fallback status title (instead of slug)
+	 * @todo    (dev) retrieve fallback status title (instead of slug)
 	 */
 	function delete_status_notices() {
 		if ( isset( $_GET['wfwp_wcos_delete_finished'] ) ) {
@@ -108,8 +176,8 @@ class WFWP_WC_Order_Status_Admin {
 	 * @version 1.0.0
 	 * @since   1.0.0
 	 *
-	 * @todo    [feature] add option to temporary remove emails (and possibly other triggers) on fallback status
-	 * @todo    [feature] customizable "fallback status"
+	 * @todo    (feature) add option to temporary remove emails (and possibly other triggers) on fallback status
+	 * @todo    (feature) customizable "fallback status"
 	 */
 	function delete_status() {
 		if ( isset( $_GET['wfwp_wcos_delete'] ) && current_user_can( 'manage_woocommerce' ) ) {
@@ -146,9 +214,9 @@ class WFWP_WC_Order_Status_Admin {
 	 * @version 1.0.0
 	 * @since   1.0.0
 	 *
-	 * @todo    [fix] is there any issues with same title slugs?
-	 * @todo    [dev] re-check: publish at once (remove other post statuses)
-	 * @todo    [dev] (maybe) delete draft on invalid title (i.e. starts with number)
+	 * @todo    (fix) is there any issues with same title slugs?
+	 * @todo    (dev) re-check: publish at once (remove other post statuses)
+	 * @todo    (dev) delete draft on invalid title (i.e., starts with number)?
 	 */
 	function on_insert_post_data( $data, $postarr ) {
 		if ( 'wfwp_wc_order_status' === $data['post_type'] ) {
@@ -166,9 +234,9 @@ class WFWP_WC_Order_Status_Admin {
 	 * @version 1.0.0
 	 * @since   1.0.0
 	 *
-	 * @todo    [fix] re-do quick edit, trash, bulk edit, bulk move to trash (see https://wordpress.stackexchange.com/questions/295169/remove-trash-delete-option-for-custom-post-type-taxonomy)
-	 * @todo    [dev] remove "Move to Trash" / remove "Visibility" / remove "Publish" - i.e. use PHP instead of CSS
-	 * @todo    [dev] maybe enqueue css file instead?
+	 * @todo    (fix) re-do quick edit, trash, bulk edit, bulk move to trash (see https://wordpress.stackexchange.com/questions/295169/remove-trash-delete-option-for-custom-post-type-taxonomy)
+	 * @todo    (dev) remove "Move to Trash" / remove "Visibility" / remove "Publish" - i.e., use PHP instead of CSS
+	 * @todo    (dev) maybe enqueue css file instead?
 	 */
 	function hide_default_options() {
 		echo '<style>
@@ -223,16 +291,16 @@ class WFWP_WC_Order_Status_Admin {
 	/**
 	 * meta_box_callback.
 	 *
-	 * @version 1.0.0
+	 * @version 1.3.0
 	 * @since   1.0.0
 	 *
-	 * @todo    [dev] better solution for `__wfwp_wcos_post_id__` and `%slug%`
-	 * @todo    [dev] nonce
-	 * @todo    [dev] code refactoring
-	 * @todo    [dev] `wc_help_tip`
+	 * @todo    (dev) better solution for `__wfwp_wcos_post_id__` (why not `get_the_ID()`?) and `%slug%`
+	 * @todo    (dev) nonce
+	 * @todo    (dev) code refactoring
+	 * @todo    (dev) `wc_help_tip`
 	 */
 	function meta_box_callback( $post, $metabox ) {
-		$post_id = get_the_ID();
+		$post_id = $post->ID;
 		$html = '';
 		if ( ! empty( $metabox['args']['section']['desc'] ) ) {
 			$html .= '<p><em>' .  str_replace(
@@ -240,7 +308,7 @@ class WFWP_WC_Order_Status_Admin {
 				array( ( ! empty( $post->post_name ) ? $post->post_name : sanitize_title( get_the_title() ) ), get_the_ID() ),
 				$metabox['args']['section']['desc'] ) . '</em></p>';
 		}
-		$options = $this->get_options();
+		$options = $this->get_options( $post_id );
 		if ( ! empty( $options[ $metabox['args']['id'] ]['options'] ) ) {
 			$html .= '<table class="widefat striped">';
 			foreach ( $options[ $metabox['args']['id'] ]['options'] as $option ) {
@@ -346,11 +414,13 @@ class WFWP_WC_Order_Status_Admin {
 	/**
 	 * save_meta_box.
 	 *
-	 * @version 1.0.0
+	 * @version 1.3.0
 	 * @since   1.0.0
+	 *
+	 * @todo    [!] (dev) sanitize
 	 */
 	function save_meta_box( $post_id, $post ) {
-		foreach ( $this->get_options() as $section_id => $section ) {
+		foreach ( $this->get_options( $post_id ) as $section_id => $section ) {
 			foreach ( $section['options'] as $option ) {
 				if ( 'title' === $option['type'] || ! empty( $option['readonly'] ) ) {
 					continue;
