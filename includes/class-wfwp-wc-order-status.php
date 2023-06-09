@@ -2,7 +2,7 @@
 /**
  * Order Status for WooCommerce - Main Class
  *
- * @version 1.3.0
+ * @version 1.4.0
  * @since   1.0.0
  *
  * @author  Algoritmika Ltd.
@@ -63,7 +63,7 @@ final class WFWP_WC_Order_Status {
 	/**
 	 * WFWP_WC_Order_Status Constructor.
 	 *
-	 * @version 1.3.0
+	 * @version 1.4.0
 	 * @since   1.0.0
 	 *
 	 * @access  public
@@ -77,6 +77,9 @@ final class WFWP_WC_Order_Status {
 
 		// Set up localisation
 		add_action( 'init', array( $this, 'localize' ), 9 );
+
+		// Declare compatibility with custom order tables for WooCommerce
+		add_action( 'before_woocommerce_init', array( $this, 'wc_declare_compatibility' ) );
 
 		// Pro
 		if ( 'order-status-for-woocommerce-pro.php' === basename( WFWP_WC_ORDER_STATUS_FILE ) ) {
@@ -104,6 +107,20 @@ final class WFWP_WC_Order_Status {
 	}
 
 	/**
+	 * wc_declare_compatibility.
+	 *
+	 * @version 1.4.0
+	 * @since   1.4.0
+	 *
+	 * @see     https://github.com/woocommerce/woocommerce/wiki/High-Performance-Order-Storage-Upgrade-Recipe-Book#declaring-extension-incompatibility
+	 */
+	function wc_declare_compatibility() {
+		if ( class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', WFWP_WC_ORDER_STATUS_FILE, true );
+		}
+	}
+
+	/**
 	 * includes.
 	 *
 	 * @version 1.1.0
@@ -119,13 +136,15 @@ final class WFWP_WC_Order_Status {
 	/**
 	 * admin.
 	 *
-	 * @version 1.1.0
+	 * @version 1.4.0
 	 * @since   1.0.0
 	 */
 	function admin() {
 		require_once( 'admin/class-wfwp-wc-order-status-admin.php' );
 		// Action links
 		add_filter( 'plugin_action_links_' . plugin_basename( WFWP_WC_ORDER_STATUS_FILE ), array( $this, 'action_links' ) );
+		// Settings
+		add_filter( 'woocommerce_get_settings_pages', array( $this, 'add_woocommerce_settings_tab' ) );
 		// Version update
 		if ( get_option( 'wfwp_wc_order_status_version', '' ) !== $this->version ) {
 			add_action( 'admin_init', array( $this, 'version_updated' ) );
@@ -135,7 +154,7 @@ final class WFWP_WC_Order_Status {
 	/**
 	 * action_links.
 	 *
-	 * @version 1.1.0
+	 * @version 1.4.0
 	 * @since   1.0.0
 	 *
 	 * @param   mixed $links
@@ -143,12 +162,24 @@ final class WFWP_WC_Order_Status {
 	 */
 	function action_links( $links ) {
 		$custom_links = array();
-		$custom_links[] = '<a href="' . admin_url( 'edit.php?post_type=wfwp_wc_order_status' ) . '">' . __( 'Settings', 'woocommerce' ) . '</a>';
+		$custom_links[] = '<a href="' . admin_url( 'edit.php?post_type=wfwp_wc_order_status' ) . '">' . __( 'Statuses', 'order-status-for-woocommerce' ) . '</a>';
+		$custom_links[] = '<a href="' . admin_url( 'admin.php?page=wc-settings&tab=wfwp_wc_order_status' ) . '">' . __( 'Settings', 'woocommerce' ) . '</a>';
 		if ( 'order-status-for-woocommerce.php' === basename( WFWP_WC_ORDER_STATUS_FILE ) ) {
 			$custom_links[] = '<a target="_blank" style="font-weight: bold; color: green;" href="https://wpfactory.com/item/order-status-for-woocommerce/">' .
 				__( 'Go Pro', 'order-status-for-woocommerce' ) . '</a>';
 		}
 		return array_merge( $custom_links, $links );
+	}
+
+	/**
+	 * add_woocommerce_settings_tab.
+	 *
+	 * @version 1.4.0
+	 * @since   1.4.0
+	 */
+	function add_woocommerce_settings_tab( $settings ) {
+		$settings[] = require_once( 'settings/class-wfwp-wc-order-status-settings.php' );
+		return $settings;
 	}
 
 	/**

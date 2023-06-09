@@ -2,7 +2,7 @@
 /**
  * Order Status for WooCommerce - Status Class
  *
- * @version 1.3.0
+ * @version 1.4.0
  * @since   1.0.0
  *
  * @author  Algoritmika Ltd.
@@ -17,7 +17,7 @@ class WFWP_WC_Shop_Order_Status {
 	/**
 	 * Public data.
 	 *
-	 * @version 1.3.0
+	 * @version 1.4.0
 	 * @since   1.0.0
 	 */
 	public $post_id;
@@ -35,6 +35,7 @@ class WFWP_WC_Shop_Order_Status {
 	public $is_order_preview_action;
 	public $is_order_editable;
 	public $is_order_paid;
+	public $do_set_order_date_paid;
 	public $do_send_email;
 	public $email_address;
 	public $email_subject;
@@ -54,10 +55,10 @@ class WFWP_WC_Shop_Order_Status {
 	/**
 	 * Constructor.
 	 *
-	 * @version 1.3.0
+	 * @version 1.4.0
 	 * @since   1.0.0
 	 *
-	 * @todo    [!] (dev) if `is_override`: skip unused options, e.g., `is_report`?
+	 * @todo    (dev) [!] if `is_override`: skip unused options, e.g., `is_report`?
 	 * @todo    (dev) go through all `options` automatically?
 	 * @todo    (dev) store all post meta as serialized data?
 	 * @todo    (dev) store all class properties as single array (i.e., `$this->data`)?
@@ -88,6 +89,7 @@ class WFWP_WC_Shop_Order_Status {
 		// Order options
 		$this->is_order_editable         = ( 'yes' === $this->get_option( 'is_order_editable', 'no' ) );
 		$this->is_order_paid             = ( 'yes' === $this->get_option( 'is_order_paid', 'no' ) );
+		$this->do_set_order_date_paid    = ( 'yes' === $this->get_option( 'do_set_order_date_paid', 'no' ) );
 
 		// Email options (default values)
 		$default_subject                 = sprintf( __( '%s Order %s status changed to %s - %s', 'order-status-for-woocommerce' ),
@@ -128,7 +130,7 @@ class WFWP_WC_Shop_Order_Status {
 	 *
 	 * @see     https://github.com/woocommerce/woocommerce/blob/7.7.0/plugins/woocommerce/includes/wc-order-functions.php#L96
 	 *
-	 * @todo    (dev) use `wc_is_order_status( $this->wc_slug )` instead (with `remove_filter/add_filter( 'wc_order_statuses', array( wfwp_wc_order_status()->core, 'add_custom_statuses_to_filter' ), PHP_INT_MAX )`)
+	 * @todo    (dev) use `wc_is_order_status( $this->wc_slug )` instead (with `remove_filter/add_filter( 'wc_order_statuses', array( wfwp_wc_order_status()->core, 'add_custom_order_statuses' ), PHP_INT_MAX )`)
 	 * @todo    (feature) add default statuses as drafts?
 	 */
 	function is_override() {

@@ -3,7 +3,7 @@ Contributors: wpcodefactory, algoritmika, anbinder
 Tags: woocommerce, status, order status, woo commerce
 Requires at least: 4.7
 Tested up to: 6.2
-Stable tag: 1.3.0
+Stable tag: 1.4.0
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -22,6 +22,8 @@ You can add any number of statuses and for *each status* you can set:
 * **Action buttons options** - icon, icon color & background color, add status to order list action buttons and/or admin order preview action buttons.
 * **Order options** - is order editable and/or is order paid.
 
+You can also change **order status sorting**, including the default WooCommerce order statuses.
+
 ### &#127942; Premium Version ###
 
 [Order Status for WooCommerce Pro](https://wpfactory.com/item/order-status-for-woocommerce/) version also has an option to send **emails** on custom order status change. For each custom status email you can set: email address, subject, heading and content.
@@ -38,6 +40,13 @@ You can add any number of statuses and for *each status* you can set:
 3. Start by visiting plugin settings at "WooCommerce > Order Status".
 
 == Changelog ==
+
+= 1.4.0 - 09/06/2023 =
+* Dev - Order Options - 'Set order "date paid" on status update' option added.
+* Dev - "WooCommerce > Settings > Order Status" settings section added for global options.
+* Dev - "Order status sorting" option added.
+* Dev – "High-Performance Order Storage (HPOS)" compatibility.
+* Dev - Admin settings descriptions updated.
 
 = 1.3.0 - 06/06/2023 =
 * Dev - Default WooCommerce status class property added (`is_override`).

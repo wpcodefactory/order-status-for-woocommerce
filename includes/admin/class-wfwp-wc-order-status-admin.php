@@ -2,7 +2,7 @@
 /**
  * Order Status for WooCommerce - Admin Class
  *
- * @version 1.3.0
+ * @version 1.4.0
  * @since   1.0.0
  *
  * @author  Algoritmika Ltd.
@@ -21,7 +21,7 @@ class WFWP_WC_Order_Status_Admin {
 	 * @since   1.0.0
 	 *
 	 * @todo    (feature) editable slug - if slug is changed, change all orders to new status (or make it editable at least in draft)
-	 * @todo    (feature) custom columns in "Statuses" list (icon, options etc.)
+	 * @todo    (feature) [!] custom columns in "Statuses" list (slug, icon, options, etc.)
 	 * @todo    (feature) icon picker (JS?)
 	 * @todo    (feature) translations (for the custom status title)
 	 * @todo    (feature) add option to set which "options" to show in admin meta boxes
@@ -48,11 +48,11 @@ class WFWP_WC_Order_Status_Admin {
 	/**
 	 * filter_options.
 	 *
-	 * @version 1.3.0
+	 * @version 1.4.0
 	 * @since   1.3.0
 	 *
-	 * @todo    [!] (dev) `is_override`: enable all options, e.g., `is_report`
-	 * @todo    [!] (dev) `draft`: better msg, e.g., check for duplicated slug
+	 * @todo    (dev) [!] `is_override`: enable all options, e.g., `is_report`, `is_order_paid`, etc.
+	 * @todo    (dev) `draft`: better msg, e.g., check for duplicated slug
 	 */
 	function filter_options( $options, $post_id = false ) {
 
@@ -81,6 +81,10 @@ class WFWP_WC_Order_Status_Admin {
 
 				if ( isset( $options['order_options']['options']['is_order_paid'] ) ) {
 					unset( $options['order_options']['options']['is_order_paid'] );
+				}
+
+				if ( isset( $options['order_options']['options']['do_set_order_date_paid'] ) ) {
+					unset( $options['order_options']['options']['do_set_order_date_paid'] );
 				}
 
 				if ( isset( $options['email_options']['options']['do_send_email']['title'] ) ) {
@@ -214,7 +218,7 @@ class WFWP_WC_Order_Status_Admin {
 	 * @version 1.0.0
 	 * @since   1.0.0
 	 *
-	 * @todo    (fix) is there any issues with same title slugs?
+	 * @todo    (fix) are there any issues with same title slugs?
 	 * @todo    (dev) re-check: publish at once (remove other post statuses)
 	 * @todo    (dev) delete draft on invalid title (i.e., starts with number)?
 	 */
@@ -417,7 +421,7 @@ class WFWP_WC_Order_Status_Admin {
 	 * @version 1.3.0
 	 * @since   1.0.0
 	 *
-	 * @todo    [!] (dev) sanitize
+	 * @todo    (dev) [!] sanitize
 	 */
 	function save_meta_box( $post_id, $post ) {
 		foreach ( $this->get_options( $post_id ) as $section_id => $section ) {

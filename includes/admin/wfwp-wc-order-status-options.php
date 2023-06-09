@@ -2,7 +2,7 @@
 /**
  * Order Status for WooCommerce - Options
  *
- * @version 1.3.0
+ * @version 1.4.0
  * @since   1.0.0
  *
  * @author  Algoritmika Ltd.
@@ -127,6 +127,16 @@ return apply_filters( 'wfwp_wc_order_status_options', array(
 			'is_order_paid' => array(
 				'title'    => __( 'Is order paid', 'order-status-for-woocommerce' ),
 				'id'       => 'is_order_paid',
+				'type'     => 'select',
+				'default'  => 'no',
+				'options'  => array(
+					'no'  => __( 'No', 'order-status-for-woocommerce' ),
+					'yes' => __( 'Yes', 'order-status-for-woocommerce' ),
+				),
+			),
+			'do_set_order_date_paid' => array(
+				'title'    => __( 'Set order "date paid" on status update', 'order-status-for-woocommerce' ),
+				'id'       => 'do_set_order_date_paid',
 				'type'     => 'select',
 				'default'  => 'no',
 				'options'  => array(

@@ -2,7 +2,7 @@
 /**
  * Order Status for WooCommerce - Core Class
  *
- * @version 1.3.0
+ * @version 1.4.0
  * @since   1.0.0
  *
  * @author  Algoritmika Ltd.
@@ -17,7 +17,7 @@ class WFWP_WC_Order_Status_Core {
 	/**
 	 * Constructor.
 	 *
-	 * @version 1.1.1
+	 * @version 1.4.0
 	 * @since   1.0.0
 	 *
 	 * @todo    (dev) customizable filters priorities
@@ -25,10 +25,10 @@ class WFWP_WC_Order_Status_Core {
 	 * @todo    (dev) maybe compatibility with WP < 4.7 (bulk actions)
 	 * @todo    (dev) maybe compatibility with WC < 3.0 (order properties: ID etc.)
 	 * @todo    (dev) maybe compatibility with WC < 3.0 ? (icons css)
-	 * @todo    [!] (feature) reduce/increase stock: `wc_maybe_reduce_stock_levels` and `wc_maybe_increase_stock_levels`
+	 * @todo    (feature) [!] reduce/increase stock: `wc_maybe_reduce_stock_levels` and `wc_maybe_increase_stock_levels`
 	 * @todo    (feature) "status rules"
 	 * @todo    (feature) "default order status"
-	 * @todo    [!] (feature) "Processing" and "Complete" action buttons (list & preview) (see `woocommerce_admin_order_actions`)
+	 * @todo    (feature) [!] "Processing" and "Complete" action buttons (list & preview) (see `woocommerce_admin_order_actions`)
 	 * @todo    (feature) "delete all custom statuses" and "delete all custom statuses with fallback" button
 	 */
 	function __construct() {
@@ -38,7 +38,10 @@ class WFWP_WC_Order_Status_Core {
 		add_action( 'init', array( $this, 'register_custom_post_statuses' ), 9 );
 
 		// Main WC filter
-		add_filter( 'wc_order_statuses', array( $this, 'add_custom_statuses_to_filter' ), PHP_INT_MAX );
+		add_filter( 'wc_order_statuses', array( $this, 'add_custom_order_statuses' ), PHP_INT_MAX - 1 );
+
+		// Sorting
+		add_filter( 'wc_order_statuses', array( $this, 'sort_order_statuses' ), PHP_INT_MAX );
 
 		// Styling
 		add_action( 'admin_head', array( $this, 'add_custom_status_column_css' ), 10 );
@@ -55,6 +58,7 @@ class WFWP_WC_Order_Status_Core {
 		// Order
 		add_filter( 'wc_order_is_editable', array( $this, 'order_editable' ), PHP_INT_MAX, 2 );
 		add_filter( 'woocommerce_order_is_paid_statuses', array( $this, 'order_paid' ), PHP_INT_MAX );
+		add_action( 'init', array( $this, 'add_order_date_paid_hooks' ) );
 
 		// Shortcodes
 		add_shortcode( 'alg_wc_os_order_meta', array( $this, 'order_meta' ) );
@@ -65,28 +69,101 @@ class WFWP_WC_Order_Status_Core {
 	}
 
 	/**
+	 * add_order_date_paid_hooks.
+	 *
+	 * @version 1.4.0
+	 * @since   1.4.0
+	 */
+	function add_order_date_paid_hooks() {
+		foreach ( $this->get_statuses() as $status ) {
+			if ( $status->is_override() ) {
+				continue;
+			}
+			if ( $status->do_set_order_date_paid ) {
+				add_action( 'woocommerce_order_status_' . $status->slug, array( $this, 'maybe_set_order_date_paid' ), 10, 2 );
+			}
+		}
+	}
+
+	/**
+	 * maybe_set_order_date_paid.
+	 *
+	 * @version 1.4.0
+	 * @since   1.4.0
+	 */
+	function maybe_set_order_date_paid( $order_id, $order ) {
+		if ( ! $order->get_date_paid( 'edit' ) ) {
+			$order->set_date_paid( time() );
+			$order->save();
+		}
+	}
+
+	/**
+	 * sort_order_statuses.
+	 *
+	 * @version 1.4.0
+	 * @since   1.4.0
+	 */
+	function sort_order_statuses( $order_statuses ) {
+
+		$sorting = get_option( 'wfwp_wc_order_status_sorting', 'default' );
+
+		switch ( $sorting ) {
+
+			case 'title_asc':
+				asort( $order_statuses );
+				break;
+
+			case 'custom':
+				$_order_statuses = array();
+				$sorted_statuses = get_option( 'wfwp_wc_order_status_sorting_custom', '' );
+				$sorted_statuses = array_map( 'trim', explode( PHP_EOL, $sorted_statuses ) );
+				foreach ( $sorted_statuses as $status ) {
+					if ( isset( $order_statuses[ $status ] ) ) {
+						$_order_statuses[ $status ] = $order_statuses[ $status ];
+						unset( $order_statuses[ $status ] );
+					}
+				}
+				$order_statuses = array_merge( $_order_statuses, $order_statuses );
+				break;
+
+		}
+
+		return $order_statuses;
+
+	}
+
+	/**
 	 * order_meta.
 	 *
-	 * @version 1.1.0
+	 * @version 1.4.0
 	 * @since   1.1.0
 	 *
-	 * @todo    [!] (dev) move all shortcodes to a separate file/class
-	 * @todo    [!] (feature) add more shortcodes?
+	 * @todo    (dev) move all shortcodes to a separate file/class
+	 * @todo    (feature) add more shortcodes?
 	 */
 	function order_meta( $atts, $content = '' ) {
-		if ( ! empty( $this->shortcode_data['order_id'] ) && isset( $atts['key'] ) ) {
-			$meta = get_post_meta( $this->shortcode_data['order_id'], $atts['key'], true );
+		if ( ! empty( $this->shortcode_data['order_id'] ) && isset( $atts['key'] ) && ( $order = wc_get_order( $this->shortcode_data['order_id'] ) ) ) {
+
+			// Meta
+			$meta = $order->get_meta( $atts['key'] );
+
+			// Sub-key(s), e.g., `$meta['x']['y']`
 			if ( isset( $atts['sub_key'] ) ) {
 				$sub_keys = explode( ',', $atts['sub_key'] );
 				foreach ( $sub_keys as $sub_key ) {
 					if ( is_array( $meta ) && isset( $meta[ $sub_key ] ) ) {
 						$meta = $meta[ $sub_key ];
 					} else {
-						return '';
+						$meta = '';
+						break;
 					}
 				}
 			}
+
+			// Result
 			return $this->output_shortcode( $meta, $atts );
+
 		}
 		return '';
 	}
@@ -97,7 +174,7 @@ class WFWP_WC_Order_Status_Core {
 	 * @version 1.1.0
 	 * @since   1.1.0
 	 *
-	 * @todo    [!] (feature) more common atts, e.g., add, multiply, format, find/replace, strip_tags, any_func, etc.
+	 * @todo    (feature) [!] more common atts, e.g., add, multiply, format, find/replace, strip_tags, any_func, etc.
 	 */
 	function output_shortcode( $value, $atts ) {
 		return ( '' !== $value ? ( ( isset( $atts['before'] ) ? $atts['before'] : '' ) . $value . ( isset( $atts['after'] ) ? $atts['after'] : '' ) ) : '' );
@@ -274,12 +351,12 @@ class WFWP_WC_Order_Status_Core {
 	}
 
 	/**
-	 * add_custom_statuses_to_filter.
+	 * add_custom_order_statuses.
 	 *
-	 * @version 1.0.0
+	 * @version 1.4.0
 	 * @since   1.0.0
 	 */
-	function add_custom_statuses_to_filter( $order_statuses ) {
+	function add_custom_order_statuses( $order_statuses ) {
 		foreach ( $this->get_statuses() as $status ) {
 			$order_statuses[ $status->wc_slug ] = $status->title;
 		}
