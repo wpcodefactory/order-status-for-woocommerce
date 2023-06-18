@@ -3,12 +3,12 @@
 Plugin Name: Order Status for WooCommerce
 Plugin URI: https://wpfactory.com/item/order-status-for-woocommerce/
 Description: Manage order statuses in WooCommerce. Beautifully.
-Version: 1.4.0
+Version: 1.4.1
 Author: WPFactory
 Author URI: https://wpfactory.com
 Text Domain: order-status-for-woocommerce
 Domain Path: /langs
-WC tested up to: 7.7
+WC tested up to: 7.8
 */
 
 defined( 'ABSPATH' ) || exit;
