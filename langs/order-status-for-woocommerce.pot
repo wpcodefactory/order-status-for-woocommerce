@@ -328,15 +328,15 @@ msgstr ""
 msgid "WooCommerce custom order status"
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status.php:165
+#: includes/class-wfwp-wc-order-status.php:168
 msgid "Statuses"
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status.php:166
+#: includes/class-wfwp-wc-order-status.php:169
 msgid "Settings"
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status.php:169
+#: includes/class-wfwp-wc-order-status.php:172
 msgid "Go Pro"
 msgstr ""
 

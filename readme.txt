@@ -1,9 +1,9 @@
 === Order Status for WooCommerce ===
-Contributors: wpcodefactory, omardabbas, karzin, anbinder, algoritmika, kousikmukherjeeli
+Contributors: wpcodefactory, algoritmika, anbinder, karzin, omardabbas, kousikmukherjeeli
 Tags: woocommerce, status, order status, woo commerce
 Requires at least: 4.7
 Tested up to: 6.3
-Stable tag: 1.4.2
+Stable tag: 1.4.3
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -33,6 +33,10 @@ You can also change **order status sorting**, including the default WooCommerce 
 * We are open to your suggestions and feedback. Thank you for using or trying out one of our plugins!
 * [Visit plugin site](https://wpfactory.com/item/order-status-for-woocommerce/).
 
+### &#8505; More ###
+
+* The plugin is **"High-Performance Order Storage (HPOS)"** compatible.
+
 == Installation ==
 
 1. Upload the entire plugin folder to the `/wp-content/plugins/` directory.
@@ -41,10 +45,13 @@ You can also change **order status sorting**, including the default WooCommerce 
 
 == Changelog ==
 
+= 1.4.3 - 03/10/2023 =
+* Fix - Declaring HPOS compatibility for the free plugin version, even if the Pro version is activated.
+
 = 1.4.2 - 26/09/2023 =
 * WC tested up to: 8.1.
 * Tested up to: 6.3.
-* Update plugin icon, banner.
+* Plugin icon, banner updated.
 
 = 1.4.1 - 18/06/2023 =
 * WC tested up to: 7.8.

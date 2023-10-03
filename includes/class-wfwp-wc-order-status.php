@@ -2,7 +2,7 @@
 /**
  * Order Status for WooCommerce - Main Class
  *
- * @version 1.4.0
+ * @version 1.4.3
  * @since   1.0.0
  *
  * @author  Algoritmika Ltd.
@@ -109,14 +109,17 @@ final class WFWP_WC_Order_Status {
 	/**
 	 * wc_declare_compatibility.
 	 *
-	 * @version 1.4.0
+	 * @version 1.4.3
 	 * @since   1.4.0
 	 *
 	 * @see     https://github.com/woocommerce/woocommerce/wiki/High-Performance-Order-Storage-Upgrade-Recipe-Book#declaring-extension-incompatibility
 	 */
 	function wc_declare_compatibility() {
 		if ( class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
-			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', WFWP_WC_ORDER_STATUS_FILE, true );
+			$files = ( defined( 'WFWP_WC_ORDER_STATUS_FILE_FREE' ) ? array( WFWP_WC_ORDER_STATUS_FILE, WFWP_WC_ORDER_STATUS_FILE_FREE ) : array( WFWP_WC_ORDER_STATUS_FILE ) );
+			foreach ( $files as $file ) {
+				\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', $file, true );
+			}
 		}
 	}
 
