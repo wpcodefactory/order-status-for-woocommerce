@@ -2,7 +2,7 @@
 /**
  * Order Status for WooCommerce - Admin Class
  *
- * @version 1.4.0
+ * @version 1.4.4
  * @since   1.0.0
  *
  * @author  Algoritmika Ltd.
@@ -48,7 +48,7 @@ class WFWP_WC_Order_Status_Admin {
 	/**
 	 * filter_options.
 	 *
-	 * @version 1.4.0
+	 * @version 1.4.4
 	 * @since   1.3.0
 	 *
 	 * @todo    (dev) [!] `is_override`: enable all options, e.g., `is_report`, `is_order_paid`, etc.
@@ -85,6 +85,10 @@ class WFWP_WC_Order_Status_Admin {
 
 				if ( isset( $options['order_options']['options']['do_set_order_date_paid'] ) ) {
 					unset( $options['order_options']['options']['do_set_order_date_paid'] );
+				}
+
+				if ( isset( $options['order_options']['options']['do_download_permissions'] ) ) {
+					unset( $options['order_options']['options']['do_download_permissions'] );
 				}
 
 				if ( isset( $options['email_options']['options']['do_send_email']['title'] ) ) {

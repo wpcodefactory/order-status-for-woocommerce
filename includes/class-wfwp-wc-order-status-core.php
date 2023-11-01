@@ -2,7 +2,7 @@
 /**
  * Order Status for WooCommerce - Core Class
  *
- * @version 1.4.0
+ * @version 1.4.4
  * @since   1.0.0
  *
  * @author  Algoritmika Ltd.
@@ -15,16 +15,23 @@ if ( ! class_exists( 'WFWP_WC_Order_Status_Core' ) ) :
 class WFWP_WC_Order_Status_Core {
 
 	/**
+	 * Public.
+	 *
+	 * @version 1.4.4
+	 * @since   1.4.4
+	 */
+	public $statuses;
+	public $download_permissions_statuses;
+	public $shortcode_data;
+
+	/**
 	 * Constructor.
 	 *
-	 * @version 1.4.0
+	 * @version 1.4.4
 	 * @since   1.0.0
 	 *
 	 * @todo    (dev) customizable filters priorities
 	 * @todo    (dev) add "reset settings" button
-	 * @todo    (dev) maybe compatibility with WP < 4.7 (bulk actions)
-	 * @todo    (dev) maybe compatibility with WC < 3.0 (order properties: ID etc.)
-	 * @todo    (dev) maybe compatibility with WC < 3.0 ? (icons css)
 	 * @todo    (feature) [!] reduce/increase stock: `wc_maybe_reduce_stock_levels` and `wc_maybe_increase_stock_levels`
 	 * @todo    (feature) "status rules"
 	 * @todo    (feature) "default order status"
@@ -59,6 +66,8 @@ class WFWP_WC_Order_Status_Core {
 		add_filter( 'wc_order_is_editable', array( $this, 'order_editable' ), PHP_INT_MAX, 2 );
 		add_filter( 'woocommerce_order_is_paid_statuses', array( $this, 'order_paid' ), PHP_INT_MAX );
 		add_action( 'init', array( $this, 'add_order_date_paid_hooks' ) );
+		add_action( 'init', array( $this, 'add_downloadable_product_permissions_hooks' ) );
+		add_action( 'woocommerce_order_is_download_permitted', array( $this, 'order_is_download_permitted' ), 10, 2 );
 
 		// Shortcodes
 		add_shortcode( 'alg_wc_os_order_meta', array( $this, 'order_meta' ) );
@@ -66,6 +75,56 @@ class WFWP_WC_Order_Status_Core {
 		// "Core loaded" action
 		do_action( 'wfwp_wc_order_status_core_loaded', $this );
 
+	}
+
+	/**
+	 * get_download_permissions_statuses.
+	 *
+	 * @version 1.4.4
+	 * @since   1.4.4
+	 *
+	 * @todo    (dev) use `array_filter()`?
+	 */
+	function get_download_permissions_statuses() {
+		if ( isset( $this->download_permissions_statuses ) ) {
+			return $this->download_permissions_statuses;
+		}
+		$this->download_permissions_statuses = array();
+		foreach ( $this->get_statuses() as $status ) {
+			if ( $status->is_override() ) {
+				continue;
+			}
+			if ( $status->do_download_permissions ) {
+				$this->download_permissions_statuses[] = $status;
+			}
+		}
+		return $this->download_permissions_statuses;
+	}
+
+	/**
+	 * order_is_download_permitted.
+	 *
+	 * @version 1.4.4
+	 * @since   1.4.4
+	 */
+	function order_is_download_permitted( $is_download_permitted, $order ) {
+		return ( (
+			! $is_download_permitted &&
+			( $statuses = wp_list_pluck( $this->get_download_permissions_statuses(), 'slug' ) ) &&
+			! empty( $statuses )
+		) ? $order->has_status( $statuses ) : $is_download_permitted );
+	}
+
+	/**
+	 * add_downloadable_product_permissions_hooks.
+	 *
+	 * @version 1.4.4
+	 * @since   1.4.4
+	 */
+	function add_downloadable_product_permissions_hooks() {
+		foreach ( $this->get_download_permissions_statuses() as $status ) {
+			add_action( 'woocommerce_order_status_' . $status->slug, 'wc_downloadable_product_permissions' );
+		}
 	}
 
 	/**

@@ -2,7 +2,7 @@
 /**
  * Order Status for WooCommerce - Status Class
  *
- * @version 1.4.0
+ * @version 1.4.4
  * @since   1.0.0
  *
  * @author  Algoritmika Ltd.
@@ -17,7 +17,7 @@ class WFWP_WC_Shop_Order_Status {
 	/**
 	 * Public data.
 	 *
-	 * @version 1.4.0
+	 * @version 1.4.4
 	 * @since   1.0.0
 	 */
 	public $post_id;
@@ -36,6 +36,7 @@ class WFWP_WC_Shop_Order_Status {
 	public $is_order_editable;
 	public $is_order_paid;
 	public $do_set_order_date_paid;
+	public $do_download_permissions;
 	public $do_send_email;
 	public $email_address;
 	public $email_subject;
@@ -55,7 +56,7 @@ class WFWP_WC_Shop_Order_Status {
 	/**
 	 * Constructor.
 	 *
-	 * @version 1.4.0
+	 * @version 1.4.4
 	 * @since   1.0.0
 	 *
 	 * @todo    (dev) [!] if `is_override`: skip unused options, e.g., `is_report`?
@@ -90,6 +91,7 @@ class WFWP_WC_Shop_Order_Status {
 		$this->is_order_editable         = ( 'yes' === $this->get_option( 'is_order_editable', 'no' ) );
 		$this->is_order_paid             = ( 'yes' === $this->get_option( 'is_order_paid', 'no' ) );
 		$this->do_set_order_date_paid    = ( 'yes' === $this->get_option( 'do_set_order_date_paid', 'no' ) );
+		$this->do_download_permissions   = ( 'yes' === $this->get_option( 'do_download_permissions', 'no' ) );
 
 		// Email options (default values)
 		$default_subject                 = sprintf( __( '%s Order %s status changed to %s - %s', 'order-status-for-woocommerce' ),
