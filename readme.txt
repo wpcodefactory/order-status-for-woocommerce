@@ -1,9 +1,9 @@
-=== Order Status for WooCommerce ===
+=== Custom Order Status for WooCommerce ===
 Contributors: wpcodefactory, algoritmika, anbinder, karzin, omardabbas, kousikmukherjeeli
 Tags: woocommerce, status, order status, woo commerce
 Requires at least: 4.7
-Tested up to: 6.3
-Stable tag: 1.4.4
+Tested up to: 6.4
+Stable tag: 1.4.5
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -11,7 +11,7 @@ Manage order statuses in WooCommerce. Beautifully.
 
 == Description ==
 
-**Order Status for WooCommerce** plugin lets you add and manage **default & custom order statuses** in WooCommerce.
+**Custom Order Status for WooCommerce** plugin lets you add and manage **default & custom order statuses** in WooCommerce.
 
 ### &#9989; Main Features ###
 
@@ -44,6 +44,11 @@ You can also change **order status sorting**, including the default WooCommerce 
 3. Start by visiting plugin settings at "WooCommerce > Order Status".
 
 == Changelog ==
+
+= 1.4.5 - 20/11/2023 =
+* WC tested up to: 8.3.
+* Tested up to: 6.4.
+* Updated plugin title.
 
 = 1.4.4 - 01/11/2023 =
 * Dev - Order Options - "Download permissions" option added (defaults to `no`).
