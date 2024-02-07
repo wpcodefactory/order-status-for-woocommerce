@@ -3,7 +3,7 @@ Contributors: wpcodefactory, algoritmika, anbinder, karzin, omardabbas, kousikmu
 Tags: woocommerce, status, order status, woo commerce
 Requires at least: 4.7
 Tested up to: 6.4
-Stable tag: 1.4.5
+Stable tag: 1.4.6
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -45,10 +45,14 @@ You can also change **order status sorting**, including the default WooCommerce 
 
 == Changelog ==
 
+= 1.4.6 - 07/02/2024 =
+* Dev - PHP 8.2 compatibility - "Creation of dynamic property is deprecated" notice fixed.
+* WC tested up to: 8.5.
+
 = 1.4.5 - 20/11/2023 =
 * WC tested up to: 8.3.
 * Tested up to: 6.4.
-* Updated plugin title.
+* Plugin title updated.
 
 = 1.4.4 - 01/11/2023 =
 * Dev - Order Options - "Download permissions" option added (defaults to `no`).

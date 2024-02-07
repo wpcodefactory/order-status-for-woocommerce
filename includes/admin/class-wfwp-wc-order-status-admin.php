@@ -2,7 +2,7 @@
 /**
  * Order Status for WooCommerce - Admin Class
  *
- * @version 1.4.4
+ * @version 1.4.6
  * @since   1.0.0
  *
  * @author  Algoritmika Ltd.
@@ -13,6 +13,14 @@ defined( 'ABSPATH' ) || exit;
 if ( ! class_exists( 'WFWP_WC_Order_Status_Admin' ) ) :
 
 class WFWP_WC_Order_Status_Admin {
+
+	/**
+	 * options.
+	 *
+	 * @version 1.4.6
+	 * @since   1.4.6
+	 */
+	public $options;
 
 	/**
 	 * Constructor.

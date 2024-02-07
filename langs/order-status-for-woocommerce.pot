@@ -1,43 +1,43 @@
-#: includes/admin/class-wfwp-wc-order-status-admin.php:70
+#: includes/admin/class-wfwp-wc-order-status-admin.php:78
 #, php-format
 msgid "You are overriding the default %s WooCommerce status."
 msgstr ""
 
-#: includes/admin/class-wfwp-wc-order-status-admin.php:95
+#: includes/admin/class-wfwp-wc-order-status-admin.php:103
 msgid "Send an additional email on status change"
 msgstr ""
 
-#: includes/admin/class-wfwp-wc-order-status-admin.php:105
+#: includes/admin/class-wfwp-wc-order-status-admin.php:113
 msgid "This is a draft. The slug may change after you publish."
 msgstr ""
 
-#: includes/admin/class-wfwp-wc-order-status-admin.php:153
+#: includes/admin/class-wfwp-wc-order-status-admin.php:161
 msgid "Order status title cannot start with number."
 msgstr ""
 
-#: includes/admin/class-wfwp-wc-order-status-admin.php:170
-#: includes/admin/class-wfwp-wc-order-status-admin.php:176
+#: includes/admin/class-wfwp-wc-order-status-admin.php:178
+#: includes/admin/class-wfwp-wc-order-status-admin.php:184
 #, php-format
 msgid "%s status deleted."
 msgstr ""
 
-#: includes/admin/class-wfwp-wc-order-status-admin.php:177
+#: includes/admin/class-wfwp-wc-order-status-admin.php:185
 #, php-format
 msgid "%s order(s) updated (to %s)."
 msgstr ""
 
-#: includes/admin/class-wfwp-wc-order-status-admin.php:193
-#: includes/admin/class-wfwp-wc-order-status-admin.php:203
+#: includes/admin/class-wfwp-wc-order-status-admin.php:201
+#: includes/admin/class-wfwp-wc-order-status-admin.php:211
 msgid "Security check (nonce not verified)."
 msgstr ""
 
-#: includes/admin/class-wfwp-wc-order-status-admin.php:210
+#: includes/admin/class-wfwp-wc-order-status-admin.php:218
 #, php-format
 msgid "Custom order status (%s) deleted."
 msgstr ""
 
-#: includes/admin/class-wfwp-wc-order-status-admin.php:272
-#: includes/admin/class-wfwp-wc-order-status-admin.php:273
+#: includes/admin/class-wfwp-wc-order-status-admin.php:280
+#: includes/admin/class-wfwp-wc-order-status-admin.php:281
 #: includes/settings/class-wfwp-wc-order-status-settings-general.php:46
 #: includes/settings/class-wfwp-wc-order-status-settings.php:25
 msgid "Order Status"
@@ -346,12 +346,12 @@ msgstr ""
 msgid "Go Pro"
 msgstr ""
 
-#: includes/pro/classes/class-wfwp-wc-order-status-email.php:30
+#: includes/pro/classes/class-wfwp-wc-order-status-email.php:46
 #, php-format
 msgid "Email for the \"%s\" custom order status."
 msgstr ""
 
-#: includes/pro/classes/class-wfwp-wc-order-status-email.php:31
+#: includes/pro/classes/class-wfwp-wc-order-status-email.php:47
 msgid "Set options in \"WooCommerce > Order Status\"."
 msgstr ""
 
