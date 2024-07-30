@@ -2,8 +2,8 @@
 Contributors: wpcodefactory, algoritmika, anbinder, karzin, omardabbas, kousikmukherjeeli
 Tags: woocommerce, status, order status, woo commerce
 Requires at least: 4.7
-Tested up to: 6.4
-Stable tag: 1.4.6
+Tested up to: 6.6
+Stable tag: 1.4.7
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -44,6 +44,10 @@ You can also change **order status sorting**, including the default WooCommerce 
 3. Start by visiting plugin settings at "WooCommerce > Order Status".
 
 == Changelog ==
+
+= 1.4.7 - 30/07/2024 =
+* WC tested up to: 9.1.
+* Tested up to: 6.6.
 
 = 1.4.6 - 07/02/2024 =
 * Dev - PHP 8.2 compatibility - "Creation of dynamic property is deprecated" notice fixed.
