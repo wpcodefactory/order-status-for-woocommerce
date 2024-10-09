@@ -2,7 +2,7 @@
 /**
  * Order Status for WooCommerce - Core Class
  *
- * @version 1.4.4
+ * @version 1.5.0
  * @since   1.0.0
  *
  * @author  Algoritmika Ltd.
@@ -15,19 +15,33 @@ if ( ! class_exists( 'WFWP_WC_Order_Status_Core' ) ) :
 class WFWP_WC_Order_Status_Core {
 
 	/**
-	 * Public.
+	 * statuses.
 	 *
 	 * @version 1.4.4
 	 * @since   1.4.4
 	 */
 	public $statuses;
+
+	/**
+	 * download_permissions_statuses.
+	 *
+	 * @version 1.4.4
+	 * @since   1.4.4
+	 */
 	public $download_permissions_statuses;
+
+	/**
+	 * shortcode_data.
+	 *
+	 * @version 1.4.4
+	 * @since   1.4.4
+	 */
 	public $shortcode_data;
 
 	/**
 	 * Constructor.
 	 *
-	 * @version 1.4.4
+	 * @version 1.5.0
 	 * @since   1.0.0
 	 *
 	 * @todo    (dev) customizable filters priorities
@@ -55,6 +69,7 @@ class WFWP_WC_Order_Status_Core {
 
 		// Admin
 		add_filter( 'bulk_actions-edit-shop_order', array( $this, 'bulk_actions' ), PHP_INT_MAX );
+		add_filter( 'bulk_actions-woocommerce_page_wc-orders', array( $this, 'bulk_actions' ), PHP_INT_MAX );
 		add_filter( 'woocommerce_reports_order_statuses', array( $this, 'reports' ), PHP_INT_MAX );
 
 		// Action buttons

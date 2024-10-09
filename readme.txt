@@ -45,6 +45,12 @@ You can also change **order status sorting**, including the default WooCommerce 
 
 == Changelog ==
 
+= 1.5.0 - 09/10/2024 =
+* Dev - Bulk actions - HPOS compatibility (`wc-orders` page).
+* Dev - "Key Manager" added.
+* WC tested up to: 9.3.
+* WooCommerce added to the "Requires Plugins" (plugin header).
+
 = 1.4.7 - 30/07/2024 =
 * WC tested up to: 9.1.
 * Tested up to: 6.6.
