@@ -1,9 +1,9 @@
-=== Custom Order Status for WooCommerce ===
-Contributors: wpcodefactory, algoritmika, anbinder, karzin, omardabbas, kousikmukherjeeli
+=== Additional Custom Order Status for WooCommerce ===
+Contributors: wpcodefactory, algoritmika, anbinder, karzin, omardabbas
 Tags: woocommerce, status, order status, woo commerce
 Requires at least: 4.7
 Tested up to: 6.6
-Stable tag: 1.5.0
+Stable tag: 1.6.0
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -11,7 +11,7 @@ Manage order statuses in WooCommerce. Beautifully.
 
 == Description ==
 
-**Custom Order Status for WooCommerce** plugin lets you add and manage **default & custom order statuses** in WooCommerce.
+**Additional Custom Order Status for WooCommerce** plugin lets you add and manage **default & custom order statuses** in WooCommerce.
 
 ### &#9989; Main Features ###
 
@@ -26,7 +26,7 @@ You can also change **order status sorting**, including the default WooCommerce 
 
 ### &#127942; Premium Version ###
 
-[Order Status for WooCommerce Pro](https://wpfactory.com/item/order-status-for-woocommerce/) version also has an option to send **emails** on custom order status change. For each custom status email you can set: email address, subject, heading and content.
+[Additional Custom Order Status for WooCommerce Pro](https://wpfactory.com/item/order-status-for-woocommerce/) version also has an option to send **emails** on custom order status change. For each custom status email you can set: email address, subject, heading and content.
 
 ### &#128472; Feedback ###
 
@@ -44,6 +44,13 @@ You can also change **order status sorting**, including the default WooCommerce 
 3. Start by visiting plugin settings at "WooCommerce > Order Status".
 
 == Changelog ==
+
+= 1.6.0 - 31/10/2024 =
+* Dev - Plugin settings moved to the "WPFactory" menu.
+* Dev - "Recommendations" added.
+* Dev - Key Manager - Library updated.
+* Dev - Code refactoring.
+* Plugin name updated.
 
 = 1.5.0 - 09/10/2024 =
 * Dev - Bulk actions - HPOS compatibility (`wc-orders` page).

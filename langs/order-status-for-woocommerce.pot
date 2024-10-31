@@ -38,6 +38,8 @@ msgstr ""
 
 #: includes/admin/class-wfwp-wc-order-status-admin.php:280
 #: includes/admin/class-wfwp-wc-order-status-admin.php:281
+#: includes/class-wfwp-wc-order-status.php:247
+#: includes/class-wfwp-wc-order-status.php:248
 #: includes/settings/class-wfwp-wc-order-status-settings-general.php:46
 #: includes/settings/class-wfwp-wc-order-status-settings.php:25
 msgid "Order Status"
@@ -334,15 +336,15 @@ msgstr ""
 msgid "WooCommerce custom order status"
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status.php:168
+#: includes/class-wfwp-wc-order-status.php:196
 msgid "Statuses"
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status.php:169
+#: includes/class-wfwp-wc-order-status.php:199
 msgid "Settings"
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status.php:172
+#: includes/class-wfwp-wc-order-status.php:203
 msgid "Go Pro"
 msgstr ""
 

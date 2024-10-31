@@ -1,9 +1,9 @@
 <?php
 /*
-Plugin Name: Custom Order Status for WooCommerce
+Plugin Name: Additional Custom Order Status for WooCommerce
 Plugin URI: https://wpfactory.com/item/order-status-for-woocommerce/
 Description: Manage order statuses in WooCommerce. Beautifully.
-Version: 1.5.0
+Version: 1.6.0
 Author: WPFactory
 Author URI: https://wpfactory.com
 Text Domain: order-status-for-woocommerce
@@ -31,11 +31,11 @@ if ( 'order-status-for-woocommerce.php' === basename( __FILE__ ) ) {
 	}
 }
 
-defined( 'WFWP_WC_ORDER_STATUS_VERSION' ) || define( 'WFWP_WC_ORDER_STATUS_VERSION', '1.5.0' );
+defined( 'WFWP_WC_ORDER_STATUS_VERSION' ) || define( 'WFWP_WC_ORDER_STATUS_VERSION', '1.6.0' );
 
 defined( 'WFWP_WC_ORDER_STATUS_FILE' ) || define( 'WFWP_WC_ORDER_STATUS_FILE', __FILE__ );
 
-require_once( 'includes/class-wfwp-wc-order-status.php' );
+require_once plugin_dir_path( __FILE__ ) . 'includes/class-wfwp-wc-order-status.php';
 
 if ( ! function_exists( 'wfwp_wc_order_status' ) ) {
 	/**
