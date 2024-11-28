@@ -42,8 +42,13 @@ class WFWP_WC_Order_Status_Settings_General extends WFWP_WC_Order_Status_Setting
 			array(
 				'title'    => __( 'Order Status Options', 'order-status-for-woocommerce' ),
 				'desc'     => '<span class="dashicons dashicons-info"></span> ' .
-					sprintf( __( 'Create & edit order statuses in the %s menu.', 'order-status-for-woocommerce' ),
-						'<a href="' . admin_url( 'edit.php?post_type=wfwp_wc_order_status' ) . '">' . __( 'Order Status', 'order-status-for-woocommerce' ) . '</a>' ),
+					sprintf(
+						/* Translators: %s: Menu title. */
+						__( 'Create & edit order statuses in the %s menu.', 'order-status-for-woocommerce' ),
+						'<a href="' . admin_url( 'edit.php?post_type=wfwp_wc_order_status' ) . '">' .
+							__( 'Order Status', 'order-status-for-woocommerce' ) .
+						'</a>'
+					),
 				'type'     => 'title',
 				'id'       => 'wfwp_wc_order_status_plugin_options',
 			),

@@ -2,7 +2,7 @@
 /**
  * Order Status for WooCommerce - Settings
  *
- * @version 1.4.0
+ * @version 1.7.0
  * @since   1.4.0
  *
  * @author  Algoritmika Ltd
@@ -21,12 +21,15 @@ class WFWP_WC_Order_Status_Settings extends WC_Settings_Page {
 	 * @since   1.4.0
 	 */
 	function __construct() {
+
 		$this->id    = 'wfwp_wc_order_status';
 		$this->label = __( 'Order Status', 'order-status-for-woocommerce' );
 		parent::__construct();
+
 		// Sections
 		require_once( 'class-wfwp-wc-order-status-settings-section.php' );
 		require_once( 'class-wfwp-wc-order-status-settings-general.php' );
+
 	}
 
 	/**
@@ -80,12 +83,13 @@ class WFWP_WC_Order_Status_Settings extends WC_Settings_Page {
 	/**
 	 * admin_notices_settings_reset_success.
 	 *
-	 * @version 1.4.0
+	 * @version 1.7.0
 	 * @since   1.4.0
 	 */
 	function admin_notices_settings_reset_success() {
 		echo '<div class="notice notice-success is-dismissible"><p><strong>' .
-			__( 'Your settings have been reset.', 'order-status-for-woocommerce' ) . '</strong></p></div>';
+			esc_html__( 'Your settings have been reset.', 'order-status-for-woocommerce' ) .
+		'</strong></p></div>';
 	}
 
 	/**

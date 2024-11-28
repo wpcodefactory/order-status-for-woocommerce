@@ -1,47 +1,47 @@
-#: includes/admin/class-wfwp-wc-order-status-admin.php:78
+#: includes/admin/class-wfwp-wc-order-status-admin.php:80
 #, php-format
 msgid "You are overriding the default %s WooCommerce status."
 msgstr ""
 
-#: includes/admin/class-wfwp-wc-order-status-admin.php:103
+#: includes/admin/class-wfwp-wc-order-status-admin.php:107
 msgid "Send an additional email on status change"
 msgstr ""
 
-#: includes/admin/class-wfwp-wc-order-status-admin.php:113
+#: includes/admin/class-wfwp-wc-order-status-admin.php:117
 msgid "This is a draft. The slug may change after you publish."
 msgstr ""
 
-#: includes/admin/class-wfwp-wc-order-status-admin.php:161
+#: includes/admin/class-wfwp-wc-order-status-admin.php:165
 msgid "Order status title cannot start with number."
 msgstr ""
 
-#: includes/admin/class-wfwp-wc-order-status-admin.php:178
-#: includes/admin/class-wfwp-wc-order-status-admin.php:184
+#: includes/admin/class-wfwp-wc-order-status-admin.php:186
+#: includes/admin/class-wfwp-wc-order-status-admin.php:203
 #, php-format
 msgid "%s status deleted."
 msgstr ""
 
-#: includes/admin/class-wfwp-wc-order-status-admin.php:185
+#: includes/admin/class-wfwp-wc-order-status-admin.php:208
 #, php-format
-msgid "%s order(s) updated (to %s)."
+msgid "%1$s order(s) updated (to %2$s)."
 msgstr ""
 
-#: includes/admin/class-wfwp-wc-order-status-admin.php:201
-#: includes/admin/class-wfwp-wc-order-status-admin.php:211
+#: includes/admin/class-wfwp-wc-order-status-admin.php:229
+#: includes/admin/class-wfwp-wc-order-status-admin.php:239
 msgid "Security check (nonce not verified)."
 msgstr ""
 
-#: includes/admin/class-wfwp-wc-order-status-admin.php:218
+#: includes/admin/class-wfwp-wc-order-status-admin.php:250
 #, php-format
 msgid "Custom order status (%s) deleted."
 msgstr ""
 
-#: includes/admin/class-wfwp-wc-order-status-admin.php:280
-#: includes/admin/class-wfwp-wc-order-status-admin.php:281
+#: includes/admin/class-wfwp-wc-order-status-admin.php:315
+#: includes/admin/class-wfwp-wc-order-status-admin.php:316
 #: includes/class-wfwp-wc-order-status.php:247
 #: includes/class-wfwp-wc-order-status.php:248
-#: includes/settings/class-wfwp-wc-order-status-settings-general.php:46
-#: includes/settings/class-wfwp-wc-order-status-settings.php:25
+#: includes/settings/class-wfwp-wc-order-status-settings-general.php:49
+#: includes/settings/class-wfwp-wc-order-status-settings.php:26
 msgid "Order Status"
 msgstr ""
 
@@ -86,8 +86,8 @@ msgstr ""
 #: includes/admin/wfwp-wc-order-status-options.php:133
 #: includes/admin/wfwp-wc-order-status-options.php:143
 #: includes/admin/wfwp-wc-order-status-options.php:153
-#: includes/admin/wfwp-wc-order-status-options.php:188
-#: includes/admin/wfwp-wc-order-status-options.php:214
+#: includes/admin/wfwp-wc-order-status-options.php:201
+#: includes/admin/wfwp-wc-order-status-options.php:234
 msgid "No"
 msgstr ""
 
@@ -99,8 +99,8 @@ msgstr ""
 #: includes/admin/wfwp-wc-order-status-options.php:134
 #: includes/admin/wfwp-wc-order-status-options.php:144
 #: includes/admin/wfwp-wc-order-status-options.php:154
-#: includes/admin/wfwp-wc-order-status-options.php:189
-#: includes/admin/wfwp-wc-order-status-options.php:215
+#: includes/admin/wfwp-wc-order-status-options.php:202
+#: includes/admin/wfwp-wc-order-status-options.php:235
 msgid "Yes"
 msgstr ""
 
@@ -160,179 +160,179 @@ msgstr ""
 msgid "Email Options"
 msgstr ""
 
-#: includes/admin/wfwp-wc-order-status-options.php:164
+#: includes/admin/wfwp-wc-order-status-options.php:170
 #, php-format
 msgid ""
 "Placeholders in <strong>subject</strong>, <strong>heading</strong> and "
 "<strong>content</strong>: %s"
 msgstr ""
 
-#: includes/admin/wfwp-wc-order-status-options.php:177
+#: includes/admin/wfwp-wc-order-status-options.php:186
 #, php-format
 msgid ""
 "Additional placeholder in <strong>heading</strong> and <strong>content</"
 "strong>: %s"
 msgstr ""
 
-#: includes/admin/wfwp-wc-order-status-options.php:179
+#: includes/admin/wfwp-wc-order-status-options.php:191
 #, php-format
 msgid "Placeholders in email <strong>address</strong>: %s"
 msgstr ""
 
-#: includes/admin/wfwp-wc-order-status-options.php:183
+#: includes/admin/wfwp-wc-order-status-options.php:196
 msgid "Send email on status change"
 msgstr ""
 
-#: includes/admin/wfwp-wc-order-status-options.php:194
+#: includes/admin/wfwp-wc-order-status-options.php:207
 msgid "Email address"
 msgstr ""
 
-#: includes/admin/wfwp-wc-order-status-options.php:202
+#: includes/admin/wfwp-wc-order-status-options.php:215
 msgid "Subject"
 msgstr ""
 
-#: includes/admin/wfwp-wc-order-status-options.php:206
-#: includes/classes/class-wfwp-wc-shop-order-status.php:97
+#: includes/admin/wfwp-wc-order-status-options.php:221
+#: includes/classes/class-wfwp-wc-shop-order-status.php:99
 #, php-format
-msgid "%s Order %s status changed to %s - %s"
+msgid "%1$s Order %2$s status changed to %3$s - %4$s"
 msgstr ""
 
-#: includes/admin/wfwp-wc-order-status-options.php:209
+#: includes/admin/wfwp-wc-order-status-options.php:229
 msgid "Wrap in WooCommerce template"
 msgstr ""
 
-#: includes/admin/wfwp-wc-order-status-options.php:219
+#: includes/admin/wfwp-wc-order-status-options.php:239
 msgid "WooCommerce template heading"
 msgstr ""
 
-#: includes/admin/wfwp-wc-order-status-options.php:223
-#: includes/classes/class-wfwp-wc-shop-order-status.php:99
+#: includes/admin/wfwp-wc-order-status-options.php:245
+#: includes/classes/class-wfwp-wc-shop-order-status.php:107
 #, php-format
 msgid "Order status changed to %s"
 msgstr ""
 
-#: includes/admin/wfwp-wc-order-status-options.php:226
+#: includes/admin/wfwp-wc-order-status-options.php:250
 msgid "Content"
 msgstr ""
 
-#: includes/admin/wfwp-wc-order-status-options.php:230
-#: includes/classes/class-wfwp-wc-shop-order-status.php:101
+#: includes/admin/wfwp-wc-order-status-options.php:256
+#: includes/classes/class-wfwp-wc-shop-order-status.php:112
 #, php-format
-msgid "Order %s status changed from %s to %s"
+msgid "Order %1$s status changed from %2$s to %3$s."
 msgstr ""
 
-#: includes/admin/wfwp-wc-order-status-options.php:235
+#: includes/admin/wfwp-wc-order-status-options.php:265
 msgid "Admin Note"
 msgstr ""
 
-#: includes/admin/wfwp-wc-order-status-options.php:236
+#: includes/admin/wfwp-wc-order-status-options.php:266
 msgid "Admin note is visible on current page only."
 msgstr ""
 
-#: includes/admin/wfwp-wc-order-status-options.php:248
+#: includes/admin/wfwp-wc-order-status-options.php:278
 msgid "Actions"
 msgstr ""
 
-#: includes/admin/wfwp-wc-order-status-options.php:252
-#: includes/admin/wfwp-wc-order-status-options.php:256
+#: includes/admin/wfwp-wc-order-status-options.php:282
+#: includes/admin/wfwp-wc-order-status-options.php:286
 msgid "Are you sure?"
 msgstr ""
 
-#: includes/admin/wfwp-wc-order-status-options.php:253
+#: includes/admin/wfwp-wc-order-status-options.php:283
 msgid "Delete status"
 msgstr ""
 
-#: includes/admin/wfwp-wc-order-status-options.php:257
+#: includes/admin/wfwp-wc-order-status-options.php:287
 msgid "Delete status with fallback"
 msgstr ""
 
-#: includes/admin/wfwp-wc-order-status-options.php:259
+#: includes/admin/wfwp-wc-order-status-options.php:289
 msgid "View orders"
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status-core.php:304
+#: includes/class-wfwp-wc-order-status-core.php:306
 #, php-format
 msgid "Change order status to %s"
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status-core.php:315
+#: includes/class-wfwp-wc-order-status-core.php:319
 msgid "Change status: "
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status-core.php:400
+#: includes/class-wfwp-wc-order-status-core.php:406
 #, php-format
 msgid "Change status to %s"
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status-core.php:458
+#: includes/class-wfwp-wc-order-status-core.php:467
 #, php-format
 msgid " <span class=\"count\">(%s)</span>"
 msgid_plural " <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-wfwp-wc-order-status-core.php:477
+#: includes/class-wfwp-wc-order-status-core.php:489
 msgctxt "post type general name"
 msgid "Statuses"
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status-core.php:478
+#: includes/class-wfwp-wc-order-status-core.php:490
 msgctxt "post type singular name"
 msgid "Status"
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status-core.php:479
+#: includes/class-wfwp-wc-order-status-core.php:491
 msgctxt "admin menu"
 msgid "Statuses"
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status-core.php:480
+#: includes/class-wfwp-wc-order-status-core.php:492
 msgctxt "add new on admin bar"
 msgid "Status"
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status-core.php:481
+#: includes/class-wfwp-wc-order-status-core.php:493
 msgctxt "status"
 msgid "Add New"
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status-core.php:482
+#: includes/class-wfwp-wc-order-status-core.php:494
 msgid "Add New Status"
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status-core.php:483
+#: includes/class-wfwp-wc-order-status-core.php:495
 msgid "New Status"
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status-core.php:484
+#: includes/class-wfwp-wc-order-status-core.php:496
 msgid "Edit Status"
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status-core.php:485
+#: includes/class-wfwp-wc-order-status-core.php:497
 msgid "View Status"
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status-core.php:486
+#: includes/class-wfwp-wc-order-status-core.php:498
 msgid "All Statuses"
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status-core.php:487
+#: includes/class-wfwp-wc-order-status-core.php:499
 msgid "Search Statuses"
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status-core.php:488
+#: includes/class-wfwp-wc-order-status-core.php:500
 msgid "Parent Statuses:"
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status-core.php:489
+#: includes/class-wfwp-wc-order-status-core.php:501
 msgid "No statuses found."
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status-core.php:490
+#: includes/class-wfwp-wc-order-status-core.php:502
 msgid "No statuses found in Trash."
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status-core.php:492
+#: includes/class-wfwp-wc-order-status-core.php:504
 msgid "WooCommerce custom order status"
 msgstr ""
 
@@ -348,12 +348,12 @@ msgstr ""
 msgid "Go Pro"
 msgstr ""
 
-#: includes/pro/classes/class-wfwp-wc-order-status-email.php:46
+#: includes/pro/classes/class-wfwp-wc-order-status-email.php:49
 #, php-format
 msgid "Email for the \"%s\" custom order status."
 msgstr ""
 
-#: includes/pro/classes/class-wfwp-wc-order-status-email.php:47
+#: includes/pro/classes/class-wfwp-wc-order-status-email.php:52
 msgid "Set options in \"WooCommerce > Order Status\"."
 msgstr ""
 
@@ -365,59 +365,59 @@ msgstr ""
 msgid "Order Status Options"
 msgstr ""
 
-#: includes/settings/class-wfwp-wc-order-status-settings-general.php:45
+#: includes/settings/class-wfwp-wc-order-status-settings-general.php:47
 #, php-format
 msgid "Create & edit order statuses in the %s menu."
 msgstr ""
 
-#: includes/settings/class-wfwp-wc-order-status-settings-general.php:51
+#: includes/settings/class-wfwp-wc-order-status-settings-general.php:56
 msgid "Order status sorting"
 msgstr ""
 
-#: includes/settings/class-wfwp-wc-order-status-settings-general.php:57
+#: includes/settings/class-wfwp-wc-order-status-settings-general.php:62
 msgid "Default"
 msgstr ""
 
-#: includes/settings/class-wfwp-wc-order-status-settings-general.php:58
+#: includes/settings/class-wfwp-wc-order-status-settings-general.php:63
 msgid "By title (ascending)"
 msgstr ""
 
-#: includes/settings/class-wfwp-wc-order-status-settings-general.php:59
+#: includes/settings/class-wfwp-wc-order-status-settings-general.php:64
 msgid "Custom"
 msgstr ""
 
-#: includes/settings/class-wfwp-wc-order-status-settings-general.php:64
+#: includes/settings/class-wfwp-wc-order-status-settings-general.php:69
 msgid "Custom sorting"
 msgstr ""
 
-#: includes/settings/class-wfwp-wc-order-status-settings-general.php:65
+#: includes/settings/class-wfwp-wc-order-status-settings-general.php:70
 msgid "The \"Sorting\" option must be set to \"Custom\"."
 msgstr ""
 
-#: includes/settings/class-wfwp-wc-order-status-settings-general.php:66
+#: includes/settings/class-wfwp-wc-order-status-settings-general.php:71
 msgid "One status slug per line."
 msgstr ""
 
-#: includes/settings/class-wfwp-wc-order-status-settings-general.php:67
+#: includes/settings/class-wfwp-wc-order-status-settings-general.php:72
 msgid "Default sorting:"
 msgstr ""
 
-#: includes/settings/class-wfwp-wc-order-status-settings.php:42
+#: includes/settings/class-wfwp-wc-order-status-settings.php:45
 msgid "Reset Settings"
 msgstr ""
 
-#: includes/settings/class-wfwp-wc-order-status-settings.php:47
+#: includes/settings/class-wfwp-wc-order-status-settings.php:50
 msgid "Reset section settings"
 msgstr ""
 
-#: includes/settings/class-wfwp-wc-order-status-settings.php:48
+#: includes/settings/class-wfwp-wc-order-status-settings.php:51
 msgid "Reset"
 msgstr ""
 
-#: includes/settings/class-wfwp-wc-order-status-settings.php:49
+#: includes/settings/class-wfwp-wc-order-status-settings.php:52
 msgid "Check the box and save changes to reset."
 msgstr ""
 
-#: includes/settings/class-wfwp-wc-order-status-settings.php:88
+#: includes/settings/class-wfwp-wc-order-status-settings.php:91
 msgid "Your settings have been reset."
 msgstr ""

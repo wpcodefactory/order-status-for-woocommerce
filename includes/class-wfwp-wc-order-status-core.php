@@ -2,7 +2,7 @@
 /**
  * Order Status for WooCommerce - Core Class
  *
- * @version 1.5.0
+ * @version 1.7.0
  * @since   1.0.0
  *
  * @author  Algoritmika Ltd.
@@ -287,7 +287,7 @@ class WFWP_WC_Order_Status_Core {
 	/**
 	 * order_preview_actions.
 	 *
-	 * @version 1.3.0
+	 * @version 1.7.0
 	 * @since   1.0.0
 	 */
 	function order_preview_actions( $actions, $order ) {
@@ -301,7 +301,11 @@ class WFWP_WC_Order_Status_Core {
 					$status_actions[ $status->slug ] = array(
 						'url'    => $this->get_status_action_url( $status->slug, $order->get_id() ),
 						'name'   => $status->title,
-						'title'  => sprintf( __( 'Change order status to %s', 'order-status-for-woocommerce' ), $custom_order_status ),
+						'title'  => sprintf(
+							/* Translators: %s: Status title. */
+							__( 'Change order status to %s', 'order-status-for-woocommerce' ),
+							$status->title
+						),
 						'action' => $status->slug,
 					);
 				}
@@ -312,7 +316,7 @@ class WFWP_WC_Order_Status_Core {
 				$actions['status']['actions'] = array_merge( $actions['status']['actions'], $status_actions );
 			} else {
 				$actions['status'] = array(
-					'group'   => __( 'Change status: ', 'woocommerce' ),
+					'group'   => __( 'Change status: ', 'woocommerce' ), // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch
 					'actions' => $status_actions,
 				);
 			}
@@ -397,7 +401,11 @@ class WFWP_WC_Order_Status_Core {
 	function bulk_actions( $bulk_actions ) {
 		foreach ( $this->get_statuses() as $status ) {
 			if ( $status->is_bulk_action ) {
-				$bulk_actions[ 'mark_' . $status->slug ] = sprintf( __( 'Change status to %s', 'order-status-for-woocommerce' ), $status->title );
+				$bulk_actions[ 'mark_' . $status->slug ] = sprintf(
+					/* Translators: %s: Status title. */
+					__( 'Change status to %s', 'order-status-for-woocommerce' ),
+					$status->title
+				);
 			} elseif ( $status->is_override() && isset( $bulk_actions[ 'mark_' . $status->slug ] ) ) {
 				unset( $bulk_actions[ 'mark_' . $status->slug ] );
 			}
@@ -440,7 +448,7 @@ class WFWP_WC_Order_Status_Core {
 	/**
 	 * register_custom_post_statuses.
 	 *
-	 * @version 1.0.0
+	 * @version 1.7.0
 	 * @since   1.0.0
 	 *
 	 * @see     https://developer.wordpress.org/reference/functions/register_post_status/
@@ -455,7 +463,11 @@ class WFWP_WC_Order_Status_Core {
 				'exclude_from_search'       => false,
 				'show_in_admin_all_list'    => true,
 				'show_in_admin_status_list' => true,
-				'label_count'               => _n_noop( $status->title . ' <span class="count">(%s)</span>', $status->title . ' <span class="count">(%s)</span>' ),
+				'label_count'               => _n_noop(
+					$status->title . ' <span class="count">(%s)</span>', // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralSingular
+					$status->title . ' <span class="count">(%s)</span>', // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralPlural
+					'order-status-for-woocommerce'
+				),
 			) );
 		}
 	}

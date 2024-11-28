@@ -2,7 +2,7 @@
 /**
  * Order Status for WooCommerce - Admin Class
  *
- * @version 1.4.6
+ * @version 1.7.0
  * @since   1.0.0
  *
  * @author  Algoritmika Ltd.
@@ -75,7 +75,11 @@ class WFWP_WC_Order_Status_Admin {
 
 				if ( isset( $options['main_data']['desc'] ) ) {
 					$options['main_data']['desc'] .= '<br>' . '<strong>' .
-						sprintf( __( 'You are overriding the default %s WooCommerce status.', 'order-status-for-woocommerce' ), '<code>' . $status->wc_slug . '</code>' ) .
+						sprintf(
+							/* Translators: %s: Status slug. */
+							__( 'You are overriding the default %s WooCommerce status.', 'order-status-for-woocommerce' ),
+							'<code>' . $status->wc_slug . '</code>'
+						) .
 					'</strong>';
 				}
 
@@ -167,29 +171,53 @@ class WFWP_WC_Order_Status_Admin {
 	/**
 	 * delete_status_notices.
 	 *
-	 * @version 1.0.0
+	 * @version 1.7.0
 	 * @since   1.0.0
 	 *
 	 * @todo    (dev) retrieve fallback status title (instead of slug)
 	 */
 	function delete_status_notices() {
-		if ( isset( $_GET['wfwp_wcos_delete_finished'] ) ) {
-			$status_title    = $_GET['wfwp_wcos_delete_finished'];
-			echo '<div class="notice notice-success is-dismissible"><p>' . sprintf( __( '%s status deleted.', 'order-status-for-woocommerce' ), $status_title ) . '</p></div>';
+
+		if ( isset( $_GET['wfwp_wcos_delete_finished'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$status_title = sanitize_text_field( wp_unslash( $_GET['wfwp_wcos_delete_finished'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			echo '<div class="notice notice-success is-dismissible"><p>' .
+				sprintf(
+					/* Translators: %s: Status title. */
+					esc_html__( '%s status deleted.', 'order-status-for-woocommerce' ),
+					esc_html( $status_title )
+				) .
+			'</p></div>';
 		}
-		if ( isset( $_GET['wfwp_wcos_delete_fallback_finished'] ) && isset( $_GET['wfwp_wcos_delete_fallback_orders_updated'] ) && isset( $_GET['wfwp_wcos_delete_fallback_status'] ) ) {
-			$status_title    = $_GET['wfwp_wcos_delete_fallback_finished'];
-			$orders_updated  = $_GET['wfwp_wcos_delete_fallback_orders_updated'];
-			$fallback_status = $_GET['wfwp_wcos_delete_fallback_status'];
-			echo '<div class="notice notice-success is-dismissible"><p>' . sprintf( __( '%s status deleted.', 'order-status-for-woocommerce' ), $status_title ) . ' ' .
-				sprintf( __( '%s order(s) updated (to %s).', 'order-status-for-woocommerce' ), $orders_updated, $fallback_status ) . '</p></div>';
+
+		if ( isset(
+			$_GET['wfwp_wcos_delete_fallback_finished'], // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$_GET['wfwp_wcos_delete_fallback_orders_updated'], // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$_GET['wfwp_wcos_delete_fallback_status'] // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		) ) {
+			$status_title    = sanitize_text_field( wp_unslash( $_GET['wfwp_wcos_delete_fallback_finished'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$orders_updated  = sanitize_text_field( wp_unslash( $_GET['wfwp_wcos_delete_fallback_orders_updated'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$fallback_status = sanitize_text_field( wp_unslash( $_GET['wfwp_wcos_delete_fallback_status'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			echo '<div class="notice notice-success is-dismissible"><p>' .
+				sprintf(
+					/* Translators: %s: Status title. */
+					esc_html__( '%s status deleted.', 'order-status-for-woocommerce' ),
+					esc_html( $status_title )
+				) . ' ' .
+				sprintf(
+					/* Translators: %1$s: Number of orders, %2$s: Status. */
+					esc_html__( '%1$s order(s) updated (to %2$s).', 'order-status-for-woocommerce' ),
+					esc_html( $orders_updated ),
+					esc_html( $fallback_status )
+				) .
+			'</p></div>';
 		}
+
 	}
 
 	/**
 	 * delete_status.
 	 *
-	 * @version 1.0.0
+	 * @version 1.7.0
 	 * @since   1.0.0
 	 *
 	 * @todo    (feature) add option to temporary remove emails (and possibly other triggers) on fallback status
@@ -197,25 +225,32 @@ class WFWP_WC_Order_Status_Admin {
 	 */
 	function delete_status() {
 		if ( isset( $_GET['wfwp_wcos_delete'] ) && current_user_can( 'manage_woocommerce' ) ) {
-			if ( ! isset( $_GET['wfwp_wcos_nonce'] ) || ! wp_verify_nonce( $_GET['wfwp_wcos_nonce'], 'delete' ) ) {
-				wp_die( __( 'Security check (nonce not verified).', 'order-status-for-woocommerce' ) );
+			if ( ! isset( $_GET['wfwp_wcos_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['wfwp_wcos_nonce'] ) ), 'delete' ) ) {
+				wp_die( esc_html__( 'Security check (nonce not verified).', 'order-status-for-woocommerce' ) );
 			}
-			$post_id         = $_GET['wfwp_wcos_delete'];
+			$post_id         = sanitize_text_field( wp_unslash( $_GET['wfwp_wcos_delete'] ) );
 			$status          = new WFWP_WC_Shop_Order_Status( $post_id );
 			wp_delete_post( $post_id, true );
 			wp_safe_redirect( admin_url( 'edit.php?post_type=wfwp_wc_order_status&wfwp_wcos_delete_finished=' . $status->title ) );
 			exit;
 		}
-		if ( isset( $_GET['wfwp_wcos_delete_fallback'] ) && isset( $_GET['wfwp_wcos_delete_fallback_status'] ) && current_user_can( 'manage_woocommerce' ) ) {
-			if ( ! isset( $_GET['wfwp_wcos_nonce'] ) || ! wp_verify_nonce( $_GET['wfwp_wcos_nonce'], 'delete_fallback' ) ) {
-				wp_die( __( 'Security check (nonce not verified).', 'order-status-for-woocommerce' ) );
+		if ( isset( $_GET['wfwp_wcos_delete_fallback'], $_GET['wfwp_wcos_delete_fallback_status'] ) && current_user_can( 'manage_woocommerce' ) ) {
+			if ( ! isset( $_GET['wfwp_wcos_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['wfwp_wcos_nonce'] ) ), 'delete_fallback' ) ) {
+				wp_die( esc_html__( 'Security check (nonce not verified).', 'order-status-for-woocommerce' ) );
 			}
-			$post_id         = $_GET['wfwp_wcos_delete_fallback'];
+			$post_id         = sanitize_text_field( wp_unslash( $_GET['wfwp_wcos_delete_fallback'] ) );
 			$status          = new WFWP_WC_Shop_Order_Status( $post_id );
-			$fallback_status = $_GET['wfwp_wcos_delete_fallback_status'];
+			$fallback_status = sanitize_text_field( wp_unslash( $_GET['wfwp_wcos_delete_fallback_status'] ) );
 			$orders          = wc_get_orders( array( 'limit' => -1, 'status' => $status->slug, 'type' => 'shop_order' ) );
 			foreach ( $orders as $order ) {
-				$order->update_status( $fallback_status, sprintf( __( 'Custom order status (%s) deleted.', 'order-status-for-woocommerce' ), $status->title, $fallback_status ) );
+				$order->update_status(
+					$fallback_status,
+					sprintf(
+						/* Translators: %s: Status title. */
+						__( 'Custom order status (%s) deleted.', 'order-status-for-woocommerce' ),
+						$status->title
+					)
+				);
 			}
 			wp_delete_post( $post_id, true );
 			wp_safe_redirect( admin_url( 'edit.php?post_type=wfwp_wc_order_status&wfwp_wcos_delete_fallback_finished=' . $status->title .
@@ -409,7 +444,15 @@ class WFWP_WC_Order_Status_Admin {
 					// Title
 					if ( ! empty( $option['title'] ) ) {
 						if ( 'order_list_icon' === $option['id'] ) {
-							$option['title'] = str_replace( '%slug%', ( ! empty( $post->post_name ) ? $post->post_name : sanitize_title( get_the_title() ) ), $option['title'] );
+							$option['title'] = str_replace(
+								'%slug%',
+								(
+									! empty( $post->post_name ) ?
+									$post->post_name :
+									sanitize_title( get_the_title() )
+								),
+								$option['title']
+							);
 						}
 						$maybe_desc_tip = ( ! empty( $option['desc_tip'] ) ? ' <em style="font-size:small;">(' . $option['desc_tip'] . ')</em>' : '' );
 						$html .= '<th style="text-align:left;width:25%;">' . $option['title'] . $maybe_desc_tip . '</th>';
@@ -432,8 +475,6 @@ class WFWP_WC_Order_Status_Admin {
 	 *
 	 * @version 1.3.0
 	 * @since   1.0.0
-	 *
-	 * @todo    (dev) [!] sanitize
 	 */
 	function save_meta_box( $post_id, $post ) {
 		foreach ( $this->get_options( $post_id ) as $section_id => $section ) {
@@ -441,7 +482,15 @@ class WFWP_WC_Order_Status_Admin {
 				if ( 'title' === $option['type'] || ! empty( $option['readonly'] ) ) {
 					continue;
 				}
-				update_post_meta( $post_id, '_' . $option['id'], ( isset( $_POST[ $option['id'] ] ) ? $_POST[ $option['id'] ] : $option['default'] ) );
+				update_post_meta(
+					$post_id,
+					'_' . $option['id'],
+					(
+						isset( $_POST[ $option['id'] ] ) ?
+						$_POST[ $option['id'] ] :
+						$option['default']
+					)
+				);
 			}
 		}
 	}

@@ -2,7 +2,7 @@
 /**
  * Order Status for WooCommerce - Options
  *
- * @version 1.4.4
+ * @version 1.7.0
  * @since   1.0.0
  *
  * @author  Algoritmika Ltd.
@@ -158,10 +158,16 @@ return apply_filters( 'wfwp_wc_order_status_options', array(
 	),
 	'email_options' => array(
 		'title'    => __( 'Email Options', 'order-status-for-woocommerce' ),
-		'desc'     => apply_filters( 'wfwp_wc_order_status_settings', '<div style="padding:10px; background-color: #f0f0f0; font-weight: bold; margin-bottom: 5px; display: block;">' .
-				'&#x26A0; Emails are available in <a target="_blank" href="https://wpfactory.com/item/order-status-for-woocommerce/">Order Status for WooCommerce Pro version</a> only.' .
-			'</div>' ) .
-			sprintf( __( 'Placeholders in <strong>subject</strong>, <strong>heading</strong> and <strong>content</strong>: %s', 'order-status-for-woocommerce' ),
+		'desc'     =>
+			apply_filters(
+				'wfwp_wc_order_status_settings',
+				'<div style="padding:10px; background-color: #f0f0f0; font-weight: bold; margin-bottom: 5px; display: block;">' .
+					'&#x26A0; Emails are available in <a target="_blank" href="https://wpfactory.com/item/order-status-for-woocommerce/">Order Status for WooCommerce Pro version</a> only.' .
+				'</div>'
+			) .
+			sprintf(
+				/* Translators: %s: Placeholder list. */
+				__( 'Placeholders in <strong>subject</strong>, <strong>heading</strong> and <strong>content</strong>: %s', 'order-status-for-woocommerce' ),
 				'<code>' . implode( '</code>, <code>', array(
 					'{order_id}',
 					'{order_number}',
@@ -173,11 +179,18 @@ return apply_filters( 'wfwp_wc_order_status_options', array(
 					'{status_to_title}',
 					'{status_from}',
 					'{status_from_title}',
-				) ) . '</code>' ) . '<br>' .
-			sprintf( __( 'Additional placeholder in <strong>heading</strong> and <strong>content</strong>: %s', 'order-status-for-woocommerce' ),
-				'<code>' . implode( '</code>, <code>', array( '{order_details}' ) ) . '</code>' ) . '<br>' .
-			sprintf( __( 'Placeholders in email <strong>address</strong>: %s', 'order-status-for-woocommerce' ),
-				'<code>' . implode( '</code>, <code>', array( '%customer%', '%admin%' ) ) . '</code>' ),
+				) ) . '</code>'
+			) . '<br>' .
+			sprintf(
+				/* Translators: %s: Placeholder name. */
+				__( 'Additional placeholder in <strong>heading</strong> and <strong>content</strong>: %s', 'order-status-for-woocommerce' ),
+				'<code>' . implode( '</code>, <code>', array( '{order_details}' ) ) . '</code>'
+			) . '<br>' .
+			sprintf(
+				/* Translators: %s: Placeholder list. */
+				__( 'Placeholders in email <strong>address</strong>: %s', 'order-status-for-woocommerce' ),
+				'<code>' . implode( '</code>, <code>', array( '%customer%', '%admin%' ) ) . '</code>'
+			),
 		'options'  => array(
 			'do_send_email' => array(
 				'title'    => __( 'Send email on status change', 'order-status-for-woocommerce' ),
@@ -203,7 +216,14 @@ return apply_filters( 'wfwp_wc_order_status_options', array(
 				'id'       => 'email_subject',
 				'type'     => 'text',
 				'css'      => 'width:100%',
-				'default'  => sprintf( __( '%s Order %s status changed to %s - %s', 'order-status-for-woocommerce' ), '[{site_title}]', '#{order_number}', '{status_to_title}', '{order_date}' ),
+				'default'  => sprintf(
+					/* Translators: %1$s: Site Title placeholder, %2$s: Order Number placeholder, %3$s: Status Title placeholder, %4$s: Order Date placeholder. */
+					__( '%1$s Order %2$s status changed to %3$s - %4$s', 'order-status-for-woocommerce' ),
+					'[{site_title}]',
+					'#{order_number}',
+					'{status_to_title}',
+					'{order_date}'
+				),
 			),
 			'do_wrap_email' => array(
 				'title'    => __( 'Wrap in WooCommerce template', 'order-status-for-woocommerce' ),
@@ -220,14 +240,24 @@ return apply_filters( 'wfwp_wc_order_status_options', array(
 				'id'       => 'email_heading',
 				'type'     => 'text',
 				'css'      => 'width:100%',
-				'default'  => sprintf( __( 'Order status changed to %s', 'order-status-for-woocommerce' ), '{status_to_title}' ),
+				'default'  => sprintf(
+					/* Translators: %s: Status Title placeholder. */
+					__( 'Order status changed to %s', 'order-status-for-woocommerce' ),
+					'{status_to_title}'
+				),
 			),
 			'email_content' => array(
 				'title'    => __( 'Content', 'order-status-for-woocommerce' ),
 				'id'       => 'email_content',
 				'type'     => 'textarea',
 				'css'      => 'width:100%;height:200px',
-				'default'  => sprintf( __( 'Order %s status changed from %s to %s', 'order-status-for-woocommerce' ), '#{order_number}', '{status_from_title}', '{status_to_title}' ),
+				'default'  => sprintf(
+					/* Translators: %1$s: Order Number placeholder, %2$s: Status Title placeholder, %3$s: Status Title placeholder. */
+					__( 'Order %1$s status changed from %2$s to %3$s.', 'order-status-for-woocommerce' ),
+					'#{order_number}',
+					'{status_from_title}',
+					'{status_to_title}'
+				),
 			),
 		),
 	),

@@ -2,8 +2,8 @@
 Contributors: wpcodefactory, algoritmika, anbinder, karzin, omardabbas
 Tags: woocommerce, status, order status, woo commerce
 Requires at least: 4.7
-Tested up to: 6.6
-Stable tag: 1.6.0
+Tested up to: 6.7
+Stable tag: 1.7.0
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -44,6 +44,15 @@ You can also change **order status sorting**, including the default WooCommerce 
 3. Start by visiting plugin settings at "WooCommerce > Order Status".
 
 == Changelog ==
+
+= 1.7.0 - 28/11/2024 =
+* Dev - Security - Input sanitized.
+* Dev - Security - Output escaped.
+* Dev - Recommendations - Library updated.
+* Dev - Coding standards improved.
+* Dev - Code refactoring.
+* WC tested up to: 9.4.
+* Tested up to: 6.7.
 
 = 1.6.0 - 31/10/2024 =
 * Dev - Plugin settings moved to the "WPFactory" menu.
