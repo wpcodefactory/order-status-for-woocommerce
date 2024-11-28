@@ -475,6 +475,8 @@ class WFWP_WC_Order_Status_Admin {
 	 *
 	 * @version 1.3.0
 	 * @since   1.0.0
+	 *
+	 * @todo    (dev) [!] sanitize
 	 */
 	function save_meta_box( $post_id, $post ) {
 		foreach ( $this->get_options( $post_id ) as $section_id => $section ) {
