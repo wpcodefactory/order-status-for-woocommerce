@@ -7,7 +7,7 @@
  * @author  Algoritmika Ltd.
  */
 
-jQuery( document ).ready( function() {
+jQuery( document ).ready( function () {
 	/**
 	 * Make title required.
 	 *
@@ -17,7 +17,7 @@ jQuery( document ).ready( function() {
 	jQuery( '[id^="titlediv"]' ).find( '#title' ).prop( 'required', true );
 } );
 
-jQuery( '#publish, #save-post' ).click( function() {
+jQuery( '#publish, #save-post' ).click( function () {
 	/**
 	 * Validate title.
 	 *

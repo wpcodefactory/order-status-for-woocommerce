@@ -135,7 +135,11 @@ class WFWP_WC_Shop_Order_Status {
 	 * @since   1.3.0
 	 */
 	function get_option( $option, $default = '' ) {
-		return ( '' !== ( $value = get_post_meta( $this->post_id, '_' . $option, true ) ) ? $value : $default );
+		return (
+			'' !== ( $value = get_post_meta( $this->post_id, '_' . $option, true ) ) ?
+			$value :
+			$default
+		);
 	}
 
 	/**
@@ -151,8 +155,18 @@ class WFWP_WC_Shop_Order_Status {
 	 */
 	function is_override() {
 		if ( ! isset( $this->is_override ) ) {
-			$this->is_override = in_array( $this->wc_slug,
-				array( 'wc-pending', 'wc-processing', 'wc-on-hold', 'wc-completed', 'wc-cancelled', 'wc-refunded', 'wc-failed' ) );
+			$this->is_override = in_array(
+				$this->wc_slug,
+				array(
+					'wc-pending',
+					'wc-processing',
+					'wc-on-hold',
+					'wc-completed',
+					'wc-cancelled',
+					'wc-refunded',
+					'wc-failed',
+				)
+			);
 		}
 		return $this->is_override;
 	}

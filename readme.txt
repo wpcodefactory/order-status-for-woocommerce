@@ -1,9 +1,9 @@
 === Additional Custom Order Status for WooCommerce ===
 Contributors: wpcodefactory, algoritmika, anbinder, karzin, omardabbas
-Tags: woocommerce, status, order status, woo commerce
+Tags: woocommerce, status, order status, custom order status, ecommerce
 Requires at least: 4.7
-Tested up to: 6.7
-Stable tag: 1.7.0
+Tested up to: 6.8
+Stable tag: 1.8.0
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -45,12 +45,25 @@ You can also change **order status sorting**, including the default WooCommerce 
 
 == Changelog ==
 
+= 1.8.0 - 01/07/2025 =
+* Dev - Security - Output escaped.
+* Dev - WPFactory Admin Menu - Library updated.
+* Dev - WPFactory Admin Menu - Moved to the `init` hook.
+* Dev - WPFactory Admin Menu - Icon added.
+* Dev - WPFactory Recommendations - Moved to the `init` hook.
+* Dev - WPFactory Key Manager - Library updated.
+* Dev - WPFactory Key Manager - Moved to the `init` hook.
+* Dev - Code refactoring.
+* Dev - Coding standards improved.
+* WC tested up to: 9.9.
+* Tested up to: 6.8.
+
 = 1.7.0 - 28/11/2024 =
 * Dev - Security - Input sanitized.
 * Dev - Security - Output escaped.
 * Dev - Recommendations - Library updated.
-* Dev - Coding standards improved.
 * Dev - Code refactoring.
+* Dev - Coding standards improved.
 * WC tested up to: 9.4.
 * Tested up to: 6.7.
 

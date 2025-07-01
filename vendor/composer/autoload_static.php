@@ -4,10 +4,11 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit661b5abc584b4120043b3c7f853b5b26
+class ComposerStaticInitWPFactoryOrderStatusForWooCommerce
 {
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'WPFactory\\WPFactory_Admin_Menu\\Plugin_Icon' => __DIR__ . '/..' . '/wpfactory/wpfactory-admin-menu/src/php/class-plugin-icon.php',
         'WPFactory\\WPFactory_Admin_Menu\\Singleton' => __DIR__ . '/..' . '/wpfactory/wpfactory-admin-menu/src/php/trait-singleton.php',
         'WPFactory\\WPFactory_Admin_Menu\\WC_Settings_Menu_Item_Swapper' => __DIR__ . '/..' . '/wpfactory/wpfactory-admin-menu/src/php/class-wc-settings-menu-item-swapper.php',
         'WPFactory\\WPFactory_Admin_Menu\\WPFactory_Admin_Menu' => __DIR__ . '/..' . '/wpfactory/wpfactory-admin-menu/src/php/class-wpfactory-admin-menu.php',
@@ -20,7 +21,7 @@ class ComposerStaticInit661b5abc584b4120043b3c7f853b5b26
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->classMap = ComposerStaticInit661b5abc584b4120043b3c7f853b5b26::$classMap;
+            $loader->classMap = ComposerStaticInitWPFactoryOrderStatusForWooCommerce::$classMap;
 
         }, null, ClassLoader::class);
     }

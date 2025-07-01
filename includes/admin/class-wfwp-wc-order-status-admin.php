@@ -2,7 +2,7 @@
 /**
  * Order Status for WooCommerce - Admin Class
  *
- * @version 1.7.0
+ * @version 1.8.0
  * @since   1.0.0
  *
  * @author  Algoritmika Ltd.
@@ -129,14 +129,14 @@ class WFWP_WC_Order_Status_Admin {
 	/**
 	 * get_options.
 	 *
-	 * @version 1.3.0
+	 * @version 1.8.0
 	 * @since   1.0.0
 	 *
 	 * @todo    (dev) recheck option descriptions
 	 */
 	function get_options( $post_id = false ) {
 		if ( ! isset( $this->options ) ) {
-			$this->options = require_once( 'wfwp-wc-order-status-options.php' );
+			$this->options = require_once plugin_dir_path( __FILE__ ) . 'wfwp-wc-order-status-options.php';
 			$this->options = $this->filter_options( $this->options, $post_id );
 		}
 		return $this->options;
@@ -150,7 +150,10 @@ class WFWP_WC_Order_Status_Admin {
 	 */
 	function enqueue_scripts() {
 		global $pagenow, $typenow;
-		if ( ( 'post-new.php' === $pagenow || 'post.php' === $pagenow ) && 'wfwp_wc_order_status' === $typenow ) {
+		if (
+			( 'post-new.php' === $pagenow || 'post.php' === $pagenow ) &&
+			'wfwp_wc_order_status' === $typenow
+		) {
 			wp_enqueue_script(
 				'wfwp-wcos-admin',
 				wfwp_wc_order_status()->plugin_url() . '/includes/js/wfwp-wcos-admin' . ( defined( 'WP_DEBUG' ) && true === WP_DEBUG ? '' : '.min' ) . '.js',
@@ -177,9 +180,10 @@ class WFWP_WC_Order_Status_Admin {
 	 * @todo    (dev) retrieve fallback status title (instead of slug)
 	 */
 	function delete_status_notices() {
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended
 
-		if ( isset( $_GET['wfwp_wcos_delete_finished'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			$status_title = sanitize_text_field( wp_unslash( $_GET['wfwp_wcos_delete_finished'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( isset( $_GET['wfwp_wcos_delete_finished'] ) ) {
+			$status_title = sanitize_text_field( wp_unslash( $_GET['wfwp_wcos_delete_finished'] ) );
 			echo '<div class="notice notice-success is-dismissible"><p>' .
 				sprintf(
 					/* Translators: %s: Status title. */
@@ -190,13 +194,13 @@ class WFWP_WC_Order_Status_Admin {
 		}
 
 		if ( isset(
-			$_GET['wfwp_wcos_delete_fallback_finished'], // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			$_GET['wfwp_wcos_delete_fallback_orders_updated'], // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			$_GET['wfwp_wcos_delete_fallback_status'] // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$_GET['wfwp_wcos_delete_fallback_finished'],
+			$_GET['wfwp_wcos_delete_fallback_orders_updated'],
+			$_GET['wfwp_wcos_delete_fallback_status']
 		) ) {
-			$status_title    = sanitize_text_field( wp_unslash( $_GET['wfwp_wcos_delete_fallback_finished'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			$orders_updated  = sanitize_text_field( wp_unslash( $_GET['wfwp_wcos_delete_fallback_orders_updated'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			$fallback_status = sanitize_text_field( wp_unslash( $_GET['wfwp_wcos_delete_fallback_status'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$status_title    = sanitize_text_field( wp_unslash( $_GET['wfwp_wcos_delete_fallback_finished'] ) );
+			$orders_updated  = sanitize_text_field( wp_unslash( $_GET['wfwp_wcos_delete_fallback_orders_updated'] ) );
+			$fallback_status = sanitize_text_field( wp_unslash( $_GET['wfwp_wcos_delete_fallback_status'] ) );
 			echo '<div class="notice notice-success is-dismissible"><p>' .
 				sprintf(
 					/* Translators: %s: Status title. */
@@ -212,6 +216,7 @@ class WFWP_WC_Order_Status_Admin {
 			'</p></div>';
 		}
 
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 	}
 
 	/**
@@ -224,8 +229,14 @@ class WFWP_WC_Order_Status_Admin {
 	 * @todo    (feature) customizable "fallback status"
 	 */
 	function delete_status() {
-		if ( isset( $_GET['wfwp_wcos_delete'] ) && current_user_can( 'manage_woocommerce' ) ) {
-			if ( ! isset( $_GET['wfwp_wcos_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['wfwp_wcos_nonce'] ) ), 'delete' ) ) {
+		if (
+			isset( $_GET['wfwp_wcos_delete'] ) &&
+			current_user_can( 'manage_woocommerce' )
+		) {
+			if (
+				! isset( $_GET['wfwp_wcos_nonce'] ) ||
+				! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['wfwp_wcos_nonce'] ) ), 'delete' )
+			) {
 				wp_die( esc_html__( 'Security check (nonce not verified).', 'order-status-for-woocommerce' ) );
 			}
 			$post_id         = sanitize_text_field( wp_unslash( $_GET['wfwp_wcos_delete'] ) );
@@ -234,8 +245,14 @@ class WFWP_WC_Order_Status_Admin {
 			wp_safe_redirect( admin_url( 'edit.php?post_type=wfwp_wc_order_status&wfwp_wcos_delete_finished=' . $status->title ) );
 			exit;
 		}
-		if ( isset( $_GET['wfwp_wcos_delete_fallback'], $_GET['wfwp_wcos_delete_fallback_status'] ) && current_user_can( 'manage_woocommerce' ) ) {
-			if ( ! isset( $_GET['wfwp_wcos_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['wfwp_wcos_nonce'] ) ), 'delete_fallback' ) ) {
+		if (
+			isset( $_GET['wfwp_wcos_delete_fallback'], $_GET['wfwp_wcos_delete_fallback_status'] ) &&
+			current_user_can( 'manage_woocommerce' )
+		) {
+			if (
+				! isset( $_GET['wfwp_wcos_nonce'] ) ||
+				! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['wfwp_wcos_nonce'] ) ), 'delete_fallback' )
+			) {
 				wp_die( esc_html__( 'Security check (nonce not verified).', 'order-status-for-woocommerce' ) );
 			}
 			$post_id         = sanitize_text_field( wp_unslash( $_GET['wfwp_wcos_delete_fallback'] ) );
@@ -253,8 +270,15 @@ class WFWP_WC_Order_Status_Admin {
 				);
 			}
 			wp_delete_post( $post_id, true );
-			wp_safe_redirect( admin_url( 'edit.php?post_type=wfwp_wc_order_status&wfwp_wcos_delete_fallback_finished=' . $status->title .
-				'&wfwp_wcos_delete_fallback_orders_updated=' . count( $orders ) . '&wfwp_wcos_delete_fallback_status=' . $fallback_status ) );
+			wp_safe_redirect(
+				admin_url(
+					'edit.php' .
+					'?post_type=wfwp_wc_order_status' .
+					'&wfwp_wcos_delete_fallback_finished=' . $status->title .
+					'&wfwp_wcos_delete_fallback_orders_updated=' . count( $orders ) .
+					'&wfwp_wcos_delete_fallback_status=' . $fallback_status
+				)
+			);
 			exit;
 		}
 	}
@@ -282,7 +306,7 @@ class WFWP_WC_Order_Status_Admin {
 	/**
 	 * hide_default_options.
 	 *
-	 * @version 1.0.0
+	 * @version 1.8.0
 	 * @since   1.0.0
 	 *
 	 * @todo    (fix) re-do quick edit, trash, bulk edit, bulk move to trash (see https://wordpress.stackexchange.com/questions/295169/remove-trash-delete-option-for-custom-post-type-taxonomy)
@@ -290,7 +314,7 @@ class WFWP_WC_Order_Status_Admin {
 	 * @todo    (dev) maybe enqueue css file instead?
 	 */
 	function hide_default_options() {
-		echo '<style>
+		?><style>
 			.post-type-wfwp_wc_order_status #normal-sortables,
 			.post-type-wfwp_wc_order_status .misc-pub-post-status,
 			.post-type-wfwp_wc_order_status .misc-pub-curtime,
@@ -300,7 +324,7 @@ class WFWP_WC_Order_Status_Admin {
 			.post-type-wfwp_wc_order_status div.bulkactions {
 				display: none;
 			}
-		</style>';
+		</style><?php
 	}
 
 	/**
@@ -322,7 +346,7 @@ class WFWP_WC_Order_Status_Admin {
 	/**
 	 * add_meta_box.
 	 *
-	 * @version 1.0.0
+	 * @version 1.8.0
 	 * @since   1.0.0
 	 */
 	function add_meta_box() {
@@ -332,7 +356,7 @@ class WFWP_WC_Order_Status_Admin {
 				$section['title'],
 				array( $this, 'meta_box_callback' ),
 				'wfwp_wc_order_status',
-				( isset( $section['context'] ) ? $section['context'] : 'advanced' ),
+				( $section['context'] ?? 'advanced' ),
 				'default',
 				array( 'id' => $section_id, 'section' => $section )
 			);
@@ -342,43 +366,70 @@ class WFWP_WC_Order_Status_Admin {
 	/**
 	 * meta_box_callback.
 	 *
-	 * @version 1.3.0
+	 * @version 1.8.0
 	 * @since   1.0.0
 	 *
+	 * @todo    (v1.8.0) escape?
 	 * @todo    (dev) better solution for `__wfwp_wcos_post_id__` (why not `get_the_ID()`?) and `%slug%`
-	 * @todo    (dev) nonce
-	 * @todo    (dev) code refactoring
 	 * @todo    (dev) `wc_help_tip`
 	 */
 	function meta_box_callback( $post, $metabox ) {
+
 		$post_id = $post->ID;
+
 		$html = '';
+
+		// Description
 		if ( ! empty( $metabox['args']['section']['desc'] ) ) {
 			$html .= '<p><em>' .  str_replace(
-				array( '%slug%', '__wfwp_wcos_post_id__' ),
-				array( ( ! empty( $post->post_name ) ? $post->post_name : sanitize_title( get_the_title() ) ), get_the_ID() ),
+				array(
+					'%slug%',
+					'__wfwp_wcos_post_id__',
+				),
+				array(
+					(
+						! empty( $post->post_name ) ?
+						$post->post_name :
+						sanitize_title( get_the_title() )
+					),
+					get_the_ID(),
+				),
 				$metabox['args']['section']['desc'] ) . '</em></p>';
 		}
+
+		// Options
 		$options = $this->get_options( $post_id );
 		if ( ! empty( $options[ $metabox['args']['id'] ]['options'] ) ) {
 			$html .= '<table class="widefat striped">';
 			foreach ( $options[ $metabox['args']['id'] ]['options'] as $option ) {
+
 				if ( 'title' === $option['type'] ) {
+
+					// Title
 					$html .= '<tr>';
-					$html .= '<th colspan="3" style="text-align:left;font-weight:bold;">' . $option['title'] . '</th>';
+					$html .= '<th colspan="3" style="text-align:left;font-weight:bold;">' .
+						$option['title'] .
+					'</th>';
 					$html .= '</tr>';
+
 				} else {
+
 					// Option value
 					$meta_name = '_' . $option['id'];
 					if ( 'slug' === $option['id'] ) {
-						$option_value = 'wc-' . ( ! empty( $post->post_name ) ? $post->post_name : sanitize_title( get_the_title() ) );
+						$option_value = 'wc-' . (
+							! empty( $post->post_name ) ?
+							$post->post_name :
+							sanitize_title( get_the_title() )
+						);
 					} elseif ( get_post_meta( $post_id, $meta_name ) ) {
 						$option_value = get_post_meta( $post_id, $meta_name, true );
 					} else {
-						$option_value = ( isset( $option['default'] ) ? $option['default'] : '' );
+						$option_value = ( $option['default'] ?? '' );
 					}
+
 					// Custom attributes, CSS, input ending
-					$css               = ( isset( $option['css'] ) ) ? $option['css']  : '';
+					$css               = ( $option['css'] ?? '' );
 					$input_ending      = '';
 					$custom_attributes = '';
 					if ( ! empty( $option['readonly'] ) ) {
@@ -387,7 +438,10 @@ class WFWP_WC_Order_Status_Admin {
 						}
 						$option['custom_attributes'] .= ' readonly';
 					}
+
 					if ( 'select' === $option['type'] ) {
+
+						// Select
 						if ( isset( $option['multiple'] ) ) {
 							$custom_attributes = ' multiple';
 							$option_name       = $option['id'] . '[]';
@@ -409,38 +463,90 @@ class WFWP_WC_Order_Status_Admin {
 							} else {
 								$selected = selected( $option_value, $select_option_key, false );
 							}
-							$select_options .= '<option value="' . $select_option_key . '" ' . $selected . '>' . $select_option_value . '</option>';
+							$select_options .= (
+								'<option' .
+									' value="' . $select_option_key . '"' .
+									' ' . $selected .
+								'>' .
+									$select_option_value .
+								'</option>'
+							);
 						}
+
 					} elseif ( 'textarea' !== $option['type'] ) {
-						$input_ending = ' id="' . $option['id'] . '" name="' . $option['id'] . '" value="' . $option_value . '">';
+
+						// Input ending
+						$input_ending = (
+							' id="' . $option['id'] . '"' .
+							' name="' . $option['id'] . '"' .
+							' value="' . $option_value . '"' . '>' );
 						if ( isset( $option['custom_attributes'] ) ) {
 							$input_ending = ' ' . $option['custom_attributes'] . $input_ending;
 						}
 						if ( isset( $option['placeholder'] ) ) {
 							$input_ending = ' placeholder="' . $option['placeholder'] . '"' . $input_ending;
 						}
+
 					}
+
 					// Field by type
 					switch ( $option['type'] ) {
+
 						case 'price':
-							$field_html = '<input style="' . $css . '" class="short wc_input_price" type="number" step="0.0001"' . $input_ending;
+							$field_html = '<input' .
+								' style="' . $css . '"' .
+								' class="short wc_input_price"' .
+								' type="number"' .
+								' step="0.0001"' .
+								$input_ending;
 							break;
+
 						case 'date':
-							$field_html = '<input style="' . $css . '" class="input-text" display="date" type="text"' . $input_ending;
+							$field_html = '<input' .
+								' style="' . $css . '"' .
+								' class="input-text"' .
+								' display="date"' .
+								' type="text"' .
+								$input_ending;
 							break;
+
 						case 'textarea':
-							$field_html = '<textarea style="' . $css . '" id="' . $option['id'] . '" name="' . $option['id'] . '">' .
-								$option_value . '</textarea>';
+							$field_html = (
+								'<textarea' .
+									' style="' . $css . '"' .
+									' id="' . $option['id'] . '"' .
+									' name="' . $option['id'] . '"' .
+								'>' .
+									$option_value .
+								'</textarea>'
+							);
 							break;
+
 						case 'select':
-							$field_html = '<select' . $custom_attributes . ' style="' . $css . '" id="' . $option['id'] . '" name="' .
-								$option_name . '">' . $select_options . '</select>';
+							$field_html = (
+								'<select' .
+									$custom_attributes .
+									' style="' . $css . '"' .
+									' id="' . $option['id'] . '"' .
+									' name="' . $option_name . '"' .
+								'>' .
+									$select_options .
+								'</select>'
+							);
 							break;
+
 						default:
-							$field_html = '<input style="' . $css . '" class="short" type="' . $option['type'] . '"' . $input_ending;
-							break;
+							$field_html = '<input' .
+								' style="' . $css . '"' .
+								' class="short"' .
+								' type="' . $option['type'] . '"' .
+								$input_ending;
+
 					}
+
+					// Start row
 					$html .= '<tr>';
+
 					// Title
 					if ( ! empty( $option['title'] ) ) {
 						if ( 'order_list_icon' === $option['id'] ) {
@@ -454,19 +560,34 @@ class WFWP_WC_Order_Status_Admin {
 								$option['title']
 							);
 						}
-						$maybe_desc_tip = ( ! empty( $option['desc_tip'] ) ? ' <em style="font-size:small;">(' . $option['desc_tip'] . ')</em>' : '' );
-						$html .= '<th style="text-align:left;width:25%;">' . $option['title'] . $maybe_desc_tip . '</th>';
+						$maybe_desc_tip = (
+							! empty( $option['desc_tip'] ) ?
+							' <em style="font-size:small;">(' . $option['desc_tip'] . ')</em>' :
+							''
+						);
+						$html .= '<th style="text-align:left;width:25%;">' .
+							$option['title'] . $maybe_desc_tip .
+						'</th>';
 					}
+
 					// Desc
 					if ( ! empty( $option['desc'] ) ) {
-						$html .= '<td style="font-style:italic;width:25%;">' . $option['desc'] . '</td>';
+						$html .= '<td style="font-style:italic;width:25%;">' .
+							$option['desc'] .
+						'</td>';
 					}
+
+					// Field
 					$html .= '<td>' . $field_html . '</td>';
+
+					// End row
 					$html .= '</tr>';
+
 				}
 			}
 			$html .= '</table>';
 		}
+
 		echo $html;
 	}
 
@@ -476,7 +597,8 @@ class WFWP_WC_Order_Status_Admin {
 	 * @version 1.3.0
 	 * @since   1.0.0
 	 *
-	 * @todo    (dev) [!] sanitize
+	 * @todo    (v1.8.0) sanitize?
+	 * @todo    (v1.8.0) nonce?
 	 */
 	function save_meta_box( $post_id, $post ) {
 		foreach ( $this->get_options( $post_id ) as $section_id => $section ) {

@@ -2,7 +2,7 @@
 /**
  * Order Status for WooCommerce - Core Class
  *
- * @version 1.7.0
+ * @version 1.8.0
  * @since   1.0.0
  *
  * @author  Algoritmika Ltd.
@@ -123,11 +123,15 @@ class WFWP_WC_Order_Status_Core {
 	 * @since   1.4.4
 	 */
 	function order_is_download_permitted( $is_download_permitted, $order ) {
-		return ( (
-			! $is_download_permitted &&
-			( $statuses = wp_list_pluck( $this->get_download_permissions_statuses(), 'slug' ) ) &&
-			! empty( $statuses )
-		) ? $order->has_status( $statuses ) : $is_download_permitted );
+		return (
+			(
+				! $is_download_permitted &&
+				( $statuses = wp_list_pluck( $this->get_download_permissions_statuses(), 'slug' ) ) &&
+				! empty( $statuses )
+			) ?
+			$order->has_status( $statuses ) :
+			$is_download_permitted
+		);
 	}
 
 	/**
@@ -138,7 +142,10 @@ class WFWP_WC_Order_Status_Core {
 	 */
 	function add_downloadable_product_permissions_hooks() {
 		foreach ( $this->get_download_permissions_statuses() as $status ) {
-			add_action( 'woocommerce_order_status_' . $status->slug, 'wc_downloadable_product_permissions' );
+			add_action(
+				'woocommerce_order_status_' . $status->slug,
+				'wc_downloadable_product_permissions'
+			);
 		}
 	}
 
@@ -154,7 +161,12 @@ class WFWP_WC_Order_Status_Core {
 				continue;
 			}
 			if ( $status->do_set_order_date_paid ) {
-				add_action( 'woocommerce_order_status_' . $status->slug, array( $this, 'maybe_set_order_date_paid' ), 10, 2 );
+				add_action(
+					'woocommerce_order_status_' . $status->slug,
+					array( $this, 'maybe_set_order_date_paid' ),
+					10,
+					2
+				);
 			}
 		}
 	}
@@ -213,11 +225,16 @@ class WFWP_WC_Order_Status_Core {
 	 * @version 1.4.0
 	 * @since   1.1.0
 	 *
+	 * @todo    (v1.8.0) add `allowed_meta_keys` option/filter?
 	 * @todo    (dev) move all shortcodes to a separate file/class
 	 * @todo    (feature) add more shortcodes?
 	 */
 	function order_meta( $atts, $content = '' ) {
-		if ( ! empty( $this->shortcode_data['order_id'] ) && isset( $atts['key'] ) && ( $order = wc_get_order( $this->shortcode_data['order_id'] ) ) ) {
+		if (
+			! empty( $this->shortcode_data['order_id'] ) &&
+			isset( $atts['key'] ) &&
+			( $order = wc_get_order( $this->shortcode_data['order_id'] ) )
+		) {
 
 			// Meta
 			$meta = $order->get_meta( $atts['key'] );
@@ -245,13 +262,21 @@ class WFWP_WC_Order_Status_Core {
 	/**
 	 * output_shortcode.
 	 *
-	 * @version 1.1.0
+	 * @version 1.8.0
 	 * @since   1.1.0
 	 *
 	 * @todo    (feature) [!] more common atts, e.g., add, multiply, format, find/replace, strip_tags, any_func, etc.
 	 */
 	function output_shortcode( $value, $atts ) {
-		return ( '' !== $value ? ( ( isset( $atts['before'] ) ? $atts['before'] : '' ) . $value . ( isset( $atts['after'] ) ? $atts['after'] : '' ) ) : '' );
+		return (
+			'' !== $value ?
+			(
+				( isset( $atts['before'] ) ? wp_kses_post( $atts['before'] ) : '' ) .
+				$value .
+				( isset( $atts['after'] )  ? wp_kses_post( $atts['after'] )  : '' )
+			) :
+			''
+		);
 	}
 
 	/**
@@ -281,13 +306,17 @@ class WFWP_WC_Order_Status_Core {
 	function order_editable( $is_editable, $order ) {
 		$order_status = $order->get_status();
 		$statuses     = $this->get_statuses();
-		return ( ! empty( $statuses[ $order_status ] ) ? $statuses[ $order_status ]->is_order_editable : $is_editable );
+		return (
+			! empty( $statuses[ $order_status ] ) ?
+			$statuses[ $order_status ]->is_order_editable :
+			$is_editable
+		);
 	}
 
 	/**
 	 * order_preview_actions.
 	 *
-	 * @version 1.7.0
+	 * @version 1.8.0
 	 * @since   1.0.0
 	 */
 	function order_preview_actions( $actions, $order ) {
@@ -312,11 +341,17 @@ class WFWP_WC_Order_Status_Core {
 			}
 		}
 		if ( $status_actions ) {
-			if ( ! empty( $actions['status']['actions'] ) && is_array( $actions['status']['actions'] ) ) {
-				$actions['status']['actions'] = array_merge( $actions['status']['actions'], $status_actions );
+			if (
+				! empty( $actions['status']['actions'] ) &&
+				is_array( $actions['status']['actions'] )
+			) {
+				$actions['status']['actions'] = array_merge(
+					$actions['status']['actions'],
+					$status_actions
+				);
 			} else {
 				$actions['status'] = array(
-					'group'   => __( 'Change status: ', 'woocommerce' ), // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch
+					'group'   => __( 'Change status: ', 'order-status-for-woocommerce' ),
 					'actions' => $status_actions,
 				);
 			}
@@ -327,7 +362,7 @@ class WFWP_WC_Order_Status_Core {
 	/**
 	 * add_custom_status_actions_css.
 	 *
-	 * @version 1.3.0
+	 * @version 1.8.0
 	 * @since   1.0.0
 	 */
 	function add_custom_status_actions_css() {
@@ -344,7 +379,7 @@ class WFWP_WC_Order_Status_Core {
 			}' . PHP_EOL;
 		}
 		if ( ! empty( $style ) ) {
-			echo '<style>' . $style . '</style>';
+			echo '<style>' . wp_kses_post( $style ) . '</style>';
 		}
 	}
 
@@ -406,7 +441,10 @@ class WFWP_WC_Order_Status_Core {
 					__( 'Change status to %s', 'order-status-for-woocommerce' ),
 					$status->title
 				);
-			} elseif ( $status->is_override() && isset( $bulk_actions[ 'mark_' . $status->slug ] ) ) {
+			} elseif (
+				$status->is_override() &&
+				isset( $bulk_actions[ 'mark_' . $status->slug ] )
+			) {
 				unset( $bulk_actions[ 'mark_' . $status->slug ] );
 			}
 		}
@@ -416,7 +454,7 @@ class WFWP_WC_Order_Status_Core {
 	/**
 	 * add_custom_status_column_css.
 	 *
-	 * @version 1.0.0
+	 * @version 1.8.0
 	 * @since   1.0.0
 	 */
 	function add_custom_status_column_css() {
@@ -428,7 +466,7 @@ class WFWP_WC_Order_Status_Core {
 			}' . PHP_EOL;
 		}
 		if ( ! empty( $style ) ) {
-			echo '<style>' . $style . '</style>';
+			echo '<style>' . wp_kses_post( $style ) . '</style>';
 		}
 	}
 
@@ -448,7 +486,7 @@ class WFWP_WC_Order_Status_Core {
 	/**
 	 * register_custom_post_statuses.
 	 *
-	 * @version 1.7.0
+	 * @version 1.8.0
 	 * @since   1.0.0
 	 *
 	 * @see     https://developer.wordpress.org/reference/functions/register_post_status/
@@ -463,10 +501,9 @@ class WFWP_WC_Order_Status_Core {
 				'exclude_from_search'       => false,
 				'show_in_admin_all_list'    => true,
 				'show_in_admin_status_list' => true,
-				'label_count'               => _n_noop(
+				'label_count'               => _n_noop(                  // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
 					$status->title . ' <span class="count">(%s)</span>', // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralSingular
-					$status->title . ' <span class="count">(%s)</span>', // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralPlural
-					'order-status-for-woocommerce'
+					$status->title . ' <span class="count">(%s)</span>'  // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralPlural
 				),
 			) );
 		}
@@ -486,20 +523,20 @@ class WFWP_WC_Order_Status_Core {
 		register_post_type( 'wfwp_wc_order_status',
 			array(
 				'labels'             => array(
-					'name'                    => _x( 'Statuses', 'post type general name', 'order-status-for-woocommerce' ),
-					'singular_name'           => _x( 'Status', 'post type singular name', 'order-status-for-woocommerce' ),
-					'menu_name'               => _x( 'Statuses', 'admin menu', 'order-status-for-woocommerce' ),
-					'name_admin_bar'          => _x( 'Status', 'add new on admin bar', 'order-status-for-woocommerce' ),
-					'add_new'                 => _x( 'Add New', 'status', 'order-status-for-woocommerce' ),
-					'add_new_item'            => __( 'Add New Status', 'order-status-for-woocommerce' ),
-					'new_item'                => __( 'New Status', 'order-status-for-woocommerce' ),
-					'edit_item'               => __( 'Edit Status', 'order-status-for-woocommerce' ),
-					'view_item'               => __( 'View Status', 'order-status-for-woocommerce' ),
-					'all_items'               => __( 'All Statuses', 'order-status-for-woocommerce' ),
-					'search_items'            => __( 'Search Statuses', 'order-status-for-woocommerce' ),
-					'parent_item_colon'       => __( 'Parent Statuses:', 'order-status-for-woocommerce' ),
-					'not_found'               => __( 'No statuses found.', 'order-status-for-woocommerce' ),
-					'not_found_in_trash'      => __( 'No statuses found in Trash.', 'order-status-for-woocommerce' ),
+					'name'               => _x( 'Statuses', 'post type general name', 'order-status-for-woocommerce' ),
+					'singular_name'      => _x( 'Status', 'post type singular name', 'order-status-for-woocommerce' ),
+					'menu_name'          => _x( 'Statuses', 'admin menu', 'order-status-for-woocommerce' ),
+					'name_admin_bar'     => _x( 'Status', 'add new on admin bar', 'order-status-for-woocommerce' ),
+					'add_new'            => _x( 'Add New', 'status', 'order-status-for-woocommerce' ),
+					'add_new_item'       => __( 'Add New Status', 'order-status-for-woocommerce' ),
+					'new_item'           => __( 'New Status', 'order-status-for-woocommerce' ),
+					'edit_item'          => __( 'Edit Status', 'order-status-for-woocommerce' ),
+					'view_item'          => __( 'View Status', 'order-status-for-woocommerce' ),
+					'all_items'          => __( 'All Statuses', 'order-status-for-woocommerce' ),
+					'search_items'       => __( 'Search Statuses', 'order-status-for-woocommerce' ),
+					'parent_item_colon'  => __( 'Parent Statuses:', 'order-status-for-woocommerce' ),
+					'not_found'          => __( 'No statuses found.', 'order-status-for-woocommerce' ),
+					'not_found_in_trash' => __( 'No statuses found in Trash.', 'order-status-for-woocommerce' ),
 				),
 				'description'        => __( 'WooCommerce custom order status', 'order-status-for-woocommerce' ),
 				'public'             => false,

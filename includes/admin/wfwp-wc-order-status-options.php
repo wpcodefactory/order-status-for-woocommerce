@@ -80,9 +80,13 @@ return apply_filters( 'wfwp_wc_order_status_options', array(
 				),
 			),
 			'order_list_icon' => array(
-				'title'    => __( 'Order list icon', 'order-status-for-woocommerce' ) .
-					' [<a target="_blank" href="https://rawgit.com/woothemes/woocommerce-icons/master/demo.html">' . __( 'icon codes', 'order-status-for-woocommerce' ) . '</a>]' .
-					' <span class="view %slug%' . '"></span>',
+				'title'    => (
+					__( 'Order list icon', 'order-status-for-woocommerce' ) .
+					' [<a target="_blank" href="https://rawgit.com/woothemes/woocommerce-icons/master/demo.html">' .
+						__( 'icon codes', 'order-status-for-woocommerce' ) .
+					'</a>]' .
+					' <span class="view %slug%' . '"></span>'
+				),
 				'id'       => 'order_list_icon',
 				'type'     => 'text',
 				'default'  => 'e011',
@@ -277,16 +281,35 @@ return apply_filters( 'wfwp_wc_order_status_options', array(
 	'actions' => array(
 		'title'    => __( 'Actions', 'order-status-for-woocommerce' ),
 		'desc'     => '<p>' . implode( '</p><p>', array(
-			'<a style="font-style:normal; color:#a00;" href="' .
-				wp_nonce_url( admin_url( '?wfwp_wcos_delete=__wfwp_wcos_post_id__' ), 'delete', 'wfwp_wcos_nonce' ) .
-				'" onclick="return confirm(\'' . __( 'Are you sure?', 'order-status-for-woocommerce' ) . '\')">' .
-				__( 'Delete status', 'order-status-for-woocommerce' ) . '</a>',
-			'<a style="font-style:normal; color:#a00;" href="' .
-				wp_nonce_url( admin_url( '?wfwp_wcos_delete_fallback=__wfwp_wcos_post_id__&wfwp_wcos_delete_fallback_status=on-hold' ), 'delete_fallback', 'wfwp_wcos_nonce' ) .
-				'" onclick="return confirm(\'' . __( 'Are you sure?', 'order-status-for-woocommerce' ) . '\')">' .
-				__( 'Delete status with fallback', 'order-status-for-woocommerce' ) . '</a>',
-			'<a style="font-style:normal;" href="' . admin_url( 'edit.php?post_status=wc-%slug%&post_type=shop_order' ) . '" target="_blank">' .
-				__( 'View orders', 'order-status-for-woocommerce' ) . '</a>',
+			'<a' .
+				' style="font-style:normal; color:#a00;"' .
+				' href="' . wp_nonce_url(
+					admin_url( '?wfwp_wcos_delete=__wfwp_wcos_post_id__' ),
+					'delete',
+					'wfwp_wcos_nonce'
+				) . '"' .
+				' onclick="return confirm(\'' . __( 'Are you sure?', 'order-status-for-woocommerce' ) . '\')"' .
+			'>' .
+				__( 'Delete status', 'order-status-for-woocommerce' ) .
+			'</a>',
+			'<a' .
+				' style="font-style:normal; color:#a00;"' .
+				' href="' . wp_nonce_url(
+					admin_url( '?wfwp_wcos_delete_fallback=__wfwp_wcos_post_id__&wfwp_wcos_delete_fallback_status=on-hold' ),
+					'delete_fallback',
+					'wfwp_wcos_nonce'
+				) . '"' .
+				' onclick="return confirm(\'' . __( 'Are you sure?', 'order-status-for-woocommerce' ) . '\')"' .
+			'>' .
+				__( 'Delete status with fallback', 'order-status-for-woocommerce' ) .
+			'</a>',
+			'<a' .
+				' style="font-style:normal;"' .
+				' href="' . admin_url( 'edit.php?post_status=wc-%slug%&post_type=shop_order' ) . '"' .
+				' target="_blank"' .
+			'>' .
+				__( 'View orders', 'order-status-for-woocommerce' ) .
+			'</a>',
 		) ) . '</p>',
 		'context'  => 'side',
 		'options'  => array(),

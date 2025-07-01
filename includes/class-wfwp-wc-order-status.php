@@ -2,7 +2,7 @@
 /**
  * Order Status for WooCommerce - Main Class
  *
- * @version 1.6.0
+ * @version 1.8.0
  * @since   1.0.0
  *
  * @author  Algoritmika Ltd.
@@ -121,16 +121,21 @@ final class WFWP_WC_Order_Status {
 	 * @version 1.4.3
 	 * @since   1.4.0
 	 *
-	 * @see     https://github.com/woocommerce/woocommerce/wiki/High-Performance-Order-Storage-Upgrade-Recipe-Book#declaring-extension-incompatibility
+	 * @see     https://developer.woocommerce.com/docs/features/high-performance-order-storage/recipe-book/
 	 */
 	function wc_declare_compatibility() {
 		if ( class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
-			$files = ( defined( 'WFWP_WC_ORDER_STATUS_FILE_FREE' ) ?
+			$files = (
+				defined( 'WFWP_WC_ORDER_STATUS_FILE_FREE' ) ?
 				array( WFWP_WC_ORDER_STATUS_FILE, WFWP_WC_ORDER_STATUS_FILE_FREE ) :
 				array( WFWP_WC_ORDER_STATUS_FILE )
 			);
 			foreach ( $files as $file ) {
-				\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', $file, true );
+				\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility(
+					'custom_order_tables',
+					$file,
+					true
+				);
 			}
 		}
 	}
@@ -154,7 +159,7 @@ final class WFWP_WC_Order_Status {
 	/**
 	 * admin.
 	 *
-	 * @version 1.6.0
+	 * @version 1.8.0
 	 * @since   1.0.0
 	 */
 	function admin() {
@@ -163,16 +168,22 @@ final class WFWP_WC_Order_Status {
 		require_once plugin_dir_path( __FILE__ ) . 'admin/class-wfwp-wc-order-status-admin.php';
 
 		// Action links
-		add_filter( 'plugin_action_links_' . plugin_basename( WFWP_WC_ORDER_STATUS_FILE ), array( $this, 'action_links' ) );
+		add_filter(
+			'plugin_action_links_' . plugin_basename( WFWP_WC_ORDER_STATUS_FILE ),
+			array( $this, 'action_links' )
+		);
 
 		// "Recommendations" page
-		$this->add_cross_selling_library();
+		add_action( 'init', array( $this, 'add_cross_selling_library' ) );
 
 		// WC Settings tab as WPFactory submenu item
-		$this->move_wc_settings_tab_to_wpfactory_menu();
+		add_action( 'init', array( $this, 'move_wc_settings_tab_to_wpfactory_menu' ) );
 
 		// Settings
-		add_filter( 'woocommerce_get_settings_pages', array( $this, 'add_woocommerce_settings_tab' ) );
+		add_filter(
+			'woocommerce_get_settings_pages',
+			array( $this, 'add_woocommerce_settings_tab' )
+		);
 
 		// Version update
 		if ( get_option( 'wfwp_wc_order_status_version', '' ) !== $this->version ) {
@@ -192,17 +203,21 @@ final class WFWP_WC_Order_Status {
 	 */
 	function action_links( $links ) {
 		$custom_links = array();
+
 		$custom_links[] = '<a href="' . admin_url( 'edit.php?post_type=wfwp_wc_order_status' ) . '">' .
 			__( 'Statuses', 'order-status-for-woocommerce' ) .
 		'</a>';
+
 		$custom_links[] = '<a href="' . admin_url( 'admin.php?page=wc-settings&tab=wfwp_wc_order_status' ) . '">' .
 			__( 'Settings', 'order-status-for-woocommerce' ) .
 		'</a>';
+
 		if ( 'order-status-for-woocommerce.php' === basename( WFWP_WC_ORDER_STATUS_FILE ) ) {
 			$custom_links[] = '<a target="_blank" style="font-weight: bold; color: green;" href="https://wpfactory.com/item/order-status-for-woocommerce/">' .
 				__( 'Go Pro', 'order-status-for-woocommerce' ) .
 			'</a>';
 		}
+
 		return array_merge( $custom_links, $links );
 	}
 
@@ -227,7 +242,7 @@ final class WFWP_WC_Order_Status {
 	/**
 	 * move_wc_settings_tab_to_wpfactory_menu.
 	 *
-	 * @version 1.6.0
+	 * @version 1.8.0
 	 * @since   1.6.0
 	 */
 	function move_wc_settings_tab_to_wpfactory_menu() {
@@ -245,7 +260,11 @@ final class WFWP_WC_Order_Status {
 		$wpfactory_admin_menu->move_wc_settings_tab_to_wpfactory_menu( array(
 			'wc_settings_tab_id' => 'wfwp_wc_order_status',
 			'menu_title'         => __( 'Order Status', 'order-status-for-woocommerce' ),
-			'page_title'         => __( 'Order Status', 'order-status-for-woocommerce' ),
+			'page_title'         => __( 'Additional Custom Order Status for WooCommerce', 'order-status-for-woocommerce' ),
+			'plugin_icon'        => array(
+				'get_url_method'    => 'wporg_plugins_api',
+				'wporg_plugin_slug' => 'order-status-for-woocommerce',
+			),
 		) );
 
 	}
