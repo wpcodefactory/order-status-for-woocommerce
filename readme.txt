@@ -45,6 +45,13 @@ You can also change **order status sorting**, including the default WooCommerce 
 
 == Changelog ==
 
+= 1.9.0 - 07/10/2025 =
+* Dev - Sorting Options - "Admin order list action buttons" options added.
+* Dev - Sorting Options - "Admin order preview action buttons" options added.
+* Dev - Sorting Options - "Admin order bulk actions" options added.
+* Dev - WPFactory Recommendations - Library updated (to v1.0.6).
+* WC tested up to: 10.2.
+
 = 1.8.1 - 10/09/2025 =
 * WC tested up to: 10.1.
 

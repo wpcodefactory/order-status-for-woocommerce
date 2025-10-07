@@ -2,46 +2,46 @@
 # This file is distributed under the GNU General Public License v3.0.
 msgid ""
 msgstr ""
-"Project-Id-Version: order-status-for-woocommerce 1.8.1\n"
+"Project-Id-Version: Additional Custom Order Status for WooCommerce 1.9.0-dev\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/order-status-for-woocommerce\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-09-10T15:07:51+00:00\n"
+"POT-Creation-Date: 2025-10-07T16:14:31+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.12.0\n"
+"X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: order-status-for-woocommerce\n"
 
 #. Plugin Name of the plugin
-#: order-status-for-woocommerce-pro.php
-msgid "Additional Custom Order Status for WooCommerce Pro"
+#: order-status-for-woocommerce.php
+#: includes/class-wfwp-wc-order-status.php:263
+msgid "Additional Custom Order Status for WooCommerce"
 msgstr ""
 
 #. Plugin URI of the plugin
-#: order-status-for-woocommerce-pro.php
+#: order-status-for-woocommerce.php
 msgid "https://wpfactory.com/item/order-status-for-woocommerce/"
 msgstr ""
 
 #. Description of the plugin
-#: order-status-for-woocommerce-pro.php
+#: order-status-for-woocommerce.php
 msgid "Manage order statuses in WooCommerce. Beautifully."
 msgstr ""
 
 #. Author of the plugin
-#: order-status-for-woocommerce-pro.php
+#: order-status-for-woocommerce.php
 msgid "WPFactory"
 msgstr ""
 
 #. Author URI of the plugin
-#: order-status-for-woocommerce-pro.php
+#: order-status-for-woocommerce.php
 msgid "https://wpfactory.com"
 msgstr ""
 
 #. Translators: %s: Status slug.
 #: includes/admin/class-wfwp-wc-order-status-admin.php:80
-#, php-format
 msgid "You are overriding the default %s WooCommerce status."
 msgstr ""
 
@@ -60,13 +60,11 @@ msgstr ""
 #. Translators: %s: Status title.
 #: includes/admin/class-wfwp-wc-order-status-admin.php:190
 #: includes/admin/class-wfwp-wc-order-status-admin.php:207
-#, php-format
 msgid "%s status deleted."
 msgstr ""
 
 #. Translators: %1$s: Number of orders, %2$s: Status.
 #: includes/admin/class-wfwp-wc-order-status-admin.php:212
-#, php-format
 msgid "%1$s order(s) updated (to %2$s)."
 msgstr ""
 
@@ -77,14 +75,13 @@ msgstr ""
 
 #. Translators: %s: Status title.
 #: includes/admin/class-wfwp-wc-order-status-admin.php:267
-#, php-format
 msgid "Custom order status (%s) deleted."
 msgstr ""
 
 #: includes/admin/class-wfwp-wc-order-status-admin.php:339
 #: includes/admin/class-wfwp-wc-order-status-admin.php:340
 #: includes/class-wfwp-wc-order-status.php:262
-#: includes/settings/class-wfwp-wc-order-status-settings-general.php:58
+#: includes/settings/class-wfwp-wc-order-status-settings-general.php:67
 #: includes/settings/class-wfwp-wc-order-status-settings.php:26
 msgid "Order Status"
 msgstr ""
@@ -205,19 +202,16 @@ msgstr ""
 
 #. Translators: %s: Placeholder list.
 #: includes/admin/wfwp-wc-order-status-options.php:174
-#, php-format
 msgid "Placeholders in <strong>subject</strong>, <strong>heading</strong> and <strong>content</strong>: %s"
 msgstr ""
 
 #. Translators: %s: Placeholder name.
 #: includes/admin/wfwp-wc-order-status-options.php:190
-#, php-format
 msgid "Additional placeholder in <strong>heading</strong> and <strong>content</strong>: %s"
 msgstr ""
 
 #. Translators: %s: Placeholder list.
 #: includes/admin/wfwp-wc-order-status-options.php:195
-#, php-format
 msgid "Placeholders in email <strong>address</strong>: %s"
 msgstr ""
 
@@ -236,7 +230,6 @@ msgstr ""
 #. Translators: %1$s: Site Title placeholder, %2$s: Order Number placeholder, %3$s: Status Title placeholder, %4$s: Order Date placeholder.
 #: includes/admin/wfwp-wc-order-status-options.php:225
 #: includes/classes/class-wfwp-wc-shop-order-status.php:99
-#, php-format
 msgid "%1$s Order %2$s status changed to %3$s - %4$s"
 msgstr ""
 
@@ -251,7 +244,6 @@ msgstr ""
 #. Translators: %s: Status Title placeholder.
 #: includes/admin/wfwp-wc-order-status-options.php:249
 #: includes/classes/class-wfwp-wc-shop-order-status.php:107
-#, php-format
 msgid "Order status changed to %s"
 msgstr ""
 
@@ -262,7 +254,6 @@ msgstr ""
 #. Translators: %1$s: Order Number placeholder, %2$s: Status Title placeholder, %3$s: Status Title placeholder.
 #: includes/admin/wfwp-wc-order-status-options.php:260
 #: includes/classes/class-wfwp-wc-shop-order-status.php:112
-#, php-format
 msgid "Order %1$s status changed from %2$s to %3$s."
 msgstr ""
 
@@ -296,83 +287,81 @@ msgid "View orders"
 msgstr ""
 
 #. Translators: %s: Status title.
-#: includes/class-wfwp-wc-order-status-core.php:335
-#, php-format
+#: includes/class-wfwp-wc-order-status-core.php:447
 msgid "Change order status to %s"
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status-core.php:354
+#: includes/class-wfwp-wc-order-status-core.php:466
 msgid "Change status: "
 msgstr ""
 
 #. Translators: %s: Status title.
-#: includes/class-wfwp-wc-order-status-core.php:441
-#, php-format
+#: includes/class-wfwp-wc-order-status-core.php:553
 msgid "Change status to %s"
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status-core.php:526
+#: includes/class-wfwp-wc-order-status-core.php:638
 msgctxt "post type general name"
 msgid "Statuses"
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status-core.php:527
+#: includes/class-wfwp-wc-order-status-core.php:639
 msgctxt "post type singular name"
 msgid "Status"
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status-core.php:528
+#: includes/class-wfwp-wc-order-status-core.php:640
 msgctxt "admin menu"
 msgid "Statuses"
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status-core.php:529
+#: includes/class-wfwp-wc-order-status-core.php:641
 msgctxt "add new on admin bar"
 msgid "Status"
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status-core.php:530
+#: includes/class-wfwp-wc-order-status-core.php:642
 msgctxt "status"
 msgid "Add New"
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status-core.php:531
+#: includes/class-wfwp-wc-order-status-core.php:643
 msgid "Add New Status"
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status-core.php:532
+#: includes/class-wfwp-wc-order-status-core.php:644
 msgid "New Status"
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status-core.php:533
+#: includes/class-wfwp-wc-order-status-core.php:645
 msgid "Edit Status"
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status-core.php:534
+#: includes/class-wfwp-wc-order-status-core.php:646
 msgid "View Status"
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status-core.php:535
+#: includes/class-wfwp-wc-order-status-core.php:647
 msgid "All Statuses"
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status-core.php:536
+#: includes/class-wfwp-wc-order-status-core.php:648
 msgid "Search Statuses"
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status-core.php:537
+#: includes/class-wfwp-wc-order-status-core.php:649
 msgid "Parent Statuses:"
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status-core.php:538
+#: includes/class-wfwp-wc-order-status-core.php:650
 msgid "No statuses found."
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status-core.php:539
+#: includes/class-wfwp-wc-order-status-core.php:651
 msgid "No statuses found in Trash."
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status-core.php:541
+#: includes/class-wfwp-wc-order-status-core.php:653
 msgid "WooCommerce custom order status"
 msgstr ""
 
@@ -388,13 +377,8 @@ msgstr ""
 msgid "Go Pro"
 msgstr ""
 
-#: includes/class-wfwp-wc-order-status.php:263
-msgid "Additional Custom Order Status for WooCommerce"
-msgstr ""
-
 #. Translators: %s: Status title.
 #: includes/pro/classes/class-wfwp-wc-order-status-email.php:49
-#, php-format
 msgid "Email for the \"%s\" custom order status."
 msgstr ""
 
@@ -406,46 +390,65 @@ msgstr ""
 msgid "General"
 msgstr ""
 
-#: includes/settings/class-wfwp-wc-order-status-settings-general.php:51
+#: includes/settings/class-wfwp-wc-order-status-settings-general.php:60
 msgid "Order Status Options"
 msgstr ""
 
 #. Translators: %s: Menu title.
-#: includes/settings/class-wfwp-wc-order-status-settings-general.php:56
-#, php-format
+#: includes/settings/class-wfwp-wc-order-status-settings-general.php:65
 msgid "Create & edit order statuses in the %s menu."
 msgstr ""
 
-#: includes/settings/class-wfwp-wc-order-status-settings-general.php:66
-msgid "Order status sorting"
+#: includes/settings/class-wfwp-wc-order-status-settings-general.php:82
+msgid "Sorting Options"
 msgstr ""
 
-#: includes/settings/class-wfwp-wc-order-status-settings-general.php:72
-msgid "Default"
+#: includes/settings/class-wfwp-wc-order-status-settings-general.php:88
+msgid "Custom sorting tips"
 msgstr ""
 
-#: includes/settings/class-wfwp-wc-order-status-settings-general.php:73
-msgid "By title (ascending)"
-msgstr ""
-
-#: includes/settings/class-wfwp-wc-order-status-settings-general.php:74
-msgid "Custom"
-msgstr ""
-
-#: includes/settings/class-wfwp-wc-order-status-settings-general.php:80
-msgid "Custom sorting"
-msgstr ""
-
-#: includes/settings/class-wfwp-wc-order-status-settings-general.php:81
+#: includes/settings/class-wfwp-wc-order-status-settings-general.php:90
 msgid "The \"Sorting\" option must be set to \"Custom\"."
 msgstr ""
 
-#: includes/settings/class-wfwp-wc-order-status-settings-general.php:82
+#: includes/settings/class-wfwp-wc-order-status-settings-general.php:91
 msgid "One status slug per line."
 msgstr ""
 
-#: includes/settings/class-wfwp-wc-order-status-settings-general.php:83
-msgid "Default sorting:"
+#: includes/settings/class-wfwp-wc-order-status-settings-general.php:92
+msgid "Default sorting (admin order edit page dropdown box):"
+msgstr ""
+
+#: includes/settings/class-wfwp-wc-order-status-settings-general.php:103
+msgid "Admin order edit page dropdown box"
+msgstr ""
+
+#: includes/settings/class-wfwp-wc-order-status-settings-general.php:107
+msgid "Admin order list action buttons"
+msgstr ""
+
+#: includes/settings/class-wfwp-wc-order-status-settings-general.php:111
+msgid "Admin order preview action buttons"
+msgstr ""
+
+#: includes/settings/class-wfwp-wc-order-status-settings-general.php:115
+msgid "Admin order bulk actions"
+msgstr ""
+
+#: includes/settings/class-wfwp-wc-order-status-settings-general.php:129
+msgid "Default"
+msgstr ""
+
+#: includes/settings/class-wfwp-wc-order-status-settings-general.php:130
+msgid "By title (ascending)"
+msgstr ""
+
+#: includes/settings/class-wfwp-wc-order-status-settings-general.php:131
+msgid "Custom"
+msgstr ""
+
+#: includes/settings/class-wfwp-wc-order-status-settings-general.php:135
+msgid "Custom sorting"
 msgstr ""
 
 #: includes/settings/class-wfwp-wc-order-status-settings.php:47

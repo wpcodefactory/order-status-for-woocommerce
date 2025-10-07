@@ -2,7 +2,7 @@
 /**
  * Order Status for WooCommerce - Core Class
  *
- * @version 1.8.0
+ * @version 1.9.0
  * @since   1.0.0
  *
  * @author  Algoritmika Ltd.
@@ -41,7 +41,7 @@ class WFWP_WC_Order_Status_Core {
 	/**
 	 * Constructor.
 	 *
-	 * @version 1.5.0
+	 * @version 1.9.0
 	 * @since   1.0.0
 	 *
 	 * @todo    (dev) customizable filters priorities
@@ -58,24 +58,26 @@ class WFWP_WC_Order_Status_Core {
 		add_action( 'init', array( $this, 'create_order_status_post_type' ), 9 );
 		add_action( 'init', array( $this, 'register_custom_post_statuses' ), 9 );
 
-		// Main WC filter
-		add_filter( 'wc_order_statuses', array( $this, 'add_custom_order_statuses' ), PHP_INT_MAX - 1 );
-
-		// Sorting
+		// Main WC filter & Sorting
+		add_filter( 'wc_order_statuses', array( $this, 'add_custom_order_statuses' ), ( PHP_INT_MAX - 1 ) );
 		add_filter( 'wc_order_statuses', array( $this, 'sort_order_statuses' ), PHP_INT_MAX );
 
 		// Styling
 		add_action( 'admin_head', array( $this, 'add_custom_status_column_css' ), 10 );
 
-		// Admin
-		add_filter( 'bulk_actions-edit-shop_order', array( $this, 'bulk_actions' ), PHP_INT_MAX );
-		add_filter( 'bulk_actions-woocommerce_page_wc-orders', array( $this, 'bulk_actions' ), PHP_INT_MAX );
+		// Bulk actions & Reports
+		add_filter( 'bulk_actions-edit-shop_order', array( $this, 'bulk_actions' ), ( PHP_INT_MAX - 1 ) );
+		add_filter( 'bulk_actions-woocommerce_page_wc-orders', array( $this, 'bulk_actions' ), ( PHP_INT_MAX - 1 ) );
+		add_filter( 'bulk_actions-edit-shop_order', array( $this, 'sort_bulk_actions' ), PHP_INT_MAX );
+		add_filter( 'bulk_actions-woocommerce_page_wc-orders', array( $this, 'sort_bulk_actions' ), PHP_INT_MAX );
 		add_filter( 'woocommerce_reports_order_statuses', array( $this, 'reports' ), PHP_INT_MAX );
 
 		// Action buttons
-		add_filter( 'woocommerce_admin_order_actions', array( $this, 'order_list_actions' ), PHP_INT_MAX, 2 );
+		add_filter( 'woocommerce_admin_order_actions', array( $this, 'order_list_actions' ), ( PHP_INT_MAX - 1 ), 2 );
+		add_filter( 'woocommerce_admin_order_actions', array( $this, 'sort_order_list_actions' ), PHP_INT_MAX, 2 );
 		add_action( 'admin_head', array( $this, 'add_custom_status_actions_css' ), 10 );
-		add_filter( 'woocommerce_admin_order_preview_actions', array( $this, 'order_preview_actions' ), PHP_INT_MAX, 2 );
+		add_filter( 'woocommerce_admin_order_preview_actions', array( $this, 'order_preview_actions' ), ( PHP_INT_MAX - 1 ), 2 );
+		add_filter( 'woocommerce_admin_order_preview_actions', array( $this, 'sort_order_preview_actions' ), PHP_INT_MAX, 2 );
 
 		// Order
 		add_filter( 'wc_order_is_editable', array( $this, 'order_editable' ), PHP_INT_MAX, 2 );
@@ -187,35 +189,145 @@ class WFWP_WC_Order_Status_Core {
 	/**
 	 * sort_order_statuses.
 	 *
-	 * @version 1.4.0
+	 * @version 1.9.0
 	 * @since   1.4.0
 	 */
 	function sort_order_statuses( $order_statuses ) {
+		return $this->get_sorted_data(
+			$order_statuses,
+			'order_statuses',
+			'wfwp_wc_order_status_sorting'
+		);
+	}
 
-		$sorting = get_option( 'wfwp_wc_order_status_sorting', 'default' );
+	/**
+	 * sort_order_list_actions.
+	 *
+	 * @version 1.9.0
+	 * @since   1.9.0
+	 */
+	function sort_order_list_actions( $actions, $order ) {
+		return $this->get_sorted_data(
+			$actions,
+			'order_actions',
+			'wfwp_wc_order_status_sorting_order_list_actions'
+		);
+	}
 
+	/**
+	 * sort_order_preview_actions.
+	 *
+	 * @version 1.9.0
+	 * @since   1.9.0
+	 */
+	function sort_order_preview_actions( $actions, $order ) {
+		if ( isset( $actions['status']['actions'] ) ) {
+			$actions['status']['actions'] = $this->get_sorted_data(
+				$actions['status']['actions'],
+				'order_actions',
+				'wfwp_wc_order_status_sorting_order_preview_actions'
+			);
+		}
+		return $actions;
+	}
+
+	/**
+	 * sort_bulk_actions.
+	 *
+	 * @version 1.9.0
+	 * @since   1.9.0
+	 */
+	function sort_bulk_actions( $bulk_actions ) {
+		return $this->get_sorted_data(
+			$bulk_actions,
+			'bulk_actions',
+			'wfwp_wc_order_status_sorting_bulk_actions'
+		);
+	}
+
+	/**
+	 * get_sorted_data.
+	 *
+	 * @version 1.9.0
+	 * @since   1.9.0
+	 */
+	function get_sorted_data( $data, $data_type, $option ) {
+
+		// Empty data
+		if ( empty( $data ) ) {
+			return $data;
+		}
+
+		// Get sorting option
+		$sorting = get_option( $option, 'default' );
+
+		// Default sorting
+		if ( 'default' === $sorting ) {
+			return $data;
+		}
+
+		// Prepare "Bulk actions" data
+		if ( 'bulk_actions' === $data_type ) {
+			$non_status_data = array();
+			foreach ( $data as $key => $value ) {
+				if ( 'mark_' !== substr( $key, 0, 5 ) ) {
+					$non_status_data[ $key ] = $value;
+					unset( $data[ $key ] );
+				}
+			}
+		}
+
+		// Sort
 		switch ( $sorting ) {
 
+			// By title (ascending)
 			case 'title_asc':
-				asort( $order_statuses );
+				if ( 'order_actions' === $data_type ) {
+					uasort(
+						$data,
+						function ( $a, $b ) {
+							$a = strtolower( $a['name'] );
+							$b = strtolower( $b['name'] );
+							return ( $a === $b ? 0 : ( $a < $b ? -1 : 1 ) );
+						}
+					);
+				} else { // 'order_statuses', 'bulk_actions'
+					natcasesort( $data );
+				}
 				break;
 
+			// Custom sorting
 			case 'custom':
-				$_order_statuses = array();
-				$sorted_statuses = get_option( 'wfwp_wc_order_status_sorting_custom', '' );
-				$sorted_statuses = array_map( 'trim', explode( PHP_EOL, $sorted_statuses ) );
-				foreach ( $sorted_statuses as $status ) {
-					if ( isset( $order_statuses[ $status ] ) ) {
-						$_order_statuses[ $status ] = $order_statuses[ $status ];
-						unset( $order_statuses[ $status ] );
+				$_data = array();
+				$sorted_data = get_option( 'wfwp_wc_order_status_sorting_custom', '' );
+				$sorted_data = array_map( 'trim', explode( PHP_EOL, $sorted_data ) );
+				foreach ( $sorted_data as $status ) {
+					if ( 'order_actions' === $data_type ) {
+						$status = substr( $status, 3 );
+						if ( 'completed' === $status ) {
+							$status = 'complete';
+						}
+					} elseif ( 'bulk_actions' === $data_type ) {
+						$status = 'mark_' . substr( $status, 3 );
+					}
+					$status = apply_filters( 'wfwp_wc_order_status_custom_sorting_status', $status, $data_type );
+					if ( isset( $data[ $status ] ) ) {
+						$_data[ $status ] = $data[ $status ];
+						unset( $data[ $status ] );
 					}
 				}
-				$order_statuses = array_merge( $_order_statuses, $order_statuses );
+				$data = array_merge( $_data, $data );
 				break;
 
 		}
 
-		return $order_statuses;
+		// Prepare "Bulk actions" data
+		if ( 'bulk_actions' === $data_type ) {
+			$data = $non_status_data + $data;
+		}
+
+		// Result
+		return $data;
 
 	}
 
