@@ -250,6 +250,8 @@ class WFWP_WC_Order_Status_Core {
 	 *
 	 * @version 1.9.0
 	 * @since   1.9.0
+	 *
+	 * @todo    (v1.9.0) use actions (vs. statuses) for order list, preview, bulk actions?
 	 */
 	function get_sorted_data( $data, $data_type, $option ) {
 

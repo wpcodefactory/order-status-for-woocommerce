@@ -52,6 +52,8 @@ class WFWP_WC_Order_Status_Settings_General extends WFWP_WC_Order_Status_Setting
 	 *
 	 * @version 1.9.0
 	 * @since   1.4.0
+	 *
+	 * @todo    (v1.9.0) display default sorting for order list, preview, bulk actions?
 	 */
 	function get_settings() {
 

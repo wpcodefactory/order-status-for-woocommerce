@@ -3,7 +3,7 @@ Contributors: wpcodefactory, anbinder, karzin, omardabbas
 Tags: woocommerce, status, order status, custom order status, ecommerce
 Requires at least: 4.7
 Tested up to: 6.8
-Stable tag: 1.8.1
+Stable tag: 1.9.0
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -45,7 +45,7 @@ You can also change **order status sorting**, including the default WooCommerce 
 
 == Changelog ==
 
-= 1.9.0 - 07/10/2025 =
+= 1.9.0 - 08/10/2025 =
 * Dev - Sorting Options - "Admin order list action buttons" options added.
 * Dev - Sorting Options - "Admin order preview action buttons" options added.
 * Dev - Sorting Options - "Admin order bulk actions" options added.
