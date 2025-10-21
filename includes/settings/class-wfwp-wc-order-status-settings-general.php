@@ -2,7 +2,7 @@
 /**
  * Order Status for WooCommerce - General Section Settings
  *
- * @version 1.9.0
+ * @version 1.9.1
  * @since   1.4.0
  *
  * @author  Algoritmika Ltd
@@ -27,36 +27,33 @@ class WFWP_WC_Order_Status_Settings_General extends WFWP_WC_Order_Status_Setting
 	}
 
 	/**
-	 * get_unsorted_statuses.
+	 * get_order_statuses.
 	 *
-	 * @version 1.9.0
-	 * @since   1.9.0
+	 * @version 1.9.1
+	 * @since   1.9.1
 	 */
-	function get_unsorted_statuses() {
-		remove_filter(
-			'wc_order_statuses',
-			array( wfwp_wc_order_status()->core, 'sort_order_statuses' ),
-			PHP_INT_MAX
-		);
-		$unsorted_statuses = wc_get_order_statuses();
-		add_filter(
-			'wc_order_statuses',
-			array( wfwp_wc_order_status()->core, 'sort_order_statuses' ),
-			PHP_INT_MAX
-		);
-		return $unsorted_statuses;
+	function get_order_statuses() {
+		$statuses = array();
+		foreach ( wc_get_order_statuses() as $key => $status ) {
+			if ( strlen( $key ) >= 3 && 'wc-' === substr( $key, 0, 3 ) ) {
+				$key = substr( $key, 3 );
+			}
+			$statuses[ $key ] = $status;
+		}
+		return $statuses;
 	}
 
 	/**
 	 * get_settings.
 	 *
-	 * @version 1.9.0
+	 * @version 1.9.1
 	 * @since   1.4.0
 	 *
-	 * @todo    (v1.9.0) display default sorting for order list, preview, bulk actions?
+	 * @todo    (v1.9.1) Admin Order Actions: better section desc?
 	 */
 	function get_settings() {
 
+		// General
 		$settings = array(
 			array(
 				'title'    => __( 'Order Status Options', 'order-status-for-woocommerce' ),
@@ -79,74 +76,47 @@ class WFWP_WC_Order_Status_Settings_General extends WFWP_WC_Order_Status_Setting
 			),
 		);
 
+		// Admin Order Actions
 		$settings = array_merge( $settings, array(
 			array(
-				'title'    => __( 'Sorting Options', 'order-status-for-woocommerce' ),
+				'title'    => __( 'Admin Order List Actions Buttons', 'order-status-for-woocommerce' ),
+				'desc'     => __( 'By default, the "Processing" action is displayed only for pending and on-hold orders; "Complete" only for pending, processing and on-hold orders. You can override it here.', 'order-status-for-woocommerce' ),
 				'type'     => 'title',
-				'id'       => 'wfwp_wc_order_status_sorting_options',
-				'desc'     => (
-					'<details style="width: fit-content;">' .
-						'<summary style="cursor: pointer;">' .
-							__( 'Custom sorting tips', 'order-status-for-woocommerce' ) .
-						'</summary>' .
-						'<p>' . '* ' . __( 'The "Sorting" option must be set to "Custom".', 'order-status-for-woocommerce' ) . '</p>' .
-						'<p>' . '* ' . __( 'One status slug per line.', 'order-status-for-woocommerce' ) . '</p>' .
-						'<p>' . '* ' . __( 'Default sorting (admin order edit page dropdown box):', 'order-status-for-woocommerce' ) . '</p>' .
-							'<pre style="border: 1px solid gray; padding: 10px;">' .
-								implode( PHP_EOL, array_keys( $this->get_unsorted_statuses() ) ) .
-							'</pre>' .
-					'</details>'
-				),
-			),
-		) );
-
-		$sorting_options = array(
-			array(
-				'title' => __( 'Admin order edit page dropdown box', 'order-status-for-woocommerce' ),
-				'key'   => 'wfwp_wc_order_status_sorting',
+				'id'       => 'wfwp_wc_order_status_admin_order_actions_options',
 			),
 			array(
-				'title' => __( 'Admin order list action buttons', 'order-status-for-woocommerce' ),
-				'key'   => 'wfwp_wc_order_status_sorting_order_list_actions',
+				'title'    => __( 'Processing', 'order-status-for-woocommerce' ),
+				'desc'     => __( 'Override', 'order-status-for-woocommerce' ),
+				'type'     => 'checkbox',
+				'id'       => 'wfwp_wc_order_status_admin_order_actions_processing_override',
+				'default'  => 'no',
 			),
 			array(
-				'title' => __( 'Admin order preview action buttons', 'order-status-for-woocommerce' ),
-				'key'   => 'wfwp_wc_order_status_sorting_order_preview_actions',
+				'desc'     => __( 'Order statuses', 'order-status-for-woocommerce' ),
+				'type'     => 'multiselect',
+				'class'    => 'wc-enhanced-select',
+				'id'       => 'wfwp_wc_order_status_admin_order_actions_processing_has_status',
+				'default'  => array( 'pending', 'on-hold' ),
+				'options'  => $this->get_order_statuses(),
 			),
 			array(
-				'title' => __( 'Admin order bulk actions', 'order-status-for-woocommerce' ),
-				'key'   => 'wfwp_wc_order_status_sorting_bulk_actions',
+				'title'    => __( 'Complete', 'order-status-for-woocommerce' ),
+				'desc'     => __( 'Override', 'order-status-for-woocommerce' ),
+				'type'     => 'checkbox',
+				'id'       => 'wfwp_wc_order_status_admin_order_actions_complete_override',
+				'default'  => 'no',
 			),
-		);
-
-		foreach ( $sorting_options as $option_data ) {
-			$settings = array_merge( $settings, array(
-				array(
-					'title'    => $option_data['title'],
-					'type'     => 'select',
-					'class'    => 'chosen_select',
-					'id'       => $option_data['key'],
-					'default'  => 'default',
-					'options'  => array(
-						'default'   => __( 'Default', 'order-status-for-woocommerce' ),
-						'title_asc' => __( 'By title (ascending)', 'order-status-for-woocommerce' ),
-						'custom'    => __( 'Custom', 'order-status-for-woocommerce' ),
-					),
-				),
-				array(
-					'desc'     => __( 'Custom sorting', 'order-status-for-woocommerce' ),
-					'type'     => 'textarea',
-					'id'       => $option_data['key'] . '_custom',
-					'default'  => '',
-					'css'      => 'height: 150px; font-family: monospace;',
-				),
-			) );
-		}
-
-		$settings = array_merge( $settings, array(
+			array(
+				'desc'     => __( 'Order statuses', 'order-status-for-woocommerce' ),
+				'type'     => 'multiselect',
+				'class'    => 'wc-enhanced-select',
+				'id'       => 'wfwp_wc_order_status_admin_order_actions_complete_has_status',
+				'default'  => array( 'pending', 'on-hold', 'processing' ),
+				'options'  => $this->get_order_statuses(),
+			),
 			array(
 				'type'     => 'sectionend',
-				'id'       => 'wfwp_wc_order_status_sorting_options',
+				'id'       => 'wfwp_wc_order_status_admin_order_actions_options',
 			),
 		) );
 

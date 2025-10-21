@@ -2,7 +2,7 @@
 /**
  * Order Status for WooCommerce - Core Class
  *
- * @version 1.9.0
+ * @version 1.9.1
  * @since   1.0.0
  *
  * @author  Algoritmika Ltd.
@@ -41,7 +41,7 @@ class WFWP_WC_Order_Status_Core {
 	/**
 	 * Constructor.
 	 *
-	 * @version 1.9.0
+	 * @version 1.9.1
 	 * @since   1.0.0
 	 *
 	 * @todo    (dev) customizable filters priorities
@@ -79,6 +79,10 @@ class WFWP_WC_Order_Status_Core {
 		add_filter( 'woocommerce_admin_order_preview_actions', array( $this, 'order_preview_actions' ), ( PHP_INT_MAX - 1 ), 2 );
 		add_filter( 'woocommerce_admin_order_preview_actions', array( $this, 'sort_order_preview_actions' ), PHP_INT_MAX, 2 );
 
+		// Action buttons: Processing & Complete
+		add_filter( 'woocommerce_admin_order_actions', array( $this, 'admin_order_actions_processing' ), 10, 2 );
+		add_filter( 'woocommerce_admin_order_actions', array( $this, 'admin_order_actions_complete' ), 10, 2 );
+
 		// Order
 		add_filter( 'wc_order_is_editable', array( $this, 'order_editable' ), PHP_INT_MAX, 2 );
 		add_filter( 'woocommerce_order_is_paid_statuses', array( $this, 'order_paid' ), PHP_INT_MAX );
@@ -92,6 +96,54 @@ class WFWP_WC_Order_Status_Core {
 		// "Core loaded" action
 		do_action( 'wfwp_wc_order_status_core_loaded', $this );
 
+	}
+
+	/**
+	 * admin_order_actions_processing.
+	 *
+	 * @version 1.9.1
+	 * @since   1.9.1
+	 */
+	function admin_order_actions_processing( $actions, $order ) {
+		if (
+			isset( $actions['processing'] ) ||
+			'yes' !== get_option( 'wfwp_wc_order_status_admin_order_actions_processing_override', 'no' )
+		) {
+			return $actions;
+		}
+		$statuses = get_option( 'wfwp_wc_order_status_admin_order_actions_processing_has_status', array( 'pending', 'on-hold' ) );
+		if ( $order->has_status( $statuses ) ) {
+			$actions['processing'] = array(
+				'url'    => wp_nonce_url( admin_url( 'admin-ajax.php?action=woocommerce_mark_order_status&status=processing&order_id=' . $order->get_id() ), 'woocommerce-mark-order-status' ),
+				'name'   => __( 'Processing', 'woocommerce' ), // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch
+				'action' => 'processing',
+			);
+		}
+		return $actions;
+	}
+
+	/**
+	 * admin_order_actions_complete.
+	 *
+	 * @version 1.9.1
+	 * @since   1.9.1
+	 */
+	function admin_order_actions_complete( $actions, $order ) {
+		if (
+			isset( $actions['complete'] ) ||
+			'yes' !== get_option( 'wfwp_wc_order_status_admin_order_actions_complete_override', 'no' )
+		) {
+			return $actions;
+		}
+		$statuses = get_option( 'wfwp_wc_order_status_admin_order_actions_complete_has_status', array( 'pending', 'on-hold', 'processing' ) );
+		if ( $order->has_status( $statuses ) ) {
+			$actions['complete'] = array(
+				'url'    => wp_nonce_url( admin_url( 'admin-ajax.php?action=woocommerce_mark_order_status&status=completed&order_id=' . $order->get_id() ), 'woocommerce-mark-order-status' ),
+				'name'   => __( 'Complete', 'woocommerce' ), // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch
+				'action' => 'complete',
+			);
+		}
+		return $actions;
 	}
 
 	/**

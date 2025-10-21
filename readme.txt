@@ -3,7 +3,7 @@ Contributors: wpcodefactory, anbinder, karzin, omardabbas
 Tags: woocommerce, status, order status, custom order status, ecommerce
 Requires at least: 4.7
 Tested up to: 6.8
-Stable tag: 1.9.0
+Stable tag: 1.9.1
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -44,6 +44,10 @@ You can also change **order status sorting**, including the default WooCommerce 
 3. Start by visiting plugin settings at "WooCommerce > Order Status".
 
 == Changelog ==
+
+= 1.9.1 - 21/10/2025 =
+* Dev - "Admin Order List Actions Buttons" options added ("Processing" and "Complete").
+* Dev - Admin settings rearranged - "Sorting" section added.
 
 = 1.9.0 - 08/10/2025 =
 * Dev - Sorting Options - "Admin order list action buttons" options added.

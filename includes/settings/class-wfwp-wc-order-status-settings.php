@@ -2,7 +2,7 @@
 /**
  * Order Status for WooCommerce - Settings
  *
- * @version 1.8.0
+ * @version 1.9.1
  * @since   1.4.0
  *
  * @author  Algoritmika Ltd
@@ -17,7 +17,7 @@ class WFWP_WC_Order_Status_Settings extends WC_Settings_Page {
 	/**
 	 * Constructor.
 	 *
-	 * @version 1.8.0
+	 * @version 1.9.1
 	 * @since   1.4.0
 	 */
 	function __construct() {
@@ -29,6 +29,7 @@ class WFWP_WC_Order_Status_Settings extends WC_Settings_Page {
 		// Sections
 		require_once plugin_dir_path( __FILE__ ) . 'class-wfwp-wc-order-status-settings-section.php';
 		require_once plugin_dir_path( __FILE__ ) . 'class-wfwp-wc-order-status-settings-general.php';
+		require_once plugin_dir_path( __FILE__ ) . 'class-wfwp-wc-order-status-settings-sorting.php';
 
 	}
 
