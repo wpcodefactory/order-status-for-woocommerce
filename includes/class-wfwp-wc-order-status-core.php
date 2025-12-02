@@ -2,7 +2,7 @@
 /**
  * Order Status for WooCommerce - Core Class
  *
- * @version 1.9.1
+ * @version 1.9.2
  * @since   1.0.0
  *
  * @author  Algoritmika Ltd.
@@ -41,7 +41,7 @@ class WFWP_WC_Order_Status_Core {
 	/**
 	 * Constructor.
 	 *
-	 * @version 1.9.1
+	 * @version 1.9.2
 	 * @since   1.0.0
 	 *
 	 * @todo    (dev) customizable filters priorities
@@ -86,6 +86,7 @@ class WFWP_WC_Order_Status_Core {
 		// Order
 		add_filter( 'wc_order_is_editable', array( $this, 'order_editable' ), PHP_INT_MAX, 2 );
 		add_filter( 'woocommerce_order_is_paid_statuses', array( $this, 'order_paid' ), PHP_INT_MAX );
+		add_filter( 'woocommerce_valid_order_statuses_for_payment', array( $this, 'order_valid_for_payment' ), PHP_INT_MAX );
 		add_action( 'init', array( $this, 'add_order_date_paid_hooks' ) );
 		add_action( 'init', array( $this, 'add_downloadable_product_permissions_hooks' ) );
 		add_action( 'woocommerce_order_is_download_permitted', array( $this, 'order_is_download_permitted' ), 10, 2 );
@@ -457,6 +458,24 @@ class WFWP_WC_Order_Status_Core {
 				continue;
 			}
 			if ( $status->is_order_paid ) {
+				$statuses[] = $status->slug;
+			}
+		}
+		return $statuses;
+	}
+
+	/**
+	 * order_valid_for_payment.
+	 *
+	 * @version 1.9.2
+	 * @since   1.9.2
+	 */
+	function order_valid_for_payment( $statuses ) {
+		foreach ( $this->get_statuses() as $status ) {
+			if ( $status->is_override() ) {
+				continue;
+			}
+			if ( $status->is_order_valid_for_payment ) {
 				$statuses[] = $status->slug;
 			}
 		}

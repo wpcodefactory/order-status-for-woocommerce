@@ -3,7 +3,7 @@ Contributors: wpcodefactory, anbinder, karzin, omardabbas
 Tags: woocommerce, status, order status, custom order status, ecommerce
 Requires at least: 4.7
 Tested up to: 6.8
-Stable tag: 1.9.1
+Stable tag: 1.9.2
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -20,7 +20,7 @@ You can add any number of statuses and for *each status* you can set:
 * **Styling options** - status text color, background color.
 * **General options** - add status to order bulk actions, add status to reports.
 * **Action buttons options** - icon, icon color & background color, add status to order list action buttons and/or admin order preview action buttons.
-* **Order options** - is order editable, is order paid, download permissions, etc.
+* **Order options** - is order editable, is order paid, is order valid for payment, download permissions, etc.
 
 You can also change **order status sorting**, including the default WooCommerce order statuses.
 
@@ -44,6 +44,10 @@ You can also change **order status sorting**, including the default WooCommerce 
 3. Start by visiting plugin settings at "WooCommerce > Order Status".
 
 == Changelog ==
+
+= 1.9.2 - 02/12/2025 =
+* Dev - Order Options - "Is order valid for payment" option added (defaults to `no`).
+* WC tested up to: 10.3.
 
 = 1.9.1 - 21/10/2025 =
 * Dev - "Admin Order List Actions Buttons" options added ("Processing" and "Complete").

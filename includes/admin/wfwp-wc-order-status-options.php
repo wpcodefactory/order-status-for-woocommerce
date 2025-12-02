@@ -2,7 +2,7 @@
 /**
  * Order Status for WooCommerce - Options
  *
- * @version 1.7.0
+ * @version 1.9.2
  * @since   1.0.0
  *
  * @author  Algoritmika Ltd.
@@ -131,6 +131,16 @@ return apply_filters( 'wfwp_wc_order_status_options', array(
 			'is_order_paid' => array(
 				'title'    => __( 'Is order paid', 'order-status-for-woocommerce' ),
 				'id'       => 'is_order_paid',
+				'type'     => 'select',
+				'default'  => 'no',
+				'options'  => array(
+					'no'  => __( 'No', 'order-status-for-woocommerce' ),
+					'yes' => __( 'Yes', 'order-status-for-woocommerce' ),
+				),
+			),
+			'is_order_valid_for_payment' => array(
+				'title'    => __( 'Is order valid for payment', 'order-status-for-woocommerce' ),
+				'id'       => 'is_order_valid_for_payment',
 				'type'     => 'select',
 				'default'  => 'no',
 				'options'  => array(
