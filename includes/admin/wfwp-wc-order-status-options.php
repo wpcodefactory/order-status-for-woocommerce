@@ -2,7 +2,7 @@
 /**
  * Order Status for WooCommerce - Options
  *
- * @version 1.9.2
+ * @version 1.9.3
  * @since   1.0.0
  *
  * @author  Algoritmika Ltd.
@@ -188,6 +188,7 @@ return apply_filters( 'wfwp_wc_order_status_options', array(
 					'{order_date}',
 					'{order_billing_first_name}',
 					'{order_billing_last_name}',
+					'{order_pay_url}',
 					'{site_title}',
 					'{status_to}',
 					'{status_to_title}',

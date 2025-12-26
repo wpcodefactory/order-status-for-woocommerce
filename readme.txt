@@ -2,8 +2,8 @@
 Contributors: wpcodefactory, anbinder, karzin, omardabbas
 Tags: woocommerce, status, order status, custom order status, ecommerce
 Requires at least: 4.7
-Tested up to: 6.8
-Stable tag: 1.9.2
+Tested up to: 6.9
+Stable tag: 1.9.3
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -44,6 +44,11 @@ You can also change **order status sorting**, including the default WooCommerce 
 3. Start by visiting plugin settings at "WooCommerce > Order Status".
 
 == Changelog ==
+
+= 1.9.3 - 26/12/2025 =
+* Dev - Emails - Placeholders - `{order_pay_url}` placeholder added.
+* WC tested up to: 10.4.
+* Tested up to: 6.9.
 
 = 1.9.2 - 02/12/2025 =
 * Dev - Order Options - "Is order valid for payment" option added (defaults to `no`).

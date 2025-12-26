@@ -2,14 +2,14 @@
 # This file is distributed under the GNU General Public License v3.0.
 msgid ""
 msgstr ""
-"Project-Id-Version: Additional Custom Order Status for WooCommerce 1.9.2\n"
+"Project-Id-Version: Additional Custom Order Status for WooCommerce 1.9.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/order-status-for-woocommerce\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-12-02T06:47:23+00:00\n"
+"POT-Creation-Date: 2025-12-26T20:55:23+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: order-status-for-woocommerce\n"
@@ -127,8 +127,8 @@ msgstr ""
 #: includes/admin/wfwp-wc-order-status-options.php:147
 #: includes/admin/wfwp-wc-order-status-options.php:157
 #: includes/admin/wfwp-wc-order-status-options.php:167
-#: includes/admin/wfwp-wc-order-status-options.php:215
-#: includes/admin/wfwp-wc-order-status-options.php:248
+#: includes/admin/wfwp-wc-order-status-options.php:216
+#: includes/admin/wfwp-wc-order-status-options.php:249
 msgid "No"
 msgstr ""
 
@@ -141,8 +141,8 @@ msgstr ""
 #: includes/admin/wfwp-wc-order-status-options.php:148
 #: includes/admin/wfwp-wc-order-status-options.php:158
 #: includes/admin/wfwp-wc-order-status-options.php:168
-#: includes/admin/wfwp-wc-order-status-options.php:216
-#: includes/admin/wfwp-wc-order-status-options.php:249
+#: includes/admin/wfwp-wc-order-status-options.php:217
+#: includes/admin/wfwp-wc-order-status-options.php:250
 msgid "Yes"
 msgstr ""
 
@@ -212,83 +212,83 @@ msgid "Placeholders in <strong>subject</strong>, <strong>heading</strong> and <s
 msgstr ""
 
 #. Translators: %s: Placeholder name.
-#: includes/admin/wfwp-wc-order-status-options.php:200
+#: includes/admin/wfwp-wc-order-status-options.php:201
 msgid "Additional placeholder in <strong>heading</strong> and <strong>content</strong>: %s"
 msgstr ""
 
 #. Translators: %s: Placeholder list.
-#: includes/admin/wfwp-wc-order-status-options.php:205
+#: includes/admin/wfwp-wc-order-status-options.php:206
 msgid "Placeholders in email <strong>address</strong>: %s"
 msgstr ""
 
-#: includes/admin/wfwp-wc-order-status-options.php:210
+#: includes/admin/wfwp-wc-order-status-options.php:211
 msgid "Send email on status change"
 msgstr ""
 
-#: includes/admin/wfwp-wc-order-status-options.php:221
+#: includes/admin/wfwp-wc-order-status-options.php:222
 msgid "Email address"
 msgstr ""
 
-#: includes/admin/wfwp-wc-order-status-options.php:229
+#: includes/admin/wfwp-wc-order-status-options.php:230
 msgid "Subject"
 msgstr ""
 
 #. Translators: %1$s: Site Title placeholder, %2$s: Order Number placeholder, %3$s: Status Title placeholder, %4$s: Order Date placeholder.
-#: includes/admin/wfwp-wc-order-status-options.php:235
+#: includes/admin/wfwp-wc-order-status-options.php:236
 #: includes/classes/class-wfwp-wc-shop-order-status.php:101
 msgid "%1$s Order %2$s status changed to %3$s - %4$s"
 msgstr ""
 
-#: includes/admin/wfwp-wc-order-status-options.php:243
+#: includes/admin/wfwp-wc-order-status-options.php:244
 msgid "Wrap in WooCommerce template"
 msgstr ""
 
-#: includes/admin/wfwp-wc-order-status-options.php:253
+#: includes/admin/wfwp-wc-order-status-options.php:254
 msgid "WooCommerce template heading"
 msgstr ""
 
 #. Translators: %s: Status Title placeholder.
-#: includes/admin/wfwp-wc-order-status-options.php:259
+#: includes/admin/wfwp-wc-order-status-options.php:260
 #: includes/classes/class-wfwp-wc-shop-order-status.php:109
 msgid "Order status changed to %s"
 msgstr ""
 
-#: includes/admin/wfwp-wc-order-status-options.php:264
+#: includes/admin/wfwp-wc-order-status-options.php:265
 msgid "Content"
 msgstr ""
 
 #. Translators: %1$s: Order Number placeholder, %2$s: Status Title placeholder, %3$s: Status Title placeholder.
-#: includes/admin/wfwp-wc-order-status-options.php:270
+#: includes/admin/wfwp-wc-order-status-options.php:271
 #: includes/classes/class-wfwp-wc-shop-order-status.php:114
 msgid "Order %1$s status changed from %2$s to %3$s."
 msgstr ""
 
-#: includes/admin/wfwp-wc-order-status-options.php:279
+#: includes/admin/wfwp-wc-order-status-options.php:280
 msgid "Admin Note"
 msgstr ""
 
-#: includes/admin/wfwp-wc-order-status-options.php:280
+#: includes/admin/wfwp-wc-order-status-options.php:281
 msgid "Admin note is visible on current page only."
 msgstr ""
 
-#: includes/admin/wfwp-wc-order-status-options.php:292
+#: includes/admin/wfwp-wc-order-status-options.php:293
 msgid "Actions"
 msgstr ""
 
-#: includes/admin/wfwp-wc-order-status-options.php:301
-#: includes/admin/wfwp-wc-order-status-options.php:312
+#: includes/admin/wfwp-wc-order-status-options.php:302
+#: includes/admin/wfwp-wc-order-status-options.php:313
 msgid "Are you sure?"
 msgstr ""
 
-#: includes/admin/wfwp-wc-order-status-options.php:303
+#: includes/admin/wfwp-wc-order-status-options.php:304
 msgid "Delete status"
 msgstr ""
 
-#: includes/admin/wfwp-wc-order-status-options.php:314
+#: includes/admin/wfwp-wc-order-status-options.php:315
 msgid "Delete status with fallback"
 msgstr ""
 
-#: includes/admin/wfwp-wc-order-status-options.php:321
+#: includes/admin/wfwp-wc-order-status-options.php:322
 msgid "View orders"
 msgstr ""
 
