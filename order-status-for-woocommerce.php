@@ -1,46 +1,71 @@
 <?php
-/*
-Plugin Name: Additional Custom Order Status for WooCommerce
-Plugin URI: https://wpfactory.com/item/order-status-for-woocommerce/
-Description: Manage order statuses in WooCommerce. Beautifully.
-Version: 1.9.4
-Author: WPFactory
-Author URI: https://wpfactory.com
-Requires at least: 4.7
-Text Domain: order-status-for-woocommerce
-Domain Path: /langs
-WC tested up to: 10.7
-Requires Plugins: woocommerce
-License: GNU General Public License v3.0
-License URI: http://www.gnu.org/licenses/gpl-3.0.html
-*/
+/**
+ * Plugin Name: Additional Custom Order Status for WooCommerce
+ * Plugin URI: https://wpfactory.com/item/order-status-for-woocommerce/
+ * Description: Manage order statuses in WooCommerce. Beautifully.
+ * Version: 2.0.0
+ * Author: WPFactory
+ * Author URI: https://wpfactory.com
+ * Requires at least: 4.7
+ * Text Domain: order-status-for-woocommerce
+ * Domain Path: /langs
+ * WC tested up to: 11.0
+ * Requires Plugins: woocommerce
+ * License: GNU General Public License v3.0
+ * License URI: http://www.gnu.org/licenses/gpl-3.0.html
+ *
+ * @package WPFactory\WC_Order_Status
+ */
 
 defined( 'ABSPATH' ) || exit;
 
 if ( 'order-status-for-woocommerce.php' === basename( __FILE__ ) ) {
-	/**
-	 * Check if Pro plugin version is activated.
-	 *
-	 * @version 1.4.3
-	 * @since   1.1.0
-	 */
-	$plugin = 'order-status-for-woocommerce-pro/order-status-for-woocommerce-pro.php';
-	if (
-		in_array( $plugin, (array) get_option( 'active_plugins', array() ), true ) ||
-		(
-			is_multisite() &&
-			array_key_exists( $plugin, (array) get_site_option( 'active_sitewide_plugins', array() ) )
-		)
-	) {
+	if ( ! function_exists( 'wfwp_wc_order_status_check_pro_activated' ) ) {
+		/**
+		 * Check if Pro plugin version is activated.
+		 *
+		 * @version 2.0.0
+		 * @since   1.1.0
+		 */
+		function wfwp_wc_order_status_check_pro_activated() {
+			$plugin = 'order-status-for-woocommerce-pro/order-status-for-woocommerce-pro.php';
+			return (
+				in_array( $plugin, (array) get_option( 'active_plugins', array() ), true ) ||
+				(
+					is_multisite() &&
+					array_key_exists( $plugin, (array) get_site_option( 'active_sitewide_plugins', array() ) )
+				)
+			);
+		}
+	}
+	if ( wfwp_wc_order_status_check_pro_activated() ) {
 		defined( 'WFWP_WC_ORDER_STATUS_FILE_FREE' ) || define( 'WFWP_WC_ORDER_STATUS_FILE_FREE', __FILE__ );
 		return;
 	}
 }
 
-defined( 'WFWP_WC_ORDER_STATUS_VERSION' ) || define( 'WFWP_WC_ORDER_STATUS_VERSION', '1.9.4' );
+/**
+ * WFWP_WC_ORDER_STATUS_VERSION constant.
+ *
+ * @version 1.0.0
+ * @since   1.0.0
+ */
+defined( 'WFWP_WC_ORDER_STATUS_VERSION' ) || define( 'WFWP_WC_ORDER_STATUS_VERSION', '2.0.0' );
 
+/**
+ * WFWP_WC_ORDER_STATUS_FILE constant.
+ *
+ * @version 1.0.0
+ * @since   1.0.0
+ */
 defined( 'WFWP_WC_ORDER_STATUS_FILE' ) || define( 'WFWP_WC_ORDER_STATUS_FILE', __FILE__ );
 
+/**
+ * Require main plugin class.
+ *
+ * @version 1.0.0
+ * @since   1.0.0
+ */
 require_once plugin_dir_path( __FILE__ ) . 'includes/class-wfwp-wc-order-status.php';
 
 if ( ! function_exists( 'wfwp_wc_order_status' ) ) {
@@ -55,4 +80,10 @@ if ( ! function_exists( 'wfwp_wc_order_status' ) ) {
 	}
 }
 
+/**
+ * Init.
+ *
+ * @version 1.0.0
+ * @since   1.0.0
+ */
 add_action( 'plugins_loaded', 'wfwp_wc_order_status' );

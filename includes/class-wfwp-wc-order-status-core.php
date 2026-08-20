@@ -2,411 +2,451 @@
 /**
  * Order Status for WooCommerce - Core Class
  *
- * @version 1.9.2
+ * @version 2.0.0
  * @since   1.0.0
  *
- * @author  Algoritmika Ltd.
+ * @author WPFactory
+ *
+ * @package WPFactory\WC_Order_Status
  */
 
 defined( 'ABSPATH' ) || exit;
 
 if ( ! class_exists( 'WFWP_WC_Order_Status_Core' ) ) :
 
-class WFWP_WC_Order_Status_Core {
-
 	/**
-	 * statuses.
+	 * WFWP_WC_Order_Status_Core class.
 	 *
-	 * @version 1.4.4
-	 * @since   1.4.4
-	 */
-	public $statuses;
-
-	/**
-	 * download_permissions_statuses.
-	 *
-	 * @version 1.4.4
-	 * @since   1.4.4
-	 */
-	public $download_permissions_statuses;
-
-	/**
-	 * shortcode_data.
-	 *
-	 * @version 1.4.4
-	 * @since   1.4.4
-	 */
-	public $shortcode_data;
-
-	/**
-	 * Constructor.
-	 *
-	 * @version 1.9.2
+	 * @version 2.0.0
 	 * @since   1.0.0
-	 *
-	 * @todo    (dev) customizable filters priorities
-	 * @todo    (dev) add "reset settings" button
-	 * @todo    (feature) [!] reduce/increase stock: `wc_maybe_reduce_stock_levels` and `wc_maybe_increase_stock_levels`
-	 * @todo    (feature) "status rules"
-	 * @todo    (feature) "default order status"
-	 * @todo    (feature) [!] "Processing" and "Complete" action buttons (list & preview) (see `woocommerce_admin_order_actions`)
-	 * @todo    (feature) "delete all custom statuses" and "delete all custom statuses with fallback" button
 	 */
-	function __construct() {
+	class WFWP_WC_Order_Status_Core {
 
-		// WP stuff
-		add_action( 'init', array( $this, 'create_order_status_post_type' ), 9 );
-		add_action( 'init', array( $this, 'register_custom_post_statuses' ), 9 );
+		/**
+		 * Statuses.
+		 *
+		 * @version 1.4.4
+		 * @since   1.4.4
+		 *
+		 * @var array
+		 */
+		public $statuses;
 
-		// Main WC filter & Sorting
-		add_filter( 'wc_order_statuses', array( $this, 'add_custom_order_statuses' ), ( PHP_INT_MAX - 1 ) );
-		add_filter( 'wc_order_statuses', array( $this, 'sort_order_statuses' ), PHP_INT_MAX );
+		/**
+		 * Download permissions statuses.
+		 *
+		 * @version 1.4.4
+		 * @since   1.4.4
+		 *
+		 * @var array
+		 */
+		public $download_permissions_statuses;
 
-		// Styling
-		add_action( 'admin_head', array( $this, 'add_custom_status_column_css' ), 10 );
+		/**
+		 * Shortcode data.
+		 *
+		 * @version 1.4.4
+		 * @since   1.4.4
+		 *
+		 * @var array
+		 */
+		public $shortcode_data;
 
-		// Bulk actions & Reports
-		add_filter( 'bulk_actions-edit-shop_order', array( $this, 'bulk_actions' ), ( PHP_INT_MAX - 1 ) );
-		add_filter( 'bulk_actions-woocommerce_page_wc-orders', array( $this, 'bulk_actions' ), ( PHP_INT_MAX - 1 ) );
-		add_filter( 'bulk_actions-edit-shop_order', array( $this, 'sort_bulk_actions' ), PHP_INT_MAX );
-		add_filter( 'bulk_actions-woocommerce_page_wc-orders', array( $this, 'sort_bulk_actions' ), PHP_INT_MAX );
-		add_filter( 'woocommerce_reports_order_statuses', array( $this, 'reports' ), PHP_INT_MAX );
+		/**
+		 * Constructor.
+		 *
+		 * @version 2.0.0
+		 * @since   1.0.0
+		 *
+		 * @todo (dev) customizable filters priorities
+		 * @todo (dev) add "reset settings" button
+		 * @todo (feature) [!] reduce/increase stock: `wc_maybe_reduce_stock_levels` and `wc_maybe_increase_stock_levels`
+		 * @todo (feature) "status rules"
+		 * @todo (feature) "default order status"
+		 * @todo (feature) [!] "Processing" and "Complete" action buttons (list & preview) (see `woocommerce_admin_order_actions`)
+		 * @todo (feature) "delete all custom statuses" and "delete all custom statuses with fallback" button
+		 */
+		public function __construct() {
 
-		// Action buttons
-		add_filter( 'woocommerce_admin_order_actions', array( $this, 'order_list_actions' ), ( PHP_INT_MAX - 1 ), 2 );
-		add_filter( 'woocommerce_admin_order_actions', array( $this, 'sort_order_list_actions' ), PHP_INT_MAX, 2 );
-		add_action( 'admin_head', array( $this, 'add_custom_status_actions_css' ), 10 );
-		add_filter( 'woocommerce_admin_order_preview_actions', array( $this, 'order_preview_actions' ), ( PHP_INT_MAX - 1 ), 2 );
-		add_filter( 'woocommerce_admin_order_preview_actions', array( $this, 'sort_order_preview_actions' ), PHP_INT_MAX, 2 );
+			// WP stuff.
+			add_action( 'init', array( $this, 'create_order_status_post_type' ), 9 );
+			add_action( 'init', array( $this, 'register_custom_post_statuses' ), 9 );
 
-		// Action buttons: Processing & Complete
-		add_filter( 'woocommerce_admin_order_actions', array( $this, 'admin_order_actions_processing' ), 10, 2 );
-		add_filter( 'woocommerce_admin_order_actions', array( $this, 'admin_order_actions_complete' ), 10, 2 );
+			// Main WC filter & Sorting.
+			add_filter( 'wc_order_statuses', array( $this, 'add_custom_order_statuses' ), ( PHP_INT_MAX - 1 ) );
+			add_filter( 'wc_order_statuses', array( $this, 'sort_order_statuses' ), PHP_INT_MAX );
 
-		// Order
-		add_filter( 'wc_order_is_editable', array( $this, 'order_editable' ), PHP_INT_MAX, 2 );
-		add_filter( 'woocommerce_order_is_paid_statuses', array( $this, 'order_paid' ), PHP_INT_MAX );
-		add_filter( 'woocommerce_valid_order_statuses_for_payment', array( $this, 'order_valid_for_payment' ), PHP_INT_MAX );
-		add_action( 'init', array( $this, 'add_order_date_paid_hooks' ) );
-		add_action( 'init', array( $this, 'add_downloadable_product_permissions_hooks' ) );
-		add_action( 'woocommerce_order_is_download_permitted', array( $this, 'order_is_download_permitted' ), 10, 2 );
+			// Bulk actions & Reports.
+			add_filter( 'bulk_actions-edit-shop_order', array( $this, 'bulk_actions' ), ( PHP_INT_MAX - 1 ) );
+			add_filter( 'bulk_actions-woocommerce_page_wc-orders', array( $this, 'bulk_actions' ), ( PHP_INT_MAX - 1 ) );
+			add_filter( 'bulk_actions-edit-shop_order', array( $this, 'sort_bulk_actions' ), PHP_INT_MAX );
+			add_filter( 'bulk_actions-woocommerce_page_wc-orders', array( $this, 'sort_bulk_actions' ), PHP_INT_MAX );
+			add_filter( 'woocommerce_reports_order_statuses', array( $this, 'reports' ), PHP_INT_MAX );
 
-		// Shortcodes
-		add_shortcode( 'alg_wc_os_order_meta', array( $this, 'order_meta' ) );
+			// Action buttons.
+			add_filter( 'woocommerce_admin_order_actions', array( $this, 'order_list_actions' ), ( PHP_INT_MAX - 1 ), 2 );
+			add_filter( 'woocommerce_admin_order_actions', array( $this, 'sort_order_list_actions' ), PHP_INT_MAX );
+			add_filter( 'woocommerce_admin_order_preview_actions', array( $this, 'order_preview_actions' ), ( PHP_INT_MAX - 1 ), 2 );
+			add_filter( 'woocommerce_admin_order_preview_actions', array( $this, 'sort_order_preview_actions' ), PHP_INT_MAX );
 
-		// "Core loaded" action
-		do_action( 'wfwp_wc_order_status_core_loaded', $this );
+			// Action buttons: Processing & Complete.
+			add_filter( 'woocommerce_admin_order_actions', array( $this, 'admin_order_actions_processing' ), 10, 2 );
+			add_filter( 'woocommerce_admin_order_actions', array( $this, 'admin_order_actions_complete' ), 10, 2 );
 
-	}
+			// Order.
+			add_filter( 'wc_order_is_editable', array( $this, 'order_editable' ), PHP_INT_MAX, 2 );
+			add_filter( 'woocommerce_order_is_paid_statuses', array( $this, 'order_paid' ), PHP_INT_MAX );
+			add_filter( 'woocommerce_valid_order_statuses_for_payment', array( $this, 'order_valid_for_payment' ), PHP_INT_MAX );
+			add_action( 'init', array( $this, 'add_order_date_paid_hooks' ) );
+			add_action( 'init', array( $this, 'add_downloadable_product_permissions_hooks' ) );
+			add_action( 'woocommerce_order_is_download_permitted', array( $this, 'order_is_download_permitted' ), 10, 2 );
 
-	/**
-	 * admin_order_actions_processing.
-	 *
-	 * @version 1.9.1
-	 * @since   1.9.1
-	 */
-	function admin_order_actions_processing( $actions, $order ) {
-		if (
-			isset( $actions['processing'] ) ||
-			'yes' !== get_option( 'wfwp_wc_order_status_admin_order_actions_processing_override', 'no' )
-		) {
+			// Shortcodes.
+			add_shortcode( 'alg_wc_os_order_meta', array( $this, 'order_meta' ) );
+
+			// "Core loaded" action.
+			do_action( 'wfwp_wc_order_status_core_loaded', $this );
+		}
+
+		/**
+		 * Admin order actions processing.
+		 *
+		 * @version 2.0.0
+		 * @since   1.9.1
+		 *
+		 * @param array    $actions Actions.
+		 * @param WC_Order $order   Order.
+		 */
+		public function admin_order_actions_processing( $actions, $order ) {
+			if (
+				isset( $actions['processing'] ) ||
+				'yes' !== get_option( 'wfwp_wc_order_status_admin_order_actions_processing_override', 'no' )
+			) {
+				return $actions;
+			}
+			$statuses = get_option( 'wfwp_wc_order_status_admin_order_actions_processing_has_status', array( 'pending', 'on-hold' ) );
+			if ( $order->has_status( $statuses ) ) {
+				$actions['processing'] = array(
+					'url'    => wp_nonce_url( admin_url( 'admin-ajax.php?action=woocommerce_mark_order_status&status=processing&order_id=' . $order->get_id() ), 'woocommerce-mark-order-status' ),
+					'name'   => __( 'Processing', 'order-status-for-woocommerce' ),
+					'action' => 'processing',
+				);
+			}
 			return $actions;
 		}
-		$statuses = get_option( 'wfwp_wc_order_status_admin_order_actions_processing_has_status', array( 'pending', 'on-hold' ) );
-		if ( $order->has_status( $statuses ) ) {
-			$actions['processing'] = array(
-				'url'    => wp_nonce_url( admin_url( 'admin-ajax.php?action=woocommerce_mark_order_status&status=processing&order_id=' . $order->get_id() ), 'woocommerce-mark-order-status' ),
-				'name'   => __( 'Processing', 'woocommerce' ), // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch
-				'action' => 'processing',
-			);
-		}
-		return $actions;
-	}
 
-	/**
-	 * admin_order_actions_complete.
-	 *
-	 * @version 1.9.1
-	 * @since   1.9.1
-	 */
-	function admin_order_actions_complete( $actions, $order ) {
-		if (
-			isset( $actions['complete'] ) ||
-			'yes' !== get_option( 'wfwp_wc_order_status_admin_order_actions_complete_override', 'no' )
-		) {
+		/**
+		 * Admin order actions complete.
+		 *
+		 * @version 2.0.0
+		 * @since   1.9.1
+		 *
+		 * @param array    $actions Actions.
+		 * @param WC_Order $order   Order.
+		 */
+		public function admin_order_actions_complete( $actions, $order ) {
+			if (
+				isset( $actions['complete'] ) ||
+				'yes' !== get_option( 'wfwp_wc_order_status_admin_order_actions_complete_override', 'no' )
+			) {
+				return $actions;
+			}
+			$statuses = get_option( 'wfwp_wc_order_status_admin_order_actions_complete_has_status', array( 'pending', 'on-hold', 'processing' ) );
+			if ( $order->has_status( $statuses ) ) {
+				$actions['complete'] = array(
+					'url'    => wp_nonce_url( admin_url( 'admin-ajax.php?action=woocommerce_mark_order_status&status=completed&order_id=' . $order->get_id() ), 'woocommerce-mark-order-status' ),
+					'name'   => __( 'Complete', 'order-status-for-woocommerce' ),
+					'action' => 'complete',
+				);
+			}
 			return $actions;
 		}
-		$statuses = get_option( 'wfwp_wc_order_status_admin_order_actions_complete_has_status', array( 'pending', 'on-hold', 'processing' ) );
-		if ( $order->has_status( $statuses ) ) {
-			$actions['complete'] = array(
-				'url'    => wp_nonce_url( admin_url( 'admin-ajax.php?action=woocommerce_mark_order_status&status=completed&order_id=' . $order->get_id() ), 'woocommerce-mark-order-status' ),
-				'name'   => __( 'Complete', 'woocommerce' ), // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch
-				'action' => 'complete',
-			);
-		}
-		return $actions;
-	}
 
-	/**
-	 * get_download_permissions_statuses.
-	 *
-	 * @version 1.4.4
-	 * @since   1.4.4
-	 *
-	 * @todo    (dev) use `array_filter()`?
-	 */
-	function get_download_permissions_statuses() {
-		if ( isset( $this->download_permissions_statuses ) ) {
+		/**
+		 * Get download permissions statuses.
+		 *
+		 * @version 1.4.4
+		 * @since   1.4.4
+		 *
+		 * @todo (dev) use `array_filter()`?
+		 */
+		public function get_download_permissions_statuses() {
+			if ( isset( $this->download_permissions_statuses ) ) {
+				return $this->download_permissions_statuses;
+			}
+			$this->download_permissions_statuses = array();
+			foreach ( $this->get_statuses() as $status ) {
+				if ( $status->is_override() ) {
+					continue;
+				}
+				if ( $status->do_download_permissions ) {
+					$this->download_permissions_statuses[] = $status;
+				}
+			}
 			return $this->download_permissions_statuses;
 		}
-		$this->download_permissions_statuses = array();
-		foreach ( $this->get_statuses() as $status ) {
-			if ( $status->is_override() ) {
-				continue;
-			}
-			if ( $status->do_download_permissions ) {
-				$this->download_permissions_statuses[] = $status;
-			}
-		}
-		return $this->download_permissions_statuses;
-	}
 
-	/**
-	 * order_is_download_permitted.
-	 *
-	 * @version 1.4.4
-	 * @since   1.4.4
-	 */
-	function order_is_download_permitted( $is_download_permitted, $order ) {
-		return (
-			(
-				! $is_download_permitted &&
-				( $statuses = wp_list_pluck( $this->get_download_permissions_statuses(), 'slug' ) ) &&
-				! empty( $statuses )
-			) ?
-			$order->has_status( $statuses ) :
-			$is_download_permitted
-		);
-	}
-
-	/**
-	 * add_downloadable_product_permissions_hooks.
-	 *
-	 * @version 1.4.4
-	 * @since   1.4.4
-	 */
-	function add_downloadable_product_permissions_hooks() {
-		foreach ( $this->get_download_permissions_statuses() as $status ) {
-			add_action(
-				'woocommerce_order_status_' . $status->slug,
-				'wc_downloadable_product_permissions'
+		/**
+		 * Order is download permitted.
+		 *
+		 * @version 2.0.0
+		 * @since   1.4.4
+		 *
+		 * @param bool     $is_download_permitted Is download permitted.
+		 * @param WC_Order $order                 Order.
+		 */
+		public function order_is_download_permitted( $is_download_permitted, $order ) {
+			if ( $is_download_permitted ) {
+				return $is_download_permitted;
+			}
+			$statuses = wp_list_pluck( $this->get_download_permissions_statuses(), 'slug' );
+			return (
+				! empty( $statuses ) ?
+				$order->has_status( $statuses ) :
+				$is_download_permitted
 			);
 		}
-	}
 
-	/**
-	 * add_order_date_paid_hooks.
-	 *
-	 * @version 1.4.0
-	 * @since   1.4.0
-	 */
-	function add_order_date_paid_hooks() {
-		foreach ( $this->get_statuses() as $status ) {
-			if ( $status->is_override() ) {
-				continue;
-			}
-			if ( $status->do_set_order_date_paid ) {
+		/**
+		 * Add downloadable product permissions hooks.
+		 *
+		 * @version 1.4.4
+		 * @since   1.4.4
+		 */
+		public function add_downloadable_product_permissions_hooks() {
+			foreach ( $this->get_download_permissions_statuses() as $status ) {
 				add_action(
 					'woocommerce_order_status_' . $status->slug,
-					array( $this, 'maybe_set_order_date_paid' ),
-					10,
-					2
+					'wc_downloadable_product_permissions'
 				);
 			}
 		}
-	}
 
-	/**
-	 * maybe_set_order_date_paid.
-	 *
-	 * @version 1.4.0
-	 * @since   1.4.0
-	 */
-	function maybe_set_order_date_paid( $order_id, $order ) {
-		if ( ! $order->get_date_paid( 'edit' ) ) {
-			$order->set_date_paid( time() );
-			$order->save();
-		}
-	}
-
-	/**
-	 * sort_order_statuses.
-	 *
-	 * @version 1.9.0
-	 * @since   1.4.0
-	 */
-	function sort_order_statuses( $order_statuses ) {
-		return $this->get_sorted_data(
-			$order_statuses,
-			'order_statuses',
-			'wfwp_wc_order_status_sorting'
-		);
-	}
-
-	/**
-	 * sort_order_list_actions.
-	 *
-	 * @version 1.9.0
-	 * @since   1.9.0
-	 */
-	function sort_order_list_actions( $actions, $order ) {
-		return $this->get_sorted_data(
-			$actions,
-			'order_actions',
-			'wfwp_wc_order_status_sorting_order_list_actions'
-		);
-	}
-
-	/**
-	 * sort_order_preview_actions.
-	 *
-	 * @version 1.9.0
-	 * @since   1.9.0
-	 */
-	function sort_order_preview_actions( $actions, $order ) {
-		if ( isset( $actions['status']['actions'] ) ) {
-			$actions['status']['actions'] = $this->get_sorted_data(
-				$actions['status']['actions'],
-				'order_actions',
-				'wfwp_wc_order_status_sorting_order_preview_actions'
-			);
-		}
-		return $actions;
-	}
-
-	/**
-	 * sort_bulk_actions.
-	 *
-	 * @version 1.9.0
-	 * @since   1.9.0
-	 */
-	function sort_bulk_actions( $bulk_actions ) {
-		return $this->get_sorted_data(
-			$bulk_actions,
-			'bulk_actions',
-			'wfwp_wc_order_status_sorting_bulk_actions'
-		);
-	}
-
-	/**
-	 * get_sorted_data.
-	 *
-	 * @version 1.9.0
-	 * @since   1.9.0
-	 *
-	 * @todo    (v1.9.0) use actions (vs. statuses) for order list, preview, bulk actions?
-	 */
-	function get_sorted_data( $data, $data_type, $option ) {
-
-		// Empty data
-		if ( empty( $data ) ) {
-			return $data;
-		}
-
-		// Get sorting option
-		$sorting = get_option( $option, 'default' );
-
-		// Default sorting
-		if ( 'default' === $sorting ) {
-			return $data;
-		}
-
-		// Prepare "Bulk actions" data
-		if ( 'bulk_actions' === $data_type ) {
-			$non_status_data = array();
-			foreach ( $data as $key => $value ) {
-				if ( 'mark_' !== substr( $key, 0, 5 ) ) {
-					$non_status_data[ $key ] = $value;
-					unset( $data[ $key ] );
+		/**
+		 * Add order date paid hooks.
+		 *
+		 * @version 1.4.0
+		 * @since   1.4.0
+		 */
+		public function add_order_date_paid_hooks() {
+			foreach ( $this->get_statuses() as $status ) {
+				if ( $status->is_override() ) {
+					continue;
+				}
+				if ( $status->do_set_order_date_paid ) {
+					add_action(
+						'woocommerce_order_status_' . $status->slug,
+						array( $this, 'maybe_set_order_date_paid' ),
+						10,
+						2
+					);
 				}
 			}
 		}
 
-		// Sort
-		switch ( $sorting ) {
+		/**
+		 * Maybe set order date paid.
+		 *
+		 * @version 1.4.0
+		 * @since   1.4.0
+		 *
+		 * @param int      $order_id The order ID.
+		 * @param WC_Order $order    Order.
+		 */
+		public function maybe_set_order_date_paid( $order_id, $order ) {
+			if ( ! $order->get_date_paid( 'edit' ) ) {
+				$order->set_date_paid( time() );
+				$order->save();
+			}
+		}
 
-			// By title (ascending)
-			case 'title_asc':
-				if ( 'order_actions' === $data_type ) {
-					uasort(
-						$data,
-						function ( $a, $b ) {
-							$a = strtolower( $a['name'] );
-							$b = strtolower( $b['name'] );
-							return ( $a === $b ? 0 : ( $a < $b ? -1 : 1 ) );
-						}
-					);
-				} else { // 'order_statuses', 'bulk_actions'
-					natcasesort( $data );
+		/**
+		 * Sort order statuses.
+		 *
+		 * @version 1.9.0
+		 * @since   1.4.0
+		 *
+		 * @param array $order_statuses Order statuses.
+		 */
+		public function sort_order_statuses( $order_statuses ) {
+			return $this->get_sorted_data(
+				$order_statuses,
+				'order_statuses',
+				'wfwp_wc_order_status_sorting'
+			);
+		}
+
+		/**
+		 * Sort order list actions.
+		 *
+		 * @version 2.0.0
+		 * @since   1.9.0
+		 *
+		 * @param array $actions Actions.
+		 */
+		public function sort_order_list_actions( $actions ) {
+			return $this->get_sorted_data(
+				$actions,
+				'order_actions',
+				'wfwp_wc_order_status_sorting_order_list_actions'
+			);
+		}
+
+		/**
+		 * Sort order preview actions.
+		 *
+		 * @version 2.0.0
+		 * @since   1.9.0
+		 *
+		 * @param array $actions Actions.
+		 */
+		public function sort_order_preview_actions( $actions ) {
+			if ( isset( $actions['status']['actions'] ) ) {
+				$actions['status']['actions'] = $this->get_sorted_data(
+					$actions['status']['actions'],
+					'order_actions',
+					'wfwp_wc_order_status_sorting_order_preview_actions'
+				);
+			}
+			return $actions;
+		}
+
+		/**
+		 * Sort bulk actions.
+		 *
+		 * @version 1.9.0
+		 * @since   1.9.0
+		 *
+		 * @param array $bulk_actions Bulk actions.
+		 */
+		public function sort_bulk_actions( $bulk_actions ) {
+			return $this->get_sorted_data(
+				$bulk_actions,
+				'bulk_actions',
+				'wfwp_wc_order_status_sorting_bulk_actions'
+			);
+		}
+
+		/**
+		 * Get sorted data.
+		 *
+		 * @version 1.9.0
+		 * @since   1.9.0
+		 *
+		 * @param array  $data      Data.
+		 * @param string $data_type Data type.
+		 * @param string $option    Option.
+		 *
+		 * @todo (v1.9.0) use actions (vs. statuses) for order list, preview, bulk actions?
+		 */
+		public function get_sorted_data( $data, $data_type, $option ) {
+
+			// Empty data.
+			if ( empty( $data ) ) {
+				return $data;
+			}
+
+			// Get sorting option.
+			$sorting = get_option( $option, 'default' );
+
+			// Default sorting.
+			if ( 'default' === $sorting ) {
+				return $data;
+			}
+
+			// Prepare "Bulk actions" data.
+			if ( 'bulk_actions' === $data_type ) {
+				$non_status_data = array();
+				foreach ( $data as $key => $value ) {
+					if ( 'mark_' !== substr( $key, 0, 5 ) ) {
+						$non_status_data[ $key ] = $value;
+						unset( $data[ $key ] );
+					}
 				}
-				break;
+			}
 
-			// Custom sorting
-			case 'custom':
-				$_data = array();
-				$sorted_data = get_option( 'wfwp_wc_order_status_sorting_custom', '' );
-				$sorted_data = array_map( 'trim', explode( PHP_EOL, $sorted_data ) );
-				foreach ( $sorted_data as $status ) {
+			// Sort.
+			switch ( $sorting ) {
+
+				// By title (ascending).
+				case 'title_asc':
 					if ( 'order_actions' === $data_type ) {
-						$status = substr( $status, 3 );
-						if ( 'completed' === $status ) {
-							$status = 'complete';
+						uasort(
+							$data,
+							function ( $a, $b ) {
+								$a = strtolower( $a['name'] );
+								$b = strtolower( $b['name'] );
+								return ( $a === $b ? 0 : ( $a < $b ? -1 : 1 ) );
+							}
+						);
+					} else { // i.e., 'order_statuses', 'bulk_actions'.
+						natcasesort( $data );
+					}
+					break;
+
+				// Custom sorting.
+				case 'custom':
+					$_data       = array();
+					$sorted_data = get_option( 'wfwp_wc_order_status_sorting_custom', '' );
+					$sorted_data = array_map( 'trim', explode( PHP_EOL, $sorted_data ) );
+					foreach ( $sorted_data as $status ) {
+						if ( 'order_actions' === $data_type ) {
+							$status = substr( $status, 3 );
+							if ( 'completed' === $status ) {
+								$status = 'complete';
+							}
+						} elseif ( 'bulk_actions' === $data_type ) {
+							$status = 'mark_' . substr( $status, 3 );
 						}
-					} elseif ( 'bulk_actions' === $data_type ) {
-						$status = 'mark_' . substr( $status, 3 );
+						$status = apply_filters( 'wfwp_wc_order_status_custom_sorting_status', $status, $data_type );
+						if ( isset( $data[ $status ] ) ) {
+							$_data[ $status ] = $data[ $status ];
+							unset( $data[ $status ] );
+						}
 					}
-					$status = apply_filters( 'wfwp_wc_order_status_custom_sorting_status', $status, $data_type );
-					if ( isset( $data[ $status ] ) ) {
-						$_data[ $status ] = $data[ $status ];
-						unset( $data[ $status ] );
-					}
-				}
-				$data = array_merge( $_data, $data );
-				break;
+					$data = array_merge( $_data, $data );
+					break;
 
+			}
+
+			// Prepare "Bulk actions" data.
+			if ( 'bulk_actions' === $data_type ) {
+				$data = $non_status_data + $data;
+			}
+
+			// Result.
+			return $data;
 		}
 
-		// Prepare "Bulk actions" data
-		if ( 'bulk_actions' === $data_type ) {
-			$data = $non_status_data + $data;
-		}
+		/**
+		 * Order meta.
+		 *
+		 * @version 2.0.0
+		 * @since   1.1.0
+		 *
+		 * @param array $atts Attributes.
+		 *
+		 * @todo (v1.8.0) add `allowed_meta_keys` option/filter?
+		 * @todo (dev) move all shortcodes to a separate file/class
+		 * @todo (feature) add more shortcodes?
+		 */
+		public function order_meta( $atts ) {
+			if (
+				empty( $this->shortcode_data['order_id'] ) ||
+				! isset( $atts['key'] )
+			) {
+				return '';
+			}
 
-		// Result
-		return $data;
+			$order = wc_get_order( $this->shortcode_data['order_id'] );
+			if ( ! $order ) {
+				return '';
+			}
 
-	}
-
-	/**
-	 * order_meta.
-	 *
-	 * @version 1.4.0
-	 * @since   1.1.0
-	 *
-	 * @todo    (v1.8.0) add `allowed_meta_keys` option/filter?
-	 * @todo    (dev) move all shortcodes to a separate file/class
-	 * @todo    (feature) add more shortcodes?
-	 */
-	function order_meta( $atts, $content = '' ) {
-		if (
-			! empty( $this->shortcode_data['order_id'] ) &&
-			isset( $atts['key'] ) &&
-			( $order = wc_get_order( $this->shortcode_data['order_id'] ) )
-		) {
-
-			// Meta
+			// Meta.
 			$meta = $order->get_meta( $atts['key'] );
 
-			// Sub-key(s), e.g., `$meta['x']['y']`
+			// Sub-key(s), e.g., `$meta['x']['y']`.
 			if ( isset( $atts['sub_key'] ) ) {
 				$sub_keys = explode( ',', $atts['sub_key'] );
 				foreach ( $sub_keys as $sub_key ) {
@@ -419,370 +459,359 @@ class WFWP_WC_Order_Status_Core {
 				}
 			}
 
-			// Result
+			// Result.
 			return $this->output_shortcode( $meta, $atts );
-
 		}
-		return '';
-	}
 
-	/**
-	 * output_shortcode.
-	 *
-	 * @version 1.8.0
-	 * @since   1.1.0
-	 *
-	 * @todo    (feature) [!] more common atts, e.g., add, multiply, format, find/replace, strip_tags, any_func, etc.
-	 */
-	function output_shortcode( $value, $atts ) {
-		return (
-			'' !== $value ?
-			(
-				( isset( $atts['before'] ) ? wp_kses_post( $atts['before'] ) : '' ) .
-				$value .
-				( isset( $atts['after'] )  ? wp_kses_post( $atts['after'] )  : '' )
-			) :
-			''
-		);
-	}
-
-	/**
-	 * order_paid.
-	 *
-	 * @version 1.3.0
-	 * @since   1.0.0
-	 */
-	function order_paid( $statuses ) {
-		foreach ( $this->get_statuses() as $status ) {
-			if ( $status->is_override() ) {
-				continue;
-			}
-			if ( $status->is_order_paid ) {
-				$statuses[] = $status->slug;
-			}
+		/**
+		 * Output shortcode.
+		 *
+		 * @version 2.0.0
+		 * @since   1.1.0
+		 *
+		 * @param string $value Value.
+		 * @param array  $atts  Attributes.
+		 *
+		 * @todo (feature) [!] more common atts, e.g., add, multiply, format, find/replace, strip_tags, any_func, etc.
+		 */
+		public function output_shortcode( $value, $atts ) {
+			return (
+				'' !== $value ?
+				(
+					( isset( $atts['before'] ) ? wp_kses_post( $atts['before'] ) : '' ) .
+					wp_kses_post( $value ) .
+					( isset( $atts['after'] ) ? wp_kses_post( $atts['after'] ) : '' )
+				) :
+				''
+			);
 		}
-		return $statuses;
-	}
 
-	/**
-	 * order_valid_for_payment.
-	 *
-	 * @version 1.9.2
-	 * @since   1.9.2
-	 */
-	function order_valid_for_payment( $statuses ) {
-		foreach ( $this->get_statuses() as $status ) {
-			if ( $status->is_override() ) {
-				continue;
+		/**
+		 * Order paid.
+		 *
+		 * @version 1.3.0
+		 * @since   1.0.0
+		 *
+		 * @param array $statuses Statuses.
+		 */
+		public function order_paid( $statuses ) {
+			foreach ( $this->get_statuses() as $status ) {
+				if ( $status->is_override() ) {
+					continue;
+				}
+				if ( $status->is_order_paid ) {
+					$statuses[] = $status->slug;
+				}
 			}
-			if ( $status->is_order_valid_for_payment ) {
-				$statuses[] = $status->slug;
-			}
+			return $statuses;
 		}
-		return $statuses;
-	}
 
-	/**
-	 * order_editable.
-	 *
-	 * @version 1.0.0
-	 * @since   1.0.0
-	 */
-	function order_editable( $is_editable, $order ) {
-		$order_status = $order->get_status();
-		$statuses     = $this->get_statuses();
-		return (
-			! empty( $statuses[ $order_status ] ) ?
-			$statuses[ $order_status ]->is_order_editable :
-			$is_editable
-		);
-	}
-
-	/**
-	 * order_preview_actions.
-	 *
-	 * @version 1.8.0
-	 * @since   1.0.0
-	 */
-	function order_preview_actions( $actions, $order ) {
-		$status_actions = array();
-		foreach ( $this->get_statuses() as $status ) {
-			if ( $status->is_override() ) {
-				continue;
+		/**
+		 * Order valid for payment.
+		 *
+		 * @version 1.9.2
+		 * @since   1.9.2
+		 *
+		 * @param array $statuses Statuses.
+		 */
+		public function order_valid_for_payment( $statuses ) {
+			foreach ( $this->get_statuses() as $status ) {
+				if ( $status->is_override() ) {
+					continue;
+				}
+				if ( $status->is_order_valid_for_payment ) {
+					$statuses[] = $status->slug;
+				}
 			}
-			if ( $status->is_order_preview_action ) {
-				if ( ! $order->has_status( array( $status->slug ) ) ) {
-					$status_actions[ $status->slug ] = array(
-						'url'    => $this->get_status_action_url( $status->slug, $order->get_id() ),
-						'name'   => $status->title,
-						'title'  => sprintf(
-							/* Translators: %s: Status title. */
-							__( 'Change order status to %s', 'order-status-for-woocommerce' ),
-							$status->title
+			return $statuses;
+		}
+
+		/**
+		 * Order editable.
+		 *
+		 * @version 1.0.0
+		 * @since   1.0.0
+		 *
+		 * @param bool     $is_editable Is editable.
+		 * @param WC_Order $order       Order.
+		 */
+		public function order_editable( $is_editable, $order ) {
+			$order_status = $order->get_status();
+			$statuses     = $this->get_statuses();
+			return (
+				! empty( $statuses[ $order_status ] ) ?
+				$statuses[ $order_status ]->is_order_editable :
+				$is_editable
+			);
+		}
+
+		/**
+		 * Order preview actions.
+		 *
+		 * @version 1.8.0
+		 * @since   1.0.0
+		 *
+		 * @param array    $actions Actions.
+		 * @param WC_Order $order   Order.
+		 */
+		public function order_preview_actions( $actions, $order ) {
+			$status_actions = array();
+			foreach ( $this->get_statuses() as $status ) {
+				if ( $status->is_override() ) {
+					continue;
+				}
+				if ( $status->is_order_preview_action ) {
+					if ( ! $order->has_status( array( $status->slug ) ) ) {
+						$status_actions[ $status->slug ] = array(
+							'url'    => $this->get_status_action_url( $status->slug, $order->get_id() ),
+							'name'   => $status->title,
+							'title'  => sprintf(
+								/* Translators: %s: Status title. */
+								__( 'Change order status to %s', 'order-status-for-woocommerce' ),
+								$status->title
+							),
+							'action' => $status->slug,
+						);
+					}
+				}
+			}
+			if ( $status_actions ) {
+				if (
+					! empty( $actions['status']['actions'] ) &&
+					is_array( $actions['status']['actions'] )
+				) {
+					$actions['status']['actions'] = array_merge(
+						$actions['status']['actions'],
+						$status_actions
+					);
+				} else {
+					$actions['status'] = array(
+						'group'   => __( 'Change status: ', 'order-status-for-woocommerce' ),
+						'actions' => $status_actions,
+					);
+				}
+			}
+			return $actions;
+		}
+
+		/**
+		 * Order list actions.
+		 *
+		 * @version 1.3.0
+		 * @since   1.0.0
+		 *
+		 * @param array    $actions Actions.
+		 * @param WC_Order $order   Order.
+		 */
+		public function order_list_actions( $actions, $order ) {
+			foreach ( $this->get_statuses() as $status ) {
+				if ( $status->is_override() ) {
+					continue;
+				}
+				if ( $status->is_order_list_action ) {
+					if ( ! $order->has_status( array( $status->slug ) ) ) {
+						$actions[ $status->slug ] = array(
+							'url'    => $this->get_status_action_url( $status->slug, $order->get_id() ),
+							'name'   => $status->title,
+							'action' => 'view ' . $status->slug,
+						);
+					}
+				}
+			}
+			return $actions;
+		}
+
+		/**
+		 * Reports.
+		 *
+		 * @version 1.3.0
+		 * @since   1.0.0
+		 *
+		 * @param array $statuses Statuses.
+		 */
+		public function reports( $statuses ) {
+			foreach ( $this->get_statuses() as $status ) {
+				if ( $status->is_override() ) {
+					continue;
+				}
+				if ( $status->is_report ) {
+					$statuses[] = $status->slug;
+				}
+			}
+			return $statuses;
+		}
+
+		/**
+		 * Bulk actions.
+		 *
+		 * @version 1.3.0
+		 * @since   1.0.0
+		 *
+		 * @see https://make.wordpress.org/core/2016/10/04/custom-bulk-actions/
+		 *
+		 * @param array $bulk_actions Bulk actions.
+		 *
+		 * @return array Bulk actions.
+		 */
+		public function bulk_actions( $bulk_actions ) {
+			foreach ( $this->get_statuses() as $status ) {
+				if ( $status->is_bulk_action ) {
+					$bulk_actions[ 'mark_' . $status->slug ] = sprintf(
+						/* Translators: %s: Status title. */
+						__( 'Change status to %s', 'order-status-for-woocommerce' ),
+						$status->title
+					);
+				} elseif (
+					$status->is_override() &&
+					isset( $bulk_actions[ 'mark_' . $status->slug ] )
+				) {
+					unset( $bulk_actions[ 'mark_' . $status->slug ] );
+				}
+			}
+			return $bulk_actions;
+		}
+
+		/**
+		 * Add custom order statuses.
+		 *
+		 * @version 1.4.0
+		 * @since   1.0.0
+		 *
+		 * @param array $order_statuses Order statuses.
+		 *
+		 * @return array Order statuses.
+		 */
+		public function add_custom_order_statuses( $order_statuses ) {
+			foreach ( $this->get_statuses() as $status ) {
+				$order_statuses[ $status->wc_slug ] = $status->title;
+			}
+			return $order_statuses;
+		}
+
+		/**
+		 * Register custom post statuses.
+		 *
+		 * @version 2.0.0
+		 * @since   1.0.0
+		 *
+		 * @see https://developer.wordpress.org/reference/functions/register_post_status/
+		 *
+		 * @todo (dev) `$status->is_override()`?
+		 */
+		public function register_custom_post_statuses() {
+			foreach ( $this->get_statuses() as $status ) {
+				register_post_status(
+					$status->wc_slug,
+					array(
+						'label'                     => $status->title,
+						'public'                    => true,
+						'exclude_from_search'       => false,
+						'show_in_admin_all_list'    => true,
+						'show_in_admin_status_list' => true,
+						'label_count'               => _n_noop(
+							$status->title . ' <span class="count">(%s)</span>', // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralSingular
+							$status->title . ' <span class="count">(%s)</span>', // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralPlural
+							'order-status-for-woocommerce'
 						),
-						'action' => $status->slug,
-					);
+					)
+				);
+			}
+		}
+
+		/**
+		 * Create order status post type.
+		 *
+		 * @version 1.0.0
+		 * @since   1.0.0
+		 *
+		 * @see https://developer.wordpress.org/reference/functions/register_post_type/
+		 *
+		 * @todo (dev) re-check `capabilities` and `capability_type`
+		 */
+		public function create_order_status_post_type() {
+			register_post_type(
+				'wfwp_wc_order_status',
+				array(
+					'labels'             => array(
+						'name'               => _x( 'Statuses', 'post type general name', 'order-status-for-woocommerce' ),
+						'singular_name'      => _x( 'Status', 'post type singular name', 'order-status-for-woocommerce' ),
+						'menu_name'          => _x( 'Statuses', 'admin menu', 'order-status-for-woocommerce' ),
+						'name_admin_bar'     => _x( 'Status', 'add new on admin bar', 'order-status-for-woocommerce' ),
+						'add_new'            => _x( 'Add New', 'status', 'order-status-for-woocommerce' ),
+						'add_new_item'       => __( 'Add New Status', 'order-status-for-woocommerce' ),
+						'new_item'           => __( 'New Status', 'order-status-for-woocommerce' ),
+						'edit_item'          => __( 'Edit Status', 'order-status-for-woocommerce' ),
+						'view_item'          => __( 'View Status', 'order-status-for-woocommerce' ),
+						'all_items'          => __( 'All Statuses', 'order-status-for-woocommerce' ),
+						'search_items'       => __( 'Search Statuses', 'order-status-for-woocommerce' ),
+						'parent_item_colon'  => __( 'Parent Statuses:', 'order-status-for-woocommerce' ),
+						'not_found'          => __( 'No statuses found.', 'order-status-for-woocommerce' ),
+						'not_found_in_trash' => __( 'No statuses found in Trash.', 'order-status-for-woocommerce' ),
+					),
+					'description'        => __( 'WooCommerce custom order status', 'order-status-for-woocommerce' ),
+					'public'             => false,
+					'publicly_queryable' => false,
+					'show_ui'            => true,
+					'show_in_menu'       => false,
+					'query_var'          => false,
+					'map_meta_cap'       => true,
+					'has_archive'        => false,
+					'hierarchical'       => false,
+					'menu_position'      => null,
+					'supports'           => array( 'title', 'revisions' ),
+				)
+			);
+		}
+
+		/**
+		 * Get statuses.
+		 *
+		 * @version 1.0.0
+		 * @since   1.0.0
+		 *
+		 * @todo (feature) add and sort by `priority` option (instead if `title`)
+		 */
+		public function get_statuses() {
+			if ( isset( $this->statuses ) ) {
+				return $this->statuses;
+			}
+			$this->statuses = array();
+			$args           = array(
+				'post_type'      => 'wfwp_wc_order_status',
+				'post_status'    => 'publish',
+				'posts_per_page' => -1,
+				'orderby'        => 'title',
+				'order'          => 'ASC',
+				'fields'         => 'ids',
+			);
+			$loop           = new WP_Query( $args );
+			if ( $loop->have_posts() ) {
+				foreach ( $loop->posts as $post_id ) {
+					$status                          = new WFWP_WC_Shop_Order_Status( $post_id );
+					$this->statuses[ $status->slug ] = $status;
 				}
 			}
-		}
-		if ( $status_actions ) {
-			if (
-				! empty( $actions['status']['actions'] ) &&
-				is_array( $actions['status']['actions'] )
-			) {
-				$actions['status']['actions'] = array_merge(
-					$actions['status']['actions'],
-					$status_actions
-				);
-			} else {
-				$actions['status'] = array(
-					'group'   => __( 'Change status: ', 'order-status-for-woocommerce' ),
-					'actions' => $status_actions,
-				);
-			}
-		}
-		return $actions;
-	}
-
-	/**
-	 * add_custom_status_actions_css.
-	 *
-	 * @version 1.8.0
-	 * @since   1.0.0
-	 */
-	function add_custom_status_actions_css() {
-		$style = '';
-		foreach ( $this->get_statuses() as $status ) {
-			if ( $status->is_override() ) {
-				continue;
-			}
-			$style .= '.view.' . $status->slug . '::after {
-				font-family: WooCommerce !important;
-				color: '            . $status->order_list_icon_color    . ' !important;
-				background-color: ' . $status->order_list_icon_bg_color . ' !important;
-				content: "\\'       . $status->order_list_icon         . '" !important;
-			}' . PHP_EOL;
-		}
-		if ( ! empty( $style ) ) {
-			echo '<style>' . wp_kses_post( $style ) . '</style>';
-		}
-	}
-
-	/**
-	 * order_list_actions.
-	 *
-	 * @version 1.3.0
-	 * @since   1.0.0
-	 */
-	function order_list_actions( $actions, $order ) {
-		foreach ( $this->get_statuses() as $status ) {
-			if ( $status->is_override() ) {
-				continue;
-			}
-			if ( $status->is_order_list_action ) {
-				if ( ! $order->has_status( array( $status->slug ) ) ) {
-					$actions[ $status->slug ] = array(
-						'url'    => $this->get_status_action_url( $status->slug, $order->get_id() ),
-						'name'   => $status->title,
-						'action' => "view " . $status->slug,
-					);
-				}
-			}
-		}
-		return $actions;
-	}
-
-	/**
-	 * reports.
-	 *
-	 * @version 1.3.0
-	 * @since   1.0.0
-	 */
-	function reports( $statuses ) {
-		foreach ( $this->get_statuses() as $status ) {
-			if ( $status->is_override() ) {
-				continue;
-			}
-			if ( $status->is_report ) {
-				$statuses[] = $status->slug;
-			}
-		}
-		return $statuses;
-	}
-
-	/**
-	 * bulk_actions.
-	 *
-	 * @version 1.3.0
-	 * @since   1.0.0
-	 *
-	 * @see     https://make.wordpress.org/core/2016/10/04/custom-bulk-actions/
-	 */
-	function bulk_actions( $bulk_actions ) {
-		foreach ( $this->get_statuses() as $status ) {
-			if ( $status->is_bulk_action ) {
-				$bulk_actions[ 'mark_' . $status->slug ] = sprintf(
-					/* Translators: %s: Status title. */
-					__( 'Change status to %s', 'order-status-for-woocommerce' ),
-					$status->title
-				);
-			} elseif (
-				$status->is_override() &&
-				isset( $bulk_actions[ 'mark_' . $status->slug ] )
-			) {
-				unset( $bulk_actions[ 'mark_' . $status->slug ] );
-			}
-		}
-		return $bulk_actions;
-	}
-
-	/**
-	 * add_custom_status_column_css.
-	 *
-	 * @version 1.8.0
-	 * @since   1.0.0
-	 */
-	function add_custom_status_column_css() {
-		$style = '';
-		foreach ( $this->get_statuses() as $status ) {
-			$style .= 'mark.order-status.status-' . $status->slug . ' {
-				color: '            . $status->text_color . ' !important;
-				background-color: ' . $status->bg_color   . ' !important;
-			}' . PHP_EOL;
-		}
-		if ( ! empty( $style ) ) {
-			echo '<style>' . wp_kses_post( $style ) . '</style>';
-		}
-	}
-
-	/**
-	 * add_custom_order_statuses.
-	 *
-	 * @version 1.4.0
-	 * @since   1.0.0
-	 */
-	function add_custom_order_statuses( $order_statuses ) {
-		foreach ( $this->get_statuses() as $status ) {
-			$order_statuses[ $status->wc_slug ] = $status->title;
-		}
-		return $order_statuses;
-	}
-
-	/**
-	 * register_custom_post_statuses.
-	 *
-	 * @version 1.8.0
-	 * @since   1.0.0
-	 *
-	 * @see     https://developer.wordpress.org/reference/functions/register_post_status/
-	 *
-	 * @todo    (dev) `$status->is_override()`?
-	 */
-	function register_custom_post_statuses() {
-		foreach ( $this->get_statuses() as $status ) {
-			register_post_status( $status->wc_slug, array(
-				'label'                     => $status->title,
-				'public'                    => true,
-				'exclude_from_search'       => false,
-				'show_in_admin_all_list'    => true,
-				'show_in_admin_status_list' => true,
-				'label_count'               => _n_noop(                  // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
-					$status->title . ' <span class="count">(%s)</span>', // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralSingular
-					$status->title . ' <span class="count">(%s)</span>'  // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralPlural
-				),
-			) );
-		}
-	}
-
-	/**
-	 * create_order_status_post_type.
-	 *
-	 * @version 1.0.0
-	 * @since   1.0.0
-	 *
-	 * @see     https://developer.wordpress.org/reference/functions/register_post_type/
-	 *
-	 * @todo    (dev) re-check `capabilities` and `capability_type`
-	 */
-	function create_order_status_post_type() {
-		register_post_type( 'wfwp_wc_order_status',
-			array(
-				'labels'             => array(
-					'name'               => _x( 'Statuses', 'post type general name', 'order-status-for-woocommerce' ),
-					'singular_name'      => _x( 'Status', 'post type singular name', 'order-status-for-woocommerce' ),
-					'menu_name'          => _x( 'Statuses', 'admin menu', 'order-status-for-woocommerce' ),
-					'name_admin_bar'     => _x( 'Status', 'add new on admin bar', 'order-status-for-woocommerce' ),
-					'add_new'            => _x( 'Add New', 'status', 'order-status-for-woocommerce' ),
-					'add_new_item'       => __( 'Add New Status', 'order-status-for-woocommerce' ),
-					'new_item'           => __( 'New Status', 'order-status-for-woocommerce' ),
-					'edit_item'          => __( 'Edit Status', 'order-status-for-woocommerce' ),
-					'view_item'          => __( 'View Status', 'order-status-for-woocommerce' ),
-					'all_items'          => __( 'All Statuses', 'order-status-for-woocommerce' ),
-					'search_items'       => __( 'Search Statuses', 'order-status-for-woocommerce' ),
-					'parent_item_colon'  => __( 'Parent Statuses:', 'order-status-for-woocommerce' ),
-					'not_found'          => __( 'No statuses found.', 'order-status-for-woocommerce' ),
-					'not_found_in_trash' => __( 'No statuses found in Trash.', 'order-status-for-woocommerce' ),
-				),
-				'description'        => __( 'WooCommerce custom order status', 'order-status-for-woocommerce' ),
-				'public'             => false,
-				'publicly_queryable' => false,
-				'show_ui'            => true,
-				'show_in_menu'       => false,
-				'query_var'          => false,
-				'map_meta_cap'       => true,
-				'has_archive'        => false,
-				'hierarchical'       => false,
-				'menu_position'      => null,
-				'supports'           => array( 'title', 'revisions' ),
-			)
-		);
-	}
-
-	/**
-	 * get_statuses.
-	 *
-	 * @version 1.0.0
-	 * @since   1.0.0
-	 *
-	 * @todo    (feature) add and sort by `priority` option (instead if `title`)
-	 */
-	function get_statuses() {
-		if ( isset( $this->statuses ) ) {
 			return $this->statuses;
 		}
-		$this->statuses = array();
-		$args = array(
-			'post_type'      => 'wfwp_wc_order_status',
-			'post_status'    => 'publish',
-			'posts_per_page' => -1,
-			'orderby'        => 'title',
-			'order'          => 'ASC',
-			'fields'         => 'ids',
-		);
-		$loop = new WP_Query( $args );
-		if ( $loop->have_posts() ) {
-			foreach ( $loop->posts as $post_id ) {
-				$status = new WFWP_WC_Shop_Order_Status( $post_id );
-				$this->statuses[ $status->slug ] = $status;
-			}
+
+		/**
+		 * Get status action URL.
+		 *
+		 * @version 1.0.0
+		 * @since   1.0.0
+		 *
+		 * @param string $status   Status slug.
+		 * @param int    $order_id Order ID.
+		 *
+		 * @return string
+		 */
+		public function get_status_action_url( $status, $order_id ) {
+			return wp_nonce_url(
+				admin_url( 'admin-ajax.php?action=woocommerce_mark_order_status&status=' . $status . '&order_id=' . $order_id ),
+				'woocommerce-mark-order-status'
+			);
 		}
-		return $this->statuses;
 	}
-
-	/**
-	 * get_status_action_url.
-	 *
-	 * @version 1.0.0
-	 * @since   1.0.0
-	 */
-	function get_status_action_url( $status, $order_id ) {
-		return wp_nonce_url(
-			admin_url( 'admin-ajax.php?action=woocommerce_mark_order_status&status=' . $status . '&order_id=' . $order_id ),
-			'woocommerce-mark-order-status'
-		);
-	}
-
-}
 
 endif;
 
